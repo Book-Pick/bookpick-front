@@ -5,10 +5,8 @@ export const buttonVariants = cva(
   {
     variants: {
       variant: {
-        primary:
-          'bg-[var(--color-primary)] text-[var(--color-primary-foreground)] hover:bg-[var(--color-primary-light)]',
-        secondary:
-          'bg-[var(--color-secondary)] text-[var(--color-secondary-foreground)] hover:bg-[var(--color-secondary-light)]',
+        primary: 'bg-primary text-primary-foreground hover:bg-primary-light',
+        secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary-light',
         outline: 'border border-gray-300 text-gray-800 hover:bg-gray-100',
       },
       size: {
