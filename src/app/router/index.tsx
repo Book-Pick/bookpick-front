@@ -1,5 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom'
 
+// 레이아웃
+import { MainLayout } from '@/app/layout'
+
 // 전역 페이지
 import HomePage from '@/pages/HomePage'
 import LoginPage from '@/pages/LoginPage'
@@ -30,41 +33,47 @@ import NotFound from '@/shared/pages/NotFound'
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <HomePage />,
+    element: <MainLayout />,
+    children: [
+      {
+        path: '/',
+        element: <HomePage />,
+      },
+      {
+        path: '/curation',
+        children: [
+          { index: true, element: <CurationListPage /> },
+          { path: 'create', element: <CurationCreatePage /> },
+          { path: 'edit/:id', element: <CurationEditPage /> },
+          { path: 'detail/:id', element: <CurationDetailPage /> },
+          { path: 'curator/:userId', element: <CuratorProfilePage /> },
+        ],
+      },
+      {
+        path: '/order',
+        children: [
+          { path: 'checkout/:curationId', element: <OrderCheckoutPage /> },
+          { path: 'complete', element: <OrderCompletePage /> },
+          { path: 'history', element: <OrderHistoryPage /> },
+        ],
+      },
+      {
+        path: '/revenue',
+        children: [
+          { index: true, element: <RevenueDashboardPage /> },
+          { path: 'settlement/request', element: <SettlementRequestPage /> },
+          { path: 'settlement/history', element: <SettlementHistoryPage /> },
+        ],
+      },
+      {
+        path: '/mypage',
+        element: <MyProfilePage />,
+      },
+    ],
   },
   {
     path: '/login',
     element: <LoginPage />,
-  },
-  {
-    path: '/curation',
-    children: [
-      { path: '', element: <CurationListPage /> },
-      { path: 'create', element: <CurationCreatePage /> },
-      { path: 'edit/:id', element: <CurationEditPage /> },
-      { path: 'detail/:id', element: <CurationDetailPage /> },
-      { path: 'curator/:userId', element: <CuratorProfilePage /> },
-    ],
-  },
-  {
-    path: '/order',
-    children: [
-      { path: 'checkout/:curationId', element: <OrderCheckoutPage /> },
-      { path: 'complete', element: <OrderCompletePage /> },
-      { path: 'history', element: <OrderHistoryPage /> },
-    ],
-  },
-  {
-    path: '/revenue',
-    children: [
-      { path: '', element: <RevenueDashboardPage /> },
-      { path: 'settlement/request', element: <SettlementRequestPage /> },
-      { path: 'settlement/history', element: <SettlementHistoryPage /> },
-    ],
-  },
-  {
-    path: '/mypage',
-    element: <MyProfilePage />,
   },
   {
     path: '*',
