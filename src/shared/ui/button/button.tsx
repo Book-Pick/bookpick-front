@@ -18,7 +18,12 @@ export const Button: React.FC<ButtonProps> = ({
   className,
   ...props
 }: ButtonProps) => {
-  const spinnerColor = variant === 'secondary' ? 'border-gray-800' : 'border-white'
+  const spinnerColorMap = {
+    primary: 'border-white',
+    secondary: 'border-white',
+    outline: 'border-gray-800',
+  }
+  const spinnerColor = spinnerColorMap[variant || 'primary'] || 'border-white'
 
   return (
     <button

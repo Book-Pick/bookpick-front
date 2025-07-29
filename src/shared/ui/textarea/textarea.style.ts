@@ -7,6 +7,7 @@ export const textareaVariants = cva(
       state: {
         default: 'border-gray-300 focus:ring-primary',
         error: 'border-red-500 focus:ring-red-500',
+        disabled: 'border-gray-200 bg-gray-100 cursor-not-allowed text-gray-500 focus:ring-0',
       },
       size: {
         sm: 'text-sm',

@@ -14,6 +14,9 @@ export default function HomePage() {
         <Button variant='outline' size='lg'>
           Click me
         </Button>
+        <Button variant='primary' size='lg' isLoading>
+          Click me
+        </Button>
       </div>
       <div className='text-2xl font-bold'>Input</div>
       <div className='flex flex-col gap-4'>
@@ -41,6 +44,7 @@ export default function HomePage() {
         <Textarea size='sm' placeholder='Small' />
         <Textarea size='md' placeholder='Medium' />
         <Textarea size='lg' placeholder='Large' />
+        <Textarea state='disabled' placeholder='Disabled' />
       </div>
       <div className='text-2xl font-bold'>Avatar</div>
       <div className='flex gap-4 items-center'>

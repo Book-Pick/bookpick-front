@@ -5,7 +5,7 @@ export const badgeVariants = cva('inline-flex items-center rounded-full font-med
     variant: {
       primary: 'bg-primary text-primary-foreground px-3 py-1 text-sm',
       secondary: 'bg-secondary text-secondary-foreground px-3 py-1 text-sm',
-      outline: 'border border-gray-300 text-gray-800 px-3 py-1 text-sm',
+      outline: 'border border-border text-foreground px-3 py-1 text-sm',
     },
   },
   defaultVariants: {
