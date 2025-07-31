@@ -1,76 +1,24 @@
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Input, Card } from '@/shared/ui'
+import { useForm, type SubmitHandler } from 'react-hook-form'
+
+type RegisterFormData = {
+  email: string
+  password: string
+  confirmPassword: string
+}
 
 export default function RegisterPage() {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    confirmPassword: '',
-  })
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<RegisterFormData>()
 
-  const [errors, setErrors] = useState({
-    email: '',
-    password: '',
-    confirmPassword: '',
-  })
+  const onSubmit: SubmitHandler<RegisterFormData> = (data) => console.log(data)
 
-  const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }))
-
-    // 입력 시 에러 메시지 초기화
-    if (errors[field as keyof typeof errors]) {
-      setErrors((prev) => ({
-        ...prev,
-        [field]: '',
-      }))
-    }
-  }
-
-  const validateForm = () => {
-    const newErrors = {
-      email: '',
-      password: '',
-      confirmPassword: '',
-    }
-
-    // 이메일 검증
-    if (!formData.email) {
-      newErrors.email = '이메일을 입력해주세요.'
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = '올바른 이메일 형식을 입력해주세요.'
-    }
-
-    // 비밀번호 검증
-    if (!formData.password) {
-      newErrors.password = '비밀번호를 입력해주세요.'
-    } else if (formData.password.length < 6) {
-      newErrors.password = '비밀번호는 6자 이상이어야 합니다.'
-    }
-
-    // 비밀번호 확인 검증
-    if (!formData.confirmPassword) {
-      newErrors.confirmPassword = '비밀번호 확인을 입력해주세요.'
-    } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = '비밀번호가 일치하지 않습니다.'
-    }
-
-    setErrors(newErrors)
-    return !Object.values(newErrors).some((error) => error)
-  }
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-
-    if (validateForm()) {
-      // 회원가입 로직 구현
-      console.log('회원가입 데이터:', formData)
-      // TODO: API 호출
-    }
-  }
+  console.log(watch('email'))
 
   return (
     <div className='min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8'>
@@ -81,7 +29,7 @@ export default function RegisterPage() {
         </div>
 
         <Card variant='default' className='p-8'>
-          <form onSubmit={handleSubmit} className='space-y-6'>
+          <form onSubmit={handleSubmit(onSubmit)} className='space-y-6'>
             <div>
               <label htmlFor='email' className='block text-sm font-medium text-gray-700 mb-1'>
                 이메일 주소
@@ -90,10 +38,9 @@ export default function RegisterPage() {
                 id='email'
                 type='email'
                 placeholder='이메일을 입력해주세요'
-                value={formData.email}
-                onChange={(e) => handleInputChange('email', e.target.value)}
+                {...register('email', { required: true })}
                 state={errors.email ? 'error' : undefined}
-                errorMessage={errors.email}
+                errorMessage={errors.email ? '이메일은 필수값입니다' : undefined}
               />
             </div>
 
@@ -105,10 +52,9 @@ export default function RegisterPage() {
                 id='password'
                 type='password'
                 placeholder='비밀번호를 입력해주세요'
-                value={formData.password}
-                onChange={(e) => handleInputChange('password', e.target.value)}
+                {...register('password', { required: true })}
                 state={errors.password ? 'error' : undefined}
-                errorMessage={errors.password}
+                errorMessage={errors.password ? '비밀번호는 필수값입니다' : undefined}
               />
             </div>
 
@@ -123,10 +69,9 @@ export default function RegisterPage() {
                 id='confirmPassword'
                 type='password'
                 placeholder='비밀번호를 다시 입력해주세요'
-                value={formData.confirmPassword}
-                onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
+                {...register('confirmPassword', { required: true })}
                 state={errors.confirmPassword ? 'error' : undefined}
-                errorMessage={errors.confirmPassword}
+                errorMessage={errors.confirmPassword ? '비밀번호가 일치하지 않습니다' : undefined}
               />
             </div>
 
