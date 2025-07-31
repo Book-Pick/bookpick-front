@@ -6,6 +6,10 @@ import { MainLayout } from '@/app/layout'
 // 전역 페이지
 import HomePage from '@/pages/HomePage'
 import LoginPage from '@/pages/LoginPage'
+import LandingPage from '@/pages/LandingPage'
+
+// 회원가입
+import RegisterPage from '@/features/auth/pages/RegisterPage'
 
 // 큐레이션
 import CurationCreatePage from '@/features/curation/pages/CurationCreatePage'
@@ -25,7 +29,14 @@ import SettlementRequestPage from '@/features/revenue/pages/SettlementRequestPag
 import SettlementHistoryPage from '@/features/revenue/pages/SettlementHistoryPage'
 
 // 마이페이지
-import MyProfilePage from '@/features/user/pages/MyPofilePage'
+import MyDashboardPage from '@/features/user/pages/MyDashboardPage'
+import MyProfilePage from '@/features/user/pages/MyProfilePage'
+import MyProfileEditPage from '@/features/user/pages/MyProfileEditPage'
+import MyCurationPage from '@/features/user/pages/MyCurationPage'
+import MyReadingHistoryPage from '@/features/user/pages/MyReadingHistoryPage'
+
+// 온보딩
+// import ReadingPreferencePage from '@/features/onboarding/pages/ReadingPreferencePage'
 
 // 에러페이지
 import NotFound from '@/shared/pages/NotFound'
@@ -38,6 +49,10 @@ export const router = createBrowserRouter([
       {
         path: '/',
         element: <HomePage />,
+      },
+      {
+        path: '/landing',
+        element: <LandingPage />,
       },
       {
         path: '/curation',
@@ -68,12 +83,22 @@ export const router = createBrowserRouter([
       {
         path: '/mypage',
         element: <MyProfilePage />,
+        children: [
+          { path: 'dashboard', element: <MyDashboardPage /> },
+          { path: 'profile', element: <MyProfileEditPage /> },
+          { path: 'curation', element: <MyCurationPage /> },
+          { path: 'reading-history', element: <MyReadingHistoryPage /> },
+        ],
       },
     ],
   },
   {
     path: '/login',
     element: <LoginPage />,
+  },
+  {
+    path: '/register',
+    element: <RegisterPage />,
   },
   {
     path: '*',
