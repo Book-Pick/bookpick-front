@@ -1,24 +1,17 @@
 import { Link } from 'react-router-dom'
 import { Button, Input, Card } from '@/shared/ui'
-import { useForm, type SubmitHandler } from 'react-hook-form'
-
-type RegisterFormData = {
-  email: string
-  password: string
-  confirmPassword: string
-}
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { registerSchema, type RegisterFormData } from '../model/validationSchema'
 
 export default function RegisterPage() {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
-  } = useForm<RegisterFormData>()
+  } = useForm<RegisterFormData>({ resolver: zodResolver(registerSchema) })
 
-  const onSubmit: SubmitHandler<RegisterFormData> = (data) => console.log(data)
-
-  console.log(watch('email'))
+  const onSubmit = (data: RegisterFormData) => console.log(data)
 
   return (
     <div className='min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8'>
@@ -38,9 +31,9 @@ export default function RegisterPage() {
                 id='email'
                 type='email'
                 placeholder='이메일을 입력해주세요'
-                {...register('email', { required: true })}
+                {...register('email')}
                 state={errors.email ? 'error' : undefined}
-                errorMessage={errors.email ? '이메일은 필수값입니다' : undefined}
+                errorMessage={errors.email?.message}
               />
             </div>
 
@@ -52,9 +45,9 @@ export default function RegisterPage() {
                 id='password'
                 type='password'
                 placeholder='비밀번호를 입력해주세요'
-                {...register('password', { required: true })}
+                {...register('password')}
                 state={errors.password ? 'error' : undefined}
-                errorMessage={errors.password ? '비밀번호는 필수값입니다' : undefined}
+                errorMessage={errors.password?.message}
               />
             </div>
 
@@ -69,9 +62,9 @@ export default function RegisterPage() {
                 id='confirmPassword'
                 type='password'
                 placeholder='비밀번호를 다시 입력해주세요'
-                {...register('confirmPassword', { required: true })}
+                {...register('confirmPassword')}
                 state={errors.confirmPassword ? 'error' : undefined}
-                errorMessage={errors.confirmPassword ? '비밀번호가 일치하지 않습니다' : undefined}
+                errorMessage={errors.confirmPassword?.message}
               />
             </div>
 
