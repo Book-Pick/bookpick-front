@@ -23,50 +23,35 @@ export default function RegisterPage() {
 
         <Card variant='default' className='p-8'>
           <form onSubmit={handleSubmit(onSubmit)} className='space-y-6'>
-            <div>
-              <label htmlFor='email' className='block text-sm font-medium text-gray-700 mb-1'>
-                이메일 주소
-              </label>
-              <Input
-                id='email'
-                type='email'
-                placeholder='이메일을 입력해주세요'
-                {...register('email')}
-                state={errors.email ? 'error' : undefined}
-                errorMessage={errors.email?.message}
-              />
-            </div>
+            <Input
+              id='email'
+              type='email'
+              label='이메일 주소'
+              placeholder='이메일을 입력해주세요'
+              {...register('email')}
+              state={errors.email ? 'error' : undefined}
+              errorMessage={errors.email?.message}
+            />
 
-            <div>
-              <label htmlFor='password' className='block text-sm font-medium text-gray-700 mb-1'>
-                비밀번호
-              </label>
-              <Input
-                id='password'
-                type='password'
-                placeholder='비밀번호를 입력해주세요'
-                {...register('password')}
-                state={errors.password ? 'error' : undefined}
-                errorMessage={errors.password?.message}
-              />
-            </div>
+            <Input
+              id='password'
+              type='password'
+              label='비밀번호'
+              placeholder='비밀번호를 입력해주세요'
+              {...register('password')}
+              state={errors.password ? 'error' : undefined}
+              errorMessage={errors.password?.message}
+            />
 
-            <div>
-              <label
-                htmlFor='confirmPassword'
-                className='block text-sm font-medium text-gray-700 mb-1'
-              >
-                비밀번호 확인
-              </label>
-              <Input
-                id='confirmPassword'
-                type='password'
-                placeholder='비밀번호를 다시 입력해주세요'
-                {...register('confirmPassword')}
-                state={errors.confirmPassword ? 'error' : undefined}
-                errorMessage={errors.confirmPassword?.message}
-              />
-            </div>
+            <Input
+              id='confirmPassword'
+              type='password'
+              label='비밀번호 확인'
+              placeholder='비밀번호를 다시 입력해주세요'
+              {...register('confirmPassword')}
+              state={errors.confirmPassword ? 'error' : undefined}
+              errorMessage={errors.confirmPassword?.message}
+            />
 
             <Button type='submit' variant='primary' size='lg' className='w-full'>
               회원가입
