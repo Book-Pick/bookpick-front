@@ -19,7 +19,7 @@ import sampleImage from '@/assets/images/sample_image.jpeg'
 
 export default function UIPreview() {
   return (
-    <div className='w-[400px] flex flex-col gap-4'>
+    <div className='w-[600px] flex flex-col gap-4 px-8 py-6'>
       <div className='text-2xl font-bold'>Button</div>
       <div className='flex gap-2'>
         <Button variant='default' size='sm'>
@@ -33,6 +33,9 @@ export default function UIPreview() {
         </Button>
         <Button variant='default' size='lg'>
           Primary/large
+        </Button>
+        <Button variant='default' size='xl'>
+          Default/X-Large
         </Button>
         <Button disabled size='lg'>
           Disabled
@@ -57,28 +60,28 @@ export default function UIPreview() {
         <div>큐레이션 카드</div>
         <Card className='bg-neutral-100 border-0'>
           <CardHeader>
-            <CardDescription className='text-[10px] text-neutral-900 font-medium'>
-              취향 유사도 82%
+            <CardDescription className='text-xs text-neutral-900 font-medium'>
+              취향 유사도 95%
             </CardDescription>
-            <CardTitle className='font-medium'>일상에서 발견하는 철학전 순간들</CardTitle>
+            <CardTitle className='text-lg font-medium'>일상에서 발견하는 철학적 순간들</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className='text-xs font-normal'>
-              우리가 무심코 지나치는 하루의 조가들 속에 얼마나 많은 질문과 해답이 숨어있는지
+            <p className='text-sm font-normal'>
+              우리가 무심코 지나치는 하루의 조각들 속에 얼마나 많은 질문과 해답이 숨어있는지
               생각해보신 적 있으신가요?
             </p>
           </CardContent>
-          <CardFooter>
+          <CardFooter className='mt-4'>
             <div className='w-full flex justify-between items-center'>
-              <div className='text-[10px] text-neutral-800 font-medium'>by 사유하는 직장인</div>
+              <div className='text-sm text-neutral-800 font-medium'>by 사유하는 직장인</div>
               <div className='flex gap-2'>
-                <div className='flex gap-1 justify-between items-center'>
-                  <Heart size={12} />
-                  <span className='text-xs font-medium'>3</span>
+                <div className='flex gap-1 items-center'>
+                  <Heart size={16} className='size-3' />
+                  <span className='text-sm font-medium'>24</span>
                 </div>
-                <div className='flex gap-1 justify-between items-center'>
-                  <MessageSquare size={12} />
-                  <span className='text-xs font-medium'>3</span>
+                <div className='flex gap-1 items-center'>
+                  <MessageSquare size={16} className='size-3' />
+                  <span className='text-sm font-medium'>8</span>
                 </div>
               </div>
             </div>
@@ -88,21 +91,19 @@ export default function UIPreview() {
         <Card className='py-4 pb-3'>
           <CardHeader className='px-4'>
             <div className='flex gap-4 items-center'>
-              <div className='w-[70px] h-[70px] bg-neutral-200 rounded-lg flex items-center justify-center'>
+              <div className='w-[80px] h-[80px] bg-neutral-200 rounded-lg flex items-center justify-center'>
                 <div className='text-xs'>프로필</div>
               </div>
               <div>
-                <CardTitle className='font-medium text-sm'>감성큐레이터</CardTitle>
-                <CardDescription className='text-[9px] text-neutral-600 font-medium mt-1'>
+                <CardTitle className='font-medium'>감성큐레이터</CardTitle>
+                <CardDescription className='text-xs text-neutral-600 font-medium mt-2'>
                   <p>선호 장르: 에세이, 심리</p>
                   <p>소개문구: 감성 독서를 사랑하는 독자입니다.</p>
                 </CardDescription>
               </div>
             </div>
             <CardAction className='self-center'>
-              <Button size='sm' className='text-xs'>
-                팔로우
-              </Button>
+              <Button>팔로우</Button>
             </CardAction>
           </CardHeader>
         </Card>
@@ -110,15 +111,13 @@ export default function UIPreview() {
         <Card className='py-4 pb-3 bg-neutral-200 border-0'>
           <CardHeader className='px-4'>
             <div>
-              <CardDescription className='text-[9px] text-neutral-600 font-medium mb-1'>
+              <CardDescription className='text-xs text-neutral-600 font-medium mb-1'>
                 큐레이션 가격
               </CardDescription>
-              <CardTitle className='font-semibold'>18,500원</CardTitle>
+              <CardTitle className='text-lg font-semibold'>18,500원</CardTitle>
             </div>
             <CardAction className='self-center'>
-              <Button size='sm' className='text-xs'>
-                이 큐레이션 구매하기
-              </Button>
+              <Button>이 큐레이션 구매하기</Button>
             </CardAction>
           </CardHeader>
         </Card>
