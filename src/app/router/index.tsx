@@ -7,6 +7,7 @@ import { MainLayout } from '@/app/layout'
 import HomePage from '@/pages/HomePage'
 import LoginPage from '@/pages/LoginPage'
 import LandingPage from '@/pages/LandingPage'
+import UIPreview from '@/pages/UIPreview'
 
 // 회원가입
 import RegisterPage from '@/features/auth/pages/RegisterPage'
@@ -49,6 +50,10 @@ export const router = createBrowserRouter([
       {
         path: '/',
         element: <HomePage />,
+      },
+      {
+        path: '/ui-preview',
+        element: <UIPreview />,
       },
       {
         path: '/landing',
