@@ -6,12 +6,8 @@ export function GnbLoggedOut() {
 
   return (
     <div className='flex items-center gap-4'>
-      <Button variant='outline' size='md'>
-        로그인
-      </Button>
-      <Button variant='primary' size='md' onClick={() => navigate('/register')}>
-        회원가입
-      </Button>
+      <Button>로그인</Button>
+      <Button onClick={() => navigate('/register')}>회원가입</Button>
     </div>
   )
 }
