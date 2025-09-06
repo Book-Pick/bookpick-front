@@ -8,16 +8,28 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-  CardAction,
   Textarea,
   Avatar,
   AvatarImage,
   AvatarFallback,
 } from '@/shared/ui'
-import { Heart, MessageSquare } from 'lucide-react'
+import { Heart, MessageSquare, CircleUser } from 'lucide-react'
 import sampleImage from '@/assets/images/sample_image.jpeg'
+import CurationCardFull from '@/features/curation/components/CurationCardFull'
+import CuratorProfileCard from '@/features/curation/components/CuratorProfileCard'
+import CurationPurchaseCard from '@/features/curation/components/CurationPurchaseCard'
+import { mockCuratorData } from '@/data/mockCuratorData'
+import { mockCurationData } from '@/data/mockCurationData'
 
 export default function UIPreview() {
+  const handleSubscribeToggle = (curatorId: number, isSubscribed: boolean) => {
+    console.log(`큐레이터 ${curatorId} 구독 상태 변경:`, isSubscribed ? '구독' : '구독취소')
+  }
+
+  const handlePurchase = (curationId: number, price: number) => {
+    console.log(`큐레이션 ${curationId} 구매 요청, 가격: ${price}원`)
+  }
+
   return (
     <div className='w-[600px] flex flex-col gap-4 px-8 py-6'>
       <div className='text-2xl font-bold'>Button</div>
@@ -50,10 +62,35 @@ export default function UIPreview() {
         <Input placeholder='에러 상태' errorMessage='8자리 이상 입력하세요' />
       </div>
       <div className='text-2xl font-bold'>Badge</div>
-      <div className='flex gap-2'>
-        <Badge variant='default'>Primary</Badge>
-        <Badge variant='secondary'>Secondary</Badge>
-        <Badge variant='outline'>Outline</Badge>
+      <div className='flex flex-col gap-3'>
+        <div className='flex gap-2'>
+          <Badge variant='default'>Primary</Badge>
+          <Badge variant='secondary'>Secondary</Badge>
+          <Badge variant='outline'>Outline</Badge>
+          <Badge variant='text'>Text Only</Badge>
+        </div>
+        <div className='flex gap-2'>
+          <Badge variant='default' size='sm'>
+            Small
+          </Badge>
+          <Badge variant='outline' size='sm'>
+            Outline Small
+          </Badge>
+          <Badge variant='text' size='sm'>
+            Text Small
+          </Badge>
+        </div>
+        <div className='flex gap-2'>
+          <Badge variant='default' size='lg'>
+            Large
+          </Badge>
+          <Badge variant='outline' size='lg'>
+            Outline Large
+          </Badge>
+          <Badge variant='text' size='lg'>
+            Text Large
+          </Badge>
+        </div>
       </div>
       <div className='text-2xl font-bold'>Card</div>
       <div className='flex flex-col gap-4'>
@@ -87,40 +124,42 @@ export default function UIPreview() {
             </div>
           </CardFooter>
         </Card>
+        <div>큐레이션 카드 ver2</div>
+        <CurationCardFull
+          title='결국 어른이 된다는 건, 아픔과 불안, 외로움을 숨기면서도 하루하루를 살아내는 법을 배워가는 일'
+          description='어른이 된다는 건 단순히 나이를 먹는 게 아니라, 세상 속에서 살아남기 위해 새로운 방식을 배우는 과정 같아. 진짜로 괜찮지 않아도, 사람들 앞에서는 웃을 줄 알고 괜찮아라는 말을 입에 달고 사는 법을 익히는 거지.'
+          curator='감성큐레이터'
+          likes={24}
+          comments={8}
+          views={156}
+          date='2025.08.25'
+          tags={['에세이', '성장', '힐링']}
+        />
         <div>큐레이터 프로필 카드</div>
-        <Card className='py-4 pb-3'>
-          <CardHeader className='px-4'>
-            <div className='flex gap-4 items-center'>
-              <div className='w-[80px] h-[80px] bg-neutral-200 rounded-lg flex items-center justify-center'>
-                <div className='text-xs'>프로필</div>
-              </div>
-              <div>
-                <CardTitle className='font-medium'>감성큐레이터</CardTitle>
-                <CardDescription className='text-xs text-neutral-600 font-medium mt-2'>
-                  <p>선호 장르: 에세이, 심리</p>
-                  <p>소개문구: 감성 독서를 사랑하는 독자입니다.</p>
-                </CardDescription>
-              </div>
-            </div>
-            <CardAction className='self-center'>
-              <Button>팔로우</Button>
-            </CardAction>
-          </CardHeader>
-        </Card>
+        <div className='flex flex-col gap-4'>
+          {mockCuratorData.slice(0, 3).map((curator) => (
+            <CuratorProfileCard
+              key={curator.id}
+              curatorId={curator.id}
+              name={curator.name}
+              favoriteGenres={curator.favoriteGenres}
+              introduction={curator.introduction}
+              isSubscribed={curator.isSubscribed}
+              onSubscribeToggle={handleSubscribeToggle}
+            />
+          ))}
+        </div>
         <div>큐레이션 구매 정보 카드</div>
-        <Card className='py-4 pb-3 bg-neutral-200 border-0'>
-          <CardHeader className='px-4'>
-            <div>
-              <CardDescription className='text-xs text-neutral-600 font-medium mb-1'>
-                큐레이션 가격
-              </CardDescription>
-              <CardTitle className='text-lg font-semibold'>18,500원</CardTitle>
-            </div>
-            <CardAction className='self-center'>
-              <Button>이 큐레이션 구매하기</Button>
-            </CardAction>
-          </CardHeader>
-        </Card>
+        <div className='flex flex-col gap-4'>
+          {mockCurationData.slice(0, 1).map((curation) => (
+            <CurationPurchaseCard
+              key={curation.id}
+              curationId={curation.id}
+              price={curation.price}
+              onPurchase={handlePurchase}
+            />
+          ))}
+        </div>
       </div>
       <div className='text-2xl font-bold'>Textarea</div>
       <div className='flex flex-col gap-4'>
@@ -134,6 +173,11 @@ export default function UIPreview() {
         </Avatar>
         <Avatar>
           <AvatarFallback>수민</AvatarFallback>
+        </Avatar>
+        <Avatar>
+          <AvatarFallback>
+            <CircleUser />
+          </AvatarFallback>
         </Avatar>
       </div>
     </div>

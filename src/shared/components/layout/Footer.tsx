@@ -1,152 +1,120 @@
-// import { Facebook, Twitter, Instagram } from 'lucide-react'
+import { Facebook, Instagram } from 'lucide-react'
+import { TwitterIcon } from '@/assets/icons/TwitterIcon'
 import { Button } from '@/shared/ui/button'
 
 export function Footer() {
   return (
     <footer className='bg-background border-t border-border py-12'>
-      <div className='max-w-[1200px] mx-auto px-4'>
+      <div className='max-w-[1440px] mx-auto px-4'>
         <div className='flex flex-col lg:flex-row gap-8'>
-          {/* 좌측 40% - 로고, 슬로건, 소셜 링크 */}
           <div className='lg:w-2/5'>
             <div className='mb-6'>
-              <h3 className='text-2xl font-bold text-foreground mb-3'>BookPick</h3>
-              <p className='text-muted-foreground text-sm leading-relaxed'>
-                당신에게 꼭 맞는 책을 찾아드립니다.
+              <h3 className='text-2xl font-semibold text-foreground mb-10'>BOOKPICK</h3>
+              <p className='text-muted-foreground leading-normal tracking-tight mb-10'>
+                "당신에게 꼭 맞는 책, 북픽이 찾아드릴게요."
                 <br />
-                지금의 기분, 상황, 취향을 바탕으로 하는
-                <br />
-                개인화된 독서 큐레이션 서비스
+                지금의 기분, 상황, 취향을 바탕으로 추천받는 독서 큐레이션
               </p>
             </div>
 
             {/* 소셜 미디어 아이콘 */}
-            <div className='flex gap-3'>
-              <Button variant='outline' size='icon' className='h-10 w-10'>
-                {/* <Facebook className='h-4 w-4' /> */}
-                <span className='sr-only'>Facebook</span>
+            <div className='flex gap-4'>
+              <Button variant='ghost' size='icon' className='h-9 w-9 rounded-full shadow-xl'>
+                <Facebook className='h-4 w-4' />
               </Button>
-              <Button variant='outline' size='icon' className='h-10 w-10'>
-                {/* <Twitter className='h-4 w-4' /> */}
-                <span className='sr-only'>Twitter</span>
+              <Button variant='ghost' size='icon' className='h-9 w-9 rounded-full shadow-xl'>
+                <TwitterIcon className='h-4 w-4' />
               </Button>
-              <Button variant='outline' size='icon' className='h-10 w-10'>
-                {/* <Instagram className='h-4 w-4' /> */}
-                <span className='sr-only'>Instagram</span>
+              <Button variant='ghost' size='icon' className='h-9 w-9 rounded-full shadow-xl'>
+                <Instagram className='h-4 w-4' />
               </Button>
             </div>
           </div>
 
-          {/* 우측 60% - 링크 섹션들 */}
           <div className='lg:w-3/5 grid grid-cols-2 md:grid-cols-3 gap-8'>
             <div>
-              <h4 className='text-sm font-semibold text-foreground mb-4'>서비스</h4>
-              <ul className='space-y-3'>
+              <h4 className='text-xl font-semibold text-foreground mb-10'>About</h4>
+              <ul className='space-y-5'>
                 <li>
                   <a
                     href='#'
-                    className='text-sm text-muted-foreground hover:text-foreground transition-colors'
+                    className='text-muted-foreground hover:text-foreground transition-colors'
                   >
-                    큐레이션 받기
+                    서비스 소개
                   </a>
                 </li>
                 <li>
                   <a
                     href='#'
-                    className='text-sm text-muted-foreground hover:text-foreground transition-colors'
+                    className='text-muted-foreground hover:text-foreground transition-colors'
                   >
-                    인기 큐레이션
+                    팀 소개
                   </a>
                 </li>
                 <li>
                   <a
                     href='#'
-                    className='text-sm text-muted-foreground hover:text-foreground transition-colors'
+                    className='text-muted-foreground hover:text-foreground transition-colors'
                   >
-                    큐레이터 찾기
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href='#'
-                    className='text-sm text-muted-foreground hover:text-foreground transition-colors'
-                  >
-                    북리뷰
+                    자주 묻는 질문
                   </a>
                 </li>
               </ul>
             </div>
-
             <div>
-              <h4 className='text-sm font-semibold text-foreground mb-4'>고객지원</h4>
-              <ul className='space-y-3'>
+              <h4 className='text-xl font-semibold text-foreground mb-10'>Community</h4>
+              <ul className='space-y-5'>
                 <li>
                   <a
                     href='#'
-                    className='text-sm text-muted-foreground hover:text-foreground transition-colors'
+                    className='text-muted-foreground hover:text-foreground transition-colors'
                   >
-                    FAQ
+                    리뷰 & 추천
                   </a>
                 </li>
                 <li>
                   <a
                     href='#'
-                    className='text-sm text-muted-foreground hover:text-foreground transition-colors'
+                    className='text-muted-foreground hover:text-foreground transition-colors'
                   >
-                    고객센터
+                    뉴스레터 구독
                   </a>
                 </li>
                 <li>
                   <a
                     href='#'
-                    className='text-sm text-muted-foreground hover:text-foreground transition-colors'
+                    className='text-muted-foreground hover:text-foreground transition-colors'
                   >
-                    이용약관
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href='#'
-                    className='text-sm text-muted-foreground hover:text-foreground transition-colors'
-                  >
-                    개인정보처리방침
+                    고객센터/문의하기
                   </a>
                 </li>
               </ul>
             </div>
-
             <div>
-              <h4 className='text-sm font-semibold text-foreground mb-4'>회사</h4>
-              <ul className='space-y-3'>
+              <h4 className='text-xl font-semibold text-foreground mb-10'>Socials</h4>
+              <ul className='space-y-5'>
                 <li>
                   <a
                     href='#'
-                    className='text-sm text-muted-foreground hover:text-foreground transition-colors'
+                    className='text-muted-foreground hover:text-foreground transition-colors'
                   >
-                    회사소개
+                    인스타그램
                   </a>
                 </li>
                 <li>
                   <a
                     href='#'
-                    className='text-sm text-muted-foreground hover:text-foreground transition-colors'
+                    className='text-muted-foreground hover:text-foreground transition-colors'
                   >
-                    채용정보
+                    트위터/X
                   </a>
                 </li>
                 <li>
                   <a
                     href='#'
-                    className='text-sm text-muted-foreground hover:text-foreground transition-colors'
+                    className='text-muted-foreground hover:text-foreground transition-colors'
                   >
-                    보도자료
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href='#'
-                    className='text-sm text-muted-foreground hover:text-foreground transition-colors'
-                  >
-                    제휴문의
+                    블로그/브런치
                   </a>
                 </li>
               </ul>

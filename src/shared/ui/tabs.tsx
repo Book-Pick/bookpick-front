@@ -1,5 +1,6 @@
 import * as React from 'react'
 import * as TabsPrimitive from '@radix-ui/react-tabs'
+import { cva, type VariantProps } from 'class-variance-authority'
 
 import { cn } from '@/shared/lib/utils'
 
@@ -26,14 +27,31 @@ function TabsList({ className, ...props }: React.ComponentProps<typeof TabsPrimi
   )
 }
 
-function TabsTrigger({ className, ...props }: React.ComponentProps<typeof TabsPrimitive.Trigger>) {
+const tabsTriggerVariants = cva(
+  'inline-flex items-center justify-center whitespace-nowrap rounded-none border-b-2 border-transparent font-medium text-muted-foreground transition-all hover:text-foreground data-[state=active]:border-primary data-[state=active]:text-foreground data-[state=active]:font-semibold disabled:pointer-events-none disabled:opacity-50 relative -mb-px',
+  {
+    variants: {
+      size: {
+        sm: 'px-2 py-2 text-xs',
+        default: 'px-3 py-3 text-sm',
+        lg: 'px-4 py-4 text-md',
+      },
+    },
+    defaultVariants: {
+      size: 'default',
+    },
+  },
+)
+
+interface TabsTriggerProps
+  extends React.ComponentProps<typeof TabsPrimitive.Trigger>,
+    VariantProps<typeof tabsTriggerVariants> {}
+
+function TabsTrigger({ className, size, ...props }: TabsTriggerProps) {
   return (
     <TabsPrimitive.Trigger
       data-slot='tabs-trigger'
-      className={cn(
-        'inline-flex items-center justify-center whitespace-nowrap rounded-none border-b-2 border-transparent px-3 py-3 text-sm font-medium text-muted-foreground transition-all hover:text-foreground data-[state=active]:border-primary data-[state=active]:text-foreground data-[state=active]:font-semibold disabled:pointer-events-none disabled:opacity-50 relative -mb-px',
-        className,
-      )}
+      className={cn(tabsTriggerVariants({ size }), className)}
       {...props}
     />
   )
@@ -49,4 +67,4 @@ function TabsContent({ className, ...props }: React.ComponentProps<typeof TabsPr
   )
 }
 
-export { Tabs, TabsList, TabsTrigger, TabsContent }
+export { Tabs, TabsList, TabsTrigger, TabsContent, tabsTriggerVariants }

@@ -1,14 +1,11 @@
 import { Avatar, AvatarFallback, AvatarImage, Button } from '@/shared/ui'
-import { Bell } from 'lucide-react'
 import sampleImage from '@/assets/images/sample_image.jpeg'
 
 export function GnbLoggedIn() {
   return (
-    <div className='flex items-center gap-2'>
-      <Button>큐레이션 작성</Button>
-
-      <Button variant='ghost' className='rounded-full'>
-        <Bell size={18} className='size-[20px]' />
+    <div className='flex items-center gap-5'>
+      <Button size='xl'>
+        <span className='font-semibold px-1'>큐레이션 작성</span>
       </Button>
 
       <Avatar>
