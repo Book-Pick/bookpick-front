@@ -5,7 +5,8 @@ import { useNavigate } from 'react-router-dom'
 export function TopBar() {
   const navigate = useNavigate()
   // TODO: store로 상태 관리
-  const isLoggedIn = false
+  const authData = localStorage.getItem('auth')
+  const isLoggedIn = !!(authData && JSON.parse(authData)?.isLogin === 'true')
 
   const handleLogoClick = () => {
     navigate('/')

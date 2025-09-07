@@ -1,11 +1,11 @@
 import CuratorProfileCard from '../components/CuratorProfileCard'
 import CurationPurchaseCard from '../components/CurationPurchaseCard'
 import CommentSection from '../components/CommentSection'
+import BookStoreMap from '../components/BookStoreMap'
 import { mockCuratorData } from '@/data/mockCuratorData'
 import { mockCurationData } from '@/data/mockCurationData'
 import { mockCommentData, type CommentData } from '@/data/mockCommentData'
-import { Badge, AspectRatio } from '@/shared/ui'
-import sampleMap from '@/assets/images/sample_map.png'
+import { Badge } from '@/shared/ui'
 import { useState } from 'react'
 
 export default function CurationDetailPage() {
@@ -100,14 +100,14 @@ export default function CurationDetailPage() {
           아니라, 서툴지만 한 걸음씩 나아가는 모습이 마치 내 이야기 같아서 몇 번이고 그 페이지를
           다시 읽었습니다.
         </p>
-        <div>
-          <Badge key={1} variant='text' size='xs' className='text-base'>
+        <div className='flex gap-1'>
+          <Badge key={1} variant='text' size='xs' className='text-base text-muted-foreground'>
             #에세이
           </Badge>
-          <Badge key={1} variant='text' size='xs' className='text-base'>
+          <Badge key={1} variant='text' size='xs' className='text-base text-muted-foreground'>
             #위로
           </Badge>
-          <Badge key={1} variant='text' size='xs' className='text-base'>
+          <Badge key={1} variant='text' size='xs' className='text-base text-muted-foreground'>
             #성장
           </Badge>
         </div>
@@ -122,15 +122,7 @@ export default function CurationDetailPage() {
         />
       ))}
       {/* 지도 */}
-      <div className='mt-16 mb-8'>
-        <AspectRatio ratio={2} className='w-full rounded-2xl overflow-hidden shadow-lg'>
-          <img
-            src={sampleMap}
-            alt='책을 읽기 좋은 카페와 서점이 표시된 지도'
-            className='w-full h-full object-cover'
-          />
-        </AspectRatio>
-      </div>
+      <BookStoreMap />
 
       {/* 댓글 및 피드백 */}
       <CommentSection

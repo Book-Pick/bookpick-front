@@ -16,6 +16,7 @@ export default function LoginPage() {
 
   const onSubmit = (data: LoginFormData) => {
     console.log('login', data)
+    localStorage.setItem('auth', JSON.stringify({ isLogin: 'true' }))
     navigate('/onboarding')
   }
 

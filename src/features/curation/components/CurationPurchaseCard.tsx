@@ -24,7 +24,7 @@ const CurationPurchaseCard = ({
   }
 
   return (
-    <Card className={`py-4 pb-3 bg-neutral-100 border-0 ${className || ''}`}>
+    <Card className={`py-4 pb-4 bg-neutral-100 border-0 ${className || ''}`}>
       <CardHeader className='px-4'>
         <div>
           <CardDescription className='text-neutral-600 font-medium mb-1'>
