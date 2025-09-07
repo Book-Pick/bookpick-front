@@ -1,15 +1,15 @@
 import { createBrowserRouter } from 'react-router-dom'
 
 // 레이아웃
-import { MainLayout, ContentsLayout } from '@/app/layout'
+import { MainLayout, ContentsLayout, AuthLayout } from '@/app/layout'
 
 // 전역 페이지
 import HomePage from '@/pages/HomePage'
-import LoginPage from '@/pages/LoginPage'
 import LandingPage from '@/pages/LandingPage'
 import UIPreview from '@/pages/UIPreview'
 
-// 회원가입
+// 인증
+import LoginPage from '@/features/auth/pages/LoginPage'
 import RegisterPage from '@/features/auth/pages/RegisterPage'
 
 // 큐레이션
@@ -37,7 +37,7 @@ import MyCurationPage from '@/features/user/pages/MyCurationPage'
 import MyReadingHistoryPage from '@/features/user/pages/MyReadingHistoryPage'
 
 // 온보딩
-// import ReadingPreferencePage from '@/features/onboarding/pages/ReadingPreferencePage'
+import ReadingPreferencePage from '@/features/onboarding/pages/ReadingPreferencePage'
 
 // 에러페이지
 import NotFound from '@/shared/pages/NotFound'
@@ -64,7 +64,7 @@ export const router = createBrowserRouter([
         element: <ContentsLayout />,
         children: [
           {
-            path: '/curation',
+            path: 'curation',
             children: [
               { index: true, element: <CurationListPage /> },
               { path: 'create', element: <CurationCreatePage /> },
@@ -74,7 +74,7 @@ export const router = createBrowserRouter([
             ],
           },
           {
-            path: '/order',
+            path: 'order',
             children: [
               { path: 'checkout/:curationId', element: <OrderCheckoutPage /> },
               { path: 'complete', element: <OrderCompletePage /> },
@@ -82,7 +82,7 @@ export const router = createBrowserRouter([
             ],
           },
           {
-            path: '/revenue',
+            path: 'revenue',
             children: [
               { index: true, element: <RevenueDashboardPage /> },
               { path: 'settlement/request', element: <SettlementRequestPage /> },
@@ -90,7 +90,7 @@ export const router = createBrowserRouter([
             ],
           },
           {
-            path: '/mypage',
+            path: 'mypage',
             element: <MyProfilePage />,
             children: [
               { path: 'dashboard', element: <MyDashboardPage /> },
@@ -99,17 +99,27 @@ export const router = createBrowserRouter([
               { path: 'reading-history', element: <MyReadingHistoryPage /> },
             ],
           },
+          {
+            path: 'onboarding',
+            children: [{ index: true, element: <ReadingPreferencePage /> }],
+          },
         ],
       },
     ],
   },
   {
-    path: '/login',
-    element: <LoginPage />,
-  },
-  {
-    path: '/register',
-    element: <RegisterPage />,
+    path: '/',
+    element: <AuthLayout />,
+    children: [
+      {
+        path: 'login',
+        element: <LoginPage />,
+      },
+      {
+        path: 'register',
+        element: <RegisterPage />,
+      },
+    ],
   },
   {
     path: '*',
