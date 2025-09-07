@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
 
 // 레이아웃
-import { MainLayout } from '@/app/layout'
+import { MainLayout, ContentsLayout } from '@/app/layout'
 
 // 전역 페이지
 import HomePage from '@/pages/HomePage'
@@ -60,39 +60,45 @@ export const router = createBrowserRouter([
         element: <LandingPage />,
       },
       {
-        path: '/curation',
+        path: '/',
+        element: <ContentsLayout />,
         children: [
-          { index: true, element: <CurationListPage /> },
-          { path: 'create', element: <CurationCreatePage /> },
-          { path: 'edit/:id', element: <CurationEditPage /> },
-          { path: 'detail/:id', element: <CurationDetailPage /> },
-          { path: 'curator/:userId', element: <CuratorProfilePage /> },
-        ],
-      },
-      {
-        path: '/order',
-        children: [
-          { path: 'checkout/:curationId', element: <OrderCheckoutPage /> },
-          { path: 'complete', element: <OrderCompletePage /> },
-          { path: 'history', element: <OrderHistoryPage /> },
-        ],
-      },
-      {
-        path: '/revenue',
-        children: [
-          { index: true, element: <RevenueDashboardPage /> },
-          { path: 'settlement/request', element: <SettlementRequestPage /> },
-          { path: 'settlement/history', element: <SettlementHistoryPage /> },
-        ],
-      },
-      {
-        path: '/mypage',
-        element: <MyProfilePage />,
-        children: [
-          { path: 'dashboard', element: <MyDashboardPage /> },
-          { path: 'profile', element: <MyProfileEditPage /> },
-          { path: 'curation', element: <MyCurationPage /> },
-          { path: 'reading-history', element: <MyReadingHistoryPage /> },
+          {
+            path: '/curation',
+            children: [
+              { index: true, element: <CurationListPage /> },
+              { path: 'create', element: <CurationCreatePage /> },
+              { path: 'edit/:id', element: <CurationEditPage /> },
+              { path: 'detail/:id', element: <CurationDetailPage /> },
+              { path: 'curator/:userId', element: <CuratorProfilePage /> },
+            ],
+          },
+          {
+            path: '/order',
+            children: [
+              { path: 'checkout/:curationId', element: <OrderCheckoutPage /> },
+              { path: 'complete', element: <OrderCompletePage /> },
+              { path: 'history', element: <OrderHistoryPage /> },
+            ],
+          },
+          {
+            path: '/revenue',
+            children: [
+              { index: true, element: <RevenueDashboardPage /> },
+              { path: 'settlement/request', element: <SettlementRequestPage /> },
+              { path: 'settlement/history', element: <SettlementHistoryPage /> },
+            ],
+          },
+          {
+            path: '/mypage',
+            element: <MyProfilePage />,
+            children: [
+              { path: 'dashboard', element: <MyDashboardPage /> },
+              { path: 'profile', element: <MyProfileEditPage /> },
+              { path: 'curation', element: <MyCurationPage /> },
+              { path: 'reading-history', element: <MyReadingHistoryPage /> },
+            ],
+          },
         ],
       },
     ],

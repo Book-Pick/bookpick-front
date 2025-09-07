@@ -78,8 +78,7 @@ export default function CurationDetailPage() {
   }
 
   return (
-    // 중복 제거하고 MainLayout으로 빼기
-    <div className='max-w-[1440px] mx-auto px-14 py-16'>
+    <>
       {/* 큐레이션 내용 */}
       <div className='mb-15'>
         <h2 className='text-4xl font-bold mb-15'>위로 받고 싶은 당신에게 추천드리는...</h2>
@@ -141,6 +140,6 @@ export default function CurationDetailPage() {
         onLike={handleLike}
         className='mt-12'
       />
-    </div>
+    </>
   )
 }
