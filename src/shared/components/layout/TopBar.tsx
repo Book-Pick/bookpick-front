@@ -7,9 +7,9 @@ export function TopBar() {
 
   return (
     <header className='border-b border-border py-4'>
-      <div className='max-w-[1440px] mx-auto px-4 flex items-center justify-between'>
+      <div className='max-w-[1440px] mx-auto px-20 flex items-center justify-between'>
         <div className='flex items-center'>
-          <h1 className='text-[32px] font-semibold text-foreground'>BOOKPICK</h1>
+          <h1 className='text-[32px] font-wanted font-semibold text-foreground'>BOOKPICK</h1>
         </div>
 
         {isLoggedIn ? <GnbLoggedIn /> : <GnbLoggedOut />}

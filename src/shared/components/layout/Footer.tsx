@@ -5,11 +5,11 @@ import { Button } from '@/shared/ui/button'
 export function Footer() {
   return (
     <footer className='bg-background border-t border-border py-12'>
-      <div className='max-w-[1440px] mx-auto px-4'>
+      <div className='max-w-[1440px] mx-auto px-20'>
         <div className='flex flex-col lg:flex-row gap-8'>
           <div className='lg:w-2/5'>
             <div className='mb-6'>
-              <h3 className='text-2xl font-semibold text-foreground mb-10'>BOOKPICK</h3>
+              <h3 className='text-2xl font-wanted font-semibold text-foreground mb-10'>BOOKPICK</h3>
               <p className='text-muted-foreground leading-normal tracking-tight mb-10'>
                 "당신에게 꼭 맞는 책, 북픽이 찾아드릴게요."
                 <br />

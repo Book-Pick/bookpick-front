@@ -3,7 +3,7 @@ import { Button } from '@/shared/ui'
 const MainBanner = () => {
   return (
     <section className='bg-gradient-to-br from-primary/10 via-background to-secondary/5 py-20 px-4'>
-      <div className='max-w-[1440px] mx-auto px-4'>
+      <div className='max-w-[1440px] mx-auto px-20'>
         <h1 className='text-4xl md:text-6xl font-bold text-foreground mt-5 mb-20'>
           지금 내 마음에 꼭 맞는 책, 북픽에서
         </h1>

@@ -4,6 +4,7 @@ import CurationCardFull from '@/features/curation/components/CurationCardFull'
 import { mockCurationData } from '@/data/mockCurationData'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui'
 import { useNavigate } from 'react-router-dom'
+import { ContentsLayout } from '@/app/layout'
 
 export default function HomePage() {
   const navigate = useNavigate()
@@ -17,7 +18,7 @@ export default function HomePage() {
       {/* 메인 배너 섹션 */}
       <MainBanner />
       {/* 메인 컨텐츠 영역 */}
-      <main className='max-w-[1440px] mx-auto px-4 py-16'>
+      <ContentsLayout>
         <section className='mb-16'>
           <div className='flex justify-between items-center mb-8'>
             <h2 className='text-2xl md:text-4xl font-bold text-foreground'>
@@ -85,7 +86,7 @@ export default function HomePage() {
             </Tabs>
           </div>
         </section>
-      </main>
+      </ContentsLayout>
     </div>
   )
 }

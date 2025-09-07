@@ -94,7 +94,10 @@ body {
 
 @theme {
   --font-pretendard: 'Pretendard', sans-serif;
-  --font-wanted: 'Wanted Sans', sans-serif;
+  --font-wanted:
+    'Wanted Sans Variable', 'Wanted Sans', -apple-system, BlinkMacSystemFont, system-ui, 'Segoe UI',
+    'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', sans-serif;
   /* --breakpoint-3xl: 1920px;
   --ease-fluid: cubic-bezier(0.3, 0, 0, 1);
   --ease-snappy: cubic-bezier(0.2, 0, 0, 1);
@@ -168,5 +171,36 @@ body {
   }
   body {
     @apply bg-background font-wanted font-normal text-foreground;
+  }
+}
+
+@layer utilities {
+  /* Custom Font Typography Classes */
+  .font-title {
+    @apply text-4xl font-bold text-foreground;
+  }
+
+  .font-subtitle {
+    @apply text-2xl font-semibold text-foreground;
+  }
+
+  .font-curation-title {
+    @apply text-2xl font-semibold text-foreground;
+  }
+
+  .font-curation-text {
+    @apply text-xl font-medium text-foreground tracking-[-1%];
+  }
+
+  .font-tag {
+    @apply text-lg font-medium text-foreground;
+  }
+
+  .font-comment {
+    @apply text-lg font-normal text-muted-foreground;
+  }
+
+  .font-meta {
+    @apply text-sm font-medium text-muted-foreground;
   }
 }
