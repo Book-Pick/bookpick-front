@@ -22,3 +22,4 @@ export {
 export { Textarea } from './textarea'
 export { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs'
 export { AspectRatio } from './aspect-ratio'
+export { Toggle, toggleVariants } from './toggle'

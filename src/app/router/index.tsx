@@ -18,6 +18,7 @@ import CurationEditPage from '@/features/curation/pages/CurationEditPage'
 import CurationDetailPage from '@/features/curation/pages/CurationDetailPage'
 import CurationListPage from '@/features/curation/pages/CurationListPage'
 import CuratorProfilePage from '@/features/curation/pages/CuratorProfilePage'
+import ReadingPreferencePage from '@/features/curation/pages/ReadingPreferencePage'
 
 // 주문
 import OrderCheckoutPage from '@/features/order/pages/OrderCheckoutPage'
@@ -35,9 +36,6 @@ import MyProfilePage from '@/features/user/pages/MyProfilePage'
 import MyProfileEditPage from '@/features/user/pages/MyProfileEditPage'
 import MyCurationPage from '@/features/user/pages/MyCurationPage'
 import MyReadingHistoryPage from '@/features/user/pages/MyReadingHistoryPage'
-
-// 온보딩
-import ReadingPreferencePage from '@/features/onboarding/pages/ReadingPreferencePage'
 
 // 에러페이지
 import NotFound from '@/shared/pages/NotFound'
