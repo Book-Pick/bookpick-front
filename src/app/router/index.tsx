@@ -32,7 +32,7 @@ import SettlementHistoryPage from '@/features/revenue/pages/SettlementHistoryPag
 
 // 마이페이지
 import MyDashboardPage from '@/features/user/pages/MyDashboardPage'
-import MyProfilePage from '@/features/user/pages/MyProfilePage'
+// import MyProfilePage from '@/features/user/pages/MyProfilePage'
 import MyProfileEditPage from '@/features/user/pages/MyProfileEditPage'
 import MyCurationPage from '@/features/user/pages/MyCurationPage'
 import MyReadingHistoryPage from '@/features/user/pages/MyReadingHistoryPage'
@@ -89,7 +89,7 @@ export const router = createBrowserRouter([
           },
           {
             path: 'mypage',
-            element: <MyProfilePage />,
+            // element: <MyProfilePage />,
             children: [
               { path: 'dashboard', element: <MyDashboardPage /> },
               { path: 'profile', element: <MyProfileEditPage /> },

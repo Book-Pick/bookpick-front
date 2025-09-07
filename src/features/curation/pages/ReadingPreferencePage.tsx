@@ -70,7 +70,7 @@ export default function ReadingPreferencePage() {
       genres,
       keywords,
     })
-    navigate('/')
+    navigate('/mypage/profile')
   }
 
   const handleSkip = () => {
