@@ -1,29 +1,22 @@
-import { Avatar, IconButton, Button } from '@/shared/ui'
-import { Bell } from 'lucide-react'
+import { Avatar, AvatarFallback, AvatarImage, Button } from '@/shared/ui'
+import sampleImage from '@/assets/images/sample_image.jpeg'
+import { useNavigate } from 'react-router-dom'
 
 export function GnbLoggedIn() {
+  const navigate = useNavigate()
+  const handleCreateClick = () => {
+    navigate('/curation/create')
+  }
   return (
-    <div className='flex items-center gap-4'>
-      <Button variant='secondary' size='md'>
-        큐레이션 작성
+    <div className='flex items-center gap-5'>
+      <Button size='xl' className='drop-shadow-lg' onClick={handleCreateClick}>
+        <span className='font-semibold px-1'>큐레이션 작성</span>
       </Button>
 
-      <div className='relative'>
-        <IconButton
-          icon={<Bell className='w-5 h-5' />}
-          variant='ghost'
-          size='md'
-          aria-label='공지사항'
-        />
-        <span className='absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full'></span>
-      </div>
-
-      <Avatar
-        name='Sumin'
-        size='md'
-        status='online'
-        className='cursor-pointer hover:ring-2 hover:ring-primary/20 transition-all'
-      />
+      <Avatar className='ring-2 ring-white/30 drop-shadow-lg'>
+        <AvatarImage src={sampleImage} alt='profile' className='object-cover' />
+        <AvatarFallback>수민</AvatarFallback>
+      </Avatar>
     </div>
   )
 }
