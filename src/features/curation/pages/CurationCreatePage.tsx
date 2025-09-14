@@ -15,7 +15,7 @@ export default function CurationCreatePage() {
 
   // 상태 관리
   const [title, setTitle] = useState('')
-  const [selectedColor, setSelectedColor] = useState(COLOR_PALETTE[0].value)
+  const [selectedColor, setSelectedColor] = useState(COLOR_PALETTE[0].value as string)
   const [thumbnail, setThumbnail] = useState<File | null>(null)
   const [selectedBook, setSelectedBook] = useState<SearchBook | null>(null)
   const [content, setContent] = useState('')

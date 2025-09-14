@@ -19,7 +19,7 @@ export function BookSearchSection({ selectedBook, onBookSelect }: BookSearchSect
     setIsSearching(true)
     // 실제로는 API 호출이지만, 현재는 mockup 데이터 사용
     setTimeout(() => {
-      setSearchResults(SEARCH_BOOKS)
+      setSearchResults([...SEARCH_BOOKS])
       setIsSearching(false)
     }, 500)
   }

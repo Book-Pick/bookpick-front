@@ -18,7 +18,7 @@ interface DraftListSheetProps {
 }
 
 export function DraftListSheet({ isOpen, onClose, onSelectDraft }: DraftListSheetProps) {
-  const [drafts, setDrafts] = useState<DraftCuration[]>(DRAFT_CURATIONS)
+  const [drafts, setDrafts] = useState<DraftCuration[]>([...DRAFT_CURATIONS])
 
   const handleSelectDraft = (draft: DraftCuration) => {
     onSelectDraft(draft)
