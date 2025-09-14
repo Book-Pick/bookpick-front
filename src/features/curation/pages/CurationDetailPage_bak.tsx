@@ -8,7 +8,7 @@ import { mockCommentData, type CommentData } from '@/data/mockCommentData'
 import { Badge } from '@/shared/ui'
 import { useState } from 'react'
 
-export default function CurationDetailPage() {
+export default function CurationDetailPageOld() {
   const [comments, setComments] = useState<CommentData[]>(mockCommentData)
 
   const handleAddComment = (content: string) => {
@@ -81,7 +81,7 @@ export default function CurationDetailPage() {
     <>
       {/* 큐레이션 내용 */}
       <div className='mb-15'>
-        <h2 className='font-title font-bold mb-10'>위로 받고 싶은 당신에게 추천드리는...</h2>
+        <h2 className='text-4xl font-bold mb-15'>위로 받고 싶은 당신에게 추천드리는...</h2>
         {mockCuratorData.slice(0, 1).map((curator) => (
           <CuratorProfileCard
             key={curator.id}
@@ -92,8 +92,8 @@ export default function CurationDetailPage() {
             isSubscribed={curator.isSubscribed}
           />
         ))}
-        <h3 className='font-curation-title my-12'>오늘, 나에게 작은 위로가 필요하다면</h3>
-        <p className='font-curation-text leading-normal mb-12'>
+        <h3 className='text-2xl font-semibold my-12'>오늘, 나에게 작은 위로가 필요하다면</h3>
+        <p className='text-xl leading-normal mb-12'>
           어른이 된다는 건 괜찮지 않아도 괜찮은 척하는 법을 배우는 과정일지도 모릅니다. 이 책은 그런
           우리에게 '굳이 애쓰지 않아도 괜찮다'고, '너는 너 자체로 충분하다'고 다정하게 속삭여줍니다.
           특히 저는 주인공이 실패를 딛고 일어서는 장면에서 큰 감동을 받았습니다. 화려한 성공기가

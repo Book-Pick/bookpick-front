@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Button, Input, Card, CardContent, CardFooter } from '@/shared/ui'
+import { Button, Input, Card, CardContent, CardFooter, CardTitle } from '@/shared/ui'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { registerSchema, type RegisterFormData } from '../model/validationSchema'
@@ -17,12 +17,10 @@ export default function RegisterPage() {
 
   return (
     <div className='max-w-md w-full space-y-8'>
-      <div className='text-center'>
-        <h2 className='text-3xl font-bold text-gray-900'>회원가입</h2>
-        <p className='mt-2 text-sm text-gray-600'>새로운 계정을 만들어보세요</p>
-      </div>
-
-      <Card>
+      <Card className='px-4 py-10 rounded-2xl'>
+        <CardTitle>
+          <h2 className='text-2xl font-bold text-gray-900 px-6 mb-5'>회원가입</h2>
+        </CardTitle>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className='space-y-6'>
             <div className='space-y-2'>
@@ -78,9 +76,9 @@ export default function RegisterPage() {
         </CardContent>
 
         <CardFooter>
-          <div className='w-full text-center space-y-2'>
+          <div className='w-full text-center space-y-2 mt-5'>
             <Link to='/login' className='text-sm text-gray-600 hover:text-gray-900 underline block'>
-              이미 계정이 있으신가요? 로그인하기
+              로그인 화면으로 가기
             </Link>
             <Link to='/' className='text-sm text-gray-600 hover:text-gray-900 underline block'>
               홈으로 돌아가기

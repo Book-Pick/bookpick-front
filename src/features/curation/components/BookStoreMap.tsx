@@ -4,8 +4,8 @@ const BookStoreMap = () => {
   return (
     <>
       <div className='mt-16 mb-8'>
-        <AspectRatio ratio={2} className='w-full rounded-2xl overflow-hidden shadow-lg'>
-          <div className='w-full h-full'>
+        <AspectRatio ratio={2} className='w-full rounded-2xl border-none overflow-hidden shadow-lg'>
+          <div className='w-full h-full border-none'>
             <a
               href='https://map.kakao.com/?urlX=493980&urlY=1132955&urlLevel=3&map_type=TYPE_MAP&map_hybrid=false'
               target='_blank'
@@ -18,7 +18,6 @@ const BookStoreMap = () => {
                 src='https://map2.daum.net/map/mapservice?FORMAT=PNG&SCALE=2.5&MX=493980&MY=1132955&S=0&IW=504&IH=310&LANG=0&COORDSTM=WCONGNAMUL&logo=kakao_logo'
                 alt='카카오맵'
                 className='w-full h-full object-cover'
-                style={{ border: '1px solid #ccc' }}
               />
             </a>
             <div

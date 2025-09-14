@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { X } from 'lucide-react'
 import {
   Button,
   Input,
@@ -9,9 +10,15 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-  Textarea,
+  Checkbox,
 } from '@/shared/ui'
-import { MBTI_TYPES, READING_MOODS, GENRES, KEYWORDS } from '../constants/preferences'
+import {
+  MBTI_TYPES,
+  READING_MOODS,
+  GENRES,
+  KEYWORDS,
+  READING_HABITS,
+} from '../constants/preferences'
 
 export default function ReadingPreferencePage() {
   const navigate = useNavigate()
@@ -21,7 +28,7 @@ export default function ReadingPreferencePage() {
   const [bookSearch, setBookSearch] = useState('')
   const [selectedBooks, setSelectedBooks] = useState<string[]>([])
   const [readingMoods, setReadingMoods] = useState<string[]>([])
-  const [readingHabit, setReadingHabit] = useState('')
+  const [readingHabits, setReadingHabits] = useState<string[]>([])
   const [genres, setGenres] = useState<string[]>([])
   const [keywords, setKeywords] = useState<string[]>([])
 
@@ -33,6 +40,12 @@ export default function ReadingPreferencePage() {
   const toggleReadingMood = (mood: string) => {
     setReadingMoods((prev) =>
       prev.includes(mood) ? prev.filter((m) => m !== mood) : [...prev, mood],
+    )
+  }
+
+  const toggleReadingHabit = (habit: string) => {
+    setReadingHabits((prev) =>
+      prev.includes(habit) ? prev.filter((h) => h !== habit) : [...prev, habit],
     )
   }
 
@@ -57,8 +70,8 @@ export default function ReadingPreferencePage() {
     }
   }
 
-  const removeBook = (book: string) => {
-    setSelectedBooks((prev) => prev.filter((b) => b !== book))
+  const removeBook = (bookToRemove: string) => {
+    setSelectedBooks(selectedBooks.filter((book) => book !== bookToRemove))
   }
 
   const handleComplete = () => {
@@ -66,7 +79,7 @@ export default function ReadingPreferencePage() {
       mbti,
       selectedBooks,
       readingMoods,
-      readingHabit,
+      readingHabits,
       genres,
       keywords,
     })
@@ -78,43 +91,42 @@ export default function ReadingPreferencePage() {
   }
 
   return (
-    <div className='w-[800px] mx-auto'>
-      <Card className='rounded-3xl'>
-        <CardContent className='space-y-8 p-8'>
-          <div className='text-center space-y-5'>
-            <h2 className='font-title'>독서 취향 설정</h2>
-            <div className='space-y-4'>
-              <p className='text-lg font-semibold leading-normal'>
-                당신의 독서 페르소나를 완성해 보세요!
-                <br />
-                아래 정보를 입력하면, 나와 꼭 맞는 책과 사람들을 만날 수 있어요
-              </p>
-              <div className='text-2xl font-semibold text-muted-foreground mt-2'>
-                더 정확한 추천을 위해, 당신의 독서 취향을 알려주세요.
-                <p className='text-sm text-muted-foreground'>
-                  (이 단계는 건너뛸 수 있으며, 나중에 마이페이지에서 설정 가능합니다)
-                </p>
-              </div>
-            </div>
+    <div className='max-w-[800px] mx-auto'>
+      <div className='text-center space-y-5 mb-15'>
+        <h2 className='font-title'>독서 취향 설정</h2>
+        <div className='space-y-4'>
+          <p className='text-lg font-semibold leading-normal'>
+            당신의 독서 페르소나를 완성해 보세요!
+            <br />
+            아래 정보를 입력하면, 나와 꼭 맞는 책과 사람들을 만날 수 있어요
+          </p>
+          <div className='text-2xl font-semibold text-muted-foreground mt-2'>
+            더 정확한 추천을 위해, 당신의 독서 취향을 알려주세요.
+            <p className='text-sm text-muted-foreground'>
+              (이 단계는 건너뛸 수 있으며, 나중에 마이페이지에서 설정 가능합니다)
+            </p>
           </div>
-
-          <div className='text-2xl font-semibold text-gray-800 pt-10'>나는 이런 독서가에요.</div>
+        </div>
+      </div>
+      <Card className='rounded-3xl'>
+        <CardContent className='space-y-8 px-8 py-4'>
+          <div className='font-subtitle font-semibold text-gray-800'>나는 이런 독서가에요.</div>
 
           <div className='space-y-6'>
             {/* 질문 1: MBTI */}
-            <Card className='border-0 shadow-none'>
+            <Card className='border-0 border-b-1 rounded-none shadow-none pb-10'>
               <CardHeader className='px-0'>
-                <CardTitle className='text-xl'>내 MBTI는?</CardTitle>
+                <CardTitle className='text-xl'>이런 MBTI에게 추천합니다!</CardTitle>
               </CardHeader>
               <CardContent className='px-0'>
-                <div className='grid grid-cols-4 gap-3'>
+                <div className='w-full flex flex-wrap gap-2'>
                   {MBTI_TYPES.map((type) => (
                     <Toggle
                       key={type}
                       pressed={mbti === type}
                       onPressedChange={() => toggleMbti(type)}
                       variant='outline'
-                      className='p-3'
+                      className='px-4 rounded-4xl'
                     >
                       {type}
                     </Toggle>
@@ -124,33 +136,35 @@ export default function ReadingPreferencePage() {
             </Card>
 
             {/* 질문 2: 인생 책/작가 */}
-            <Card className='border-0 shadow-none'>
+            <Card className='border-0 border-b-1 rounded-none shadow-none pb-10'>
               <CardHeader className='px-0'>
                 <CardTitle className='text-xl'>인생 책이나 좋아하는 작가를 알려주세요</CardTitle>
                 <p className='text-sm text-muted-foreground'>최대 3개까지 선택 가능합니다</p>
               </CardHeader>
               <CardContent className='space-y-4 px-0'>
-                <div className='flex gap-2'>
+                <div>
                   <Input
                     placeholder='책 제목이나 작가명을 검색하세요'
                     value={bookSearch}
                     onChange={(e) => setBookSearch(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && addBook()}
                   />
-                  <Button onClick={addBook} disabled={selectedBooks.length >= 3}>
-                    검색
-                  </Button>
                 </div>
                 {selectedBooks.length > 0 && (
                   <div className='flex flex-wrap gap-2'>
                     {selectedBooks.map((book) => (
                       <Badge
                         key={book}
-                        variant='default'
-                        className='cursor-pointer'
-                        onClick={() => removeBook(book)}
+                        variant='outline'
+                        size='sm'
+                        className='flex items-center gap-1'
                       >
-                        {book} ✕
+                        {book}
+                        <X
+                          size={12}
+                          className='cursor-pointer hover:text-destructive'
+                          onClick={() => removeBook(book)}
+                        />
                       </Badge>
                     ))}
                   </div>
@@ -159,21 +173,21 @@ export default function ReadingPreferencePage() {
             </Card>
 
             {/* 질문 3: 독서 분위기 */}
-            <Card className='border-0 shadow-none'>
+            <Card className='border-0 border-b-1 rounded-none shadow-none pb-10'>
               <CardHeader className='px-0'>
                 <CardTitle className='text-xl'>책을 읽을 때 선호하는 분위기는?</CardTitle>
               </CardHeader>
               <CardContent className='px-0'>
-                <div className='flex flex-wrap gap-3'>
+                <div className='flex flex-wrap gap-2'>
                   {READING_MOODS.map((mood) => (
                     <Toggle
                       key={mood}
                       pressed={readingMoods.includes(mood)}
                       onPressedChange={() => toggleReadingMood(mood)}
                       variant='outline'
-                      size='sm'
+                      className='px-4 rounded-4xl'
                     >
-                      {mood}
+                      #{mood}
                     </Toggle>
                   ))}
                 </div>
@@ -181,22 +195,33 @@ export default function ReadingPreferencePage() {
             </Card>
 
             {/* 질문 4: 독서 습관 */}
-            <Card className='border-0 shadow-none'>
+            <Card className='border-0 border-b-1 rounded-none shadow-none pb-10'>
               <CardHeader className='px-0'>
                 <CardTitle className='text-xl'>평소 독서 습관은 어떤가요?</CardTitle>
               </CardHeader>
               <CardContent className='px-0'>
-                <Textarea
-                  placeholder='예) 주말마다 2-3시간씩 읽어요, 하루 30분씩 꾸준히 읽어요, 한 달에 3-4권 정도 읽어요 등'
-                  value={readingHabit}
-                  onChange={(e) => setReadingHabit(e.target.value)}
-                  className='min-h-[100px]'
-                />
+                <div className='space-y-3'>
+                  {READING_HABITS.map((habit) => (
+                    <div key={habit} className='flex items-center space-x-3'>
+                      <Checkbox
+                        id={habit}
+                        checked={readingHabits.includes(habit)}
+                        onCheckedChange={() => toggleReadingHabit(habit)}
+                      />
+                      <label
+                        htmlFor={habit}
+                        className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer'
+                      >
+                        {habit}
+                      </label>
+                    </div>
+                  ))}
+                </div>
               </CardContent>
             </Card>
 
             {/* 질문 5: 좋아하는 장르 */}
-            <Card className='border-0 shadow-none'>
+            <Card className='border-0 border-b-1 rounded-none shadow-none pb-10'>
               <CardHeader className='px-0'>
                 <CardTitle className='text-xl'>내가 좋아하는 장르는?</CardTitle>
               </CardHeader>
@@ -241,11 +266,11 @@ export default function ReadingPreferencePage() {
           </div>
 
           {/* 하단 버튼 */}
-          <div className='flex justify-center gap-4 pt-8'>
-            <Button size='xl' onClick={handleComplete}>
+          <div className='flex flex-col sm:flex-row justify-center gap-4 pt-8 mb-10'>
+            <Button size='lg' onClick={handleComplete} className='w-full sm:w-auto'>
               설정 완료하고 시작하기
             </Button>
-            <Button variant='outline' size='xl' onClick={handleSkip}>
+            <Button variant='outline' size='lg' onClick={handleSkip} className='w-full sm:w-auto'>
               건너뛰기
             </Button>
           </div>
