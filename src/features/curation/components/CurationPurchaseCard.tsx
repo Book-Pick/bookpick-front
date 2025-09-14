@@ -33,7 +33,12 @@ const CurationPurchaseCard = ({
           <CardTitle className='text-2xl font-bold'>{formatPrice(price, currency)}</CardTitle>
         </div>
         <CardAction className='self-center'>
-          <Button size='lg' onClick={handlePurchaseClick} className='bg-[#E85660] mr-2 font-bold'>
+          <Button
+            size='lg'
+            variant='accent'
+            onClick={handlePurchaseClick}
+            className='mr-2 font-bold'
+          >
             이 큐레이션 구매하기
           </Button>
           <Button

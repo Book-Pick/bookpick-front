@@ -64,8 +64,22 @@ export const KEYWORDS = [
   '과거',
 ] as const
 
+export const READING_HABITS = [
+  '한 번에 완독하는 편',
+  '밑줄 긋거나 형광펜으로 표시하는 편',
+  '여러 권을 동시에 읽는 편',
+  '책갈피를 많이 사용하는 편',
+  '읽은 내용을 메모하는 편',
+  '소리 내어 읽는 편',
+  '조용한 곳에서만 읽는 편',
+  '음악을 들으며 읽는 편',
+  '읽은 책을 다시 읽는 편',
+  '독서 모임에 참여하는 편',
+] as const
+
 // 타입 정의
 export type MBTIType = (typeof MBTI_TYPES)[number]
 export type ReadingMood = (typeof READING_MOODS)[number]
 export type Genre = (typeof GENRES)[number]
 export type Keyword = (typeof KEYWORDS)[number]
+export type ReadingHabit = (typeof READING_HABITS)[number]

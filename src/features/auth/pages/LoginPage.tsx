@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Button, Input, Card, CardContent, CardFooter } from '@/shared/ui'
+import { Button, Input, Card, CardContent, CardFooter, CardTitle } from '@/shared/ui'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { loginSchema, type LoginFormData } from '../model/validationSchema'
@@ -22,12 +22,10 @@ export default function LoginPage() {
 
   return (
     <div className='max-w-md w-full space-y-8'>
-      <div className='text-center'>
-        <h2 className='text-3xl font-bold text-gray-900'>로그인</h2>
-        <p className='mt-2 text-sm text-gray-600'>계정에 로그인해주세요</p>
-      </div>
-
-      <Card>
+      <Card className='px-4 py-10 rounded-2xl'>
+        <CardTitle>
+          <h2 className='text-2xl font-bold text-gray-900 px-6 mb-5'>로그인</h2>
+        </CardTitle>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className='space-y-6'>
             <div className='space-y-2'>
@@ -60,15 +58,6 @@ export default function LoginPage() {
               )}
             </div>
 
-            <div className='text-right'>
-              <Link
-                to='/forgot-password'
-                className='text-sm text-primary hover:text-primary/80 underline'
-              >
-                비밀번호를 잊으셨나요?
-              </Link>
-            </div>
-
             <Button type='submit' variant='default' size='lg' className='w-full'>
               로그인
             </Button>
@@ -76,18 +65,18 @@ export default function LoginPage() {
         </CardContent>
 
         <CardFooter>
-          <div className='w-full text-center space-y-2'>
-            <p className='text-sm text-gray-600'>
-              북픽 회원이 아니신가요?{' '}
-              <Link
-                to='/register'
-                className='text-primary hover:text-primary/80 underline font-medium'
-              >
-                지금 가입하세요
-              </Link>
-            </p>
-            <Link to='/' className='text-sm text-gray-600 hover:text-gray-900 underline block'>
-              홈으로 돌아가기
+          <div className='w-full text-center space-y-2 mt-5'>
+            <Link
+              to='/forgot-password'
+              className='text-sm text-gray-600 hover:text-gray-900 underline block'
+            >
+              비밀번호를 잊으셨나요?
+            </Link>
+            <Link
+              to='/register'
+              className='text-sm text-gray-600 hover:text-gray-900 underline block'
+            >
+              회원가입하기
             </Link>
           </div>
         </CardFooter>
