@@ -11,4 +11,10 @@ export const registerSchema = z
     path: ['confirmPassword'],
   })
 
+export const loginSchema = z.object({
+  email: z.email({ message: '유효한 이메일을 입력하세요' }),
+  password: z.string().min(1, { message: '비밀번호를 입력하세요' }),
+})
+
 export type RegisterFormData = z.infer<typeof registerSchema>
+export type LoginFormData = z.infer<typeof loginSchema>
