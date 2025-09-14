@@ -9,11 +9,11 @@ export function GnbLoggedIn() {
   }
   return (
     <div className='flex items-center gap-5'>
-      <Button size='lg' className='drop-shadow-lg bg-accent' onClick={handleCreateClick}>
+      <Button size='xl' className='drop-shadow-lg' onClick={handleCreateClick}>
         <span className='font-semibold px-1'>큐레이션 작성</span>
       </Button>
 
-      <Avatar size='sm' className='ring-2 ring-white/30 drop-shadow-lg'>
+      <Avatar className='ring-2 ring-white/30 drop-shadow-lg'>
         <AvatarImage src={sampleImage} alt='profile' className='object-cover' />
         <AvatarFallback>수민</AvatarFallback>
       </Avatar>

@@ -37,7 +37,7 @@ const CuratorProfileCard = ({
     <Card className={`py-4 pb-3 ${className || ''}`}>
       <CardHeader className='px-7'>
         <div className='flex gap-4 items-center'>
-          <div className='w-[140px] min-w-[140px] max-w-[140px] flex-shrink-0'>
+          <div className='w-[100px] min-w-[100px] max-w-[100px] flex-shrink-0'>
             <AspectRatio ratio={1} className='w-full'>
               <div className='w-full h-full bg-neutral-200 rounded-full flex items-center justify-center overflow-hidden'>
                 {profileImage ? (
@@ -53,8 +53,8 @@ const CuratorProfileCard = ({
             </AspectRatio>
           </div>
           <div>
-            <CardTitle className='font-semibold text-[26px]'>{name}</CardTitle>
-            <CardDescription className='mt-1'>
+            <CardTitle className='font-curation-title'>{name}</CardTitle>
+            <CardDescription className='mt-2'>
               <p className='text-neutral-900'>선호 장르: {favoriteGenres.join(', ')}</p>
               <p className='text-neutral-600'>소개문구: {introduction}</p>
             </CardDescription>

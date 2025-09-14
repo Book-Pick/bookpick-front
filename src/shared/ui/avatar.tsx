@@ -8,7 +8,7 @@ interface AvatarProps extends React.ComponentProps<typeof AvatarPrimitive.Root> 
 }
 
 function Avatar({ className, size = 'default', ...props }: AvatarProps) {
-  const sizeClass = size === 'sm' ? 'size-8' : 'size-14'
+  const sizeClass = size === 'sm' ? 'size-10' : 'size-14'
 
   return (
     <AvatarPrimitive.Root
