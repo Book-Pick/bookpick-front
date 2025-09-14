@@ -22,6 +22,9 @@ export default function MyProfileEditPage() {
 
   const handleImageUpload = () => {
     console.log('이미지 업로드')
+    // 임시로 샘플 이미지 설정
+    const sampleImage = '/dist/assets/sample_image-CFjU2Epl.jpeg'
+    setProfileImage(sampleImage)
   }
 
   const handleComplete = () => {
