@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   Button,
@@ -9,22 +9,33 @@ import {
   AvatarFallback,
   Card,
   CardContent,
+  CardHeader,
   CardTitle,
 } from '@/shared/ui'
 
 export default function MyProfileEditPage() {
   const navigate = useNavigate()
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   // 상태 관리
   const [nickname, setNickname] = useState('')
   const [introduction, setIntroduction] = useState('')
   const [profileImage, setProfileImage] = useState<string>('')
 
-  const handleImageUpload = () => {
-    console.log('이미지 업로드')
-    // 임시로 샘플 이미지 설정
-    const sampleImage = '/dist/assets/sample_image-CFjU2Epl.jpeg'
-    setProfileImage(sampleImage)
+  const handleImageClick = () => {
+    fileInputRef.current?.click()
+  }
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        const result = e.target?.result as string
+        setProfileImage(result)
+      }
+      reader.readAsDataURL(file)
+    }
   }
 
   const handleComplete = () => {
@@ -46,13 +57,34 @@ export default function MyProfileEditPage() {
         </p>
       </div>
 
-      {/* 중앙 프로필 정보 입력 */}
+      {/* 통합 프로필 설정 카드 */}
       <Card className='rounded-3xl'>
-        <CardContent className='p-8'>
-          <div className='grid grid-cols-5 gap-8 items-center'>
-            {/* 좌측 40% - 제목 */}
-            <div className='col-span-2 flex items-center'>
-              <CardTitle className='text-2xl font-semibold'>프로필 설정</CardTitle>
+        <CardHeader className='text-center pb-6 py-6'>
+          <CardTitle className='text-2xl font-semibold'>프로필 설정</CardTitle>
+        </CardHeader>
+        <CardContent className='p-8 pt-0'>
+          <div className='grid grid-cols-5 gap-8 items-start'>
+            {/* 좌측 40% - 프로필 이미지 설정 */}
+            <div className='col-span-2 space-y-4'>
+              {/* 프로필 이미지 */}
+              <div className='flex flex-col items-center space-y-4'>
+                <div
+                  className='cursor-pointer hover:opacity-80 transition-opacity'
+                  onClick={handleImageClick}
+                >
+                  <Avatar className='w-24 h-24'>
+                    {profileImage ? (
+                      <AvatarImage src={profileImage} alt='프로필 이미지' />
+                    ) : (
+                      <AvatarFallback className='text-3xl bg-muted'>👤</AvatarFallback>
+                    )}
+                  </Avatar>
+                </div>
+                <div className='text-center'>
+                  <p className='font-medium text-lg'>프로필 이미지</p>
+                  <p className='text-sm text-muted-foreground mt-1'>이미지를 클릭하여 변경하세요</p>
+                </div>
+              </div>
             </div>
 
             {/* 우측 60% - 입력 필드들 */}
@@ -94,7 +126,7 @@ export default function MyProfileEditPage() {
                 <Button variant='outline' onClick={handleSkip} className='flex-1'>
                   건너뛰기
                 </Button>
-                <Button onClick={handleComplete} className='flex-1'>
+                <Button variant='secondary' onClick={handleComplete} className='flex-1'>
                   시작하기
                 </Button>
               </div>
@@ -103,30 +135,14 @@ export default function MyProfileEditPage() {
         </CardContent>
       </Card>
 
-      {/* 하단 프로필 이미지 설정 */}
-      <Card className='rounded-3xl'>
-        <CardContent className='p-8'>
-          <div className='flex items-center justify-between'>
-            {/* 좌측 - 프로필 이미지와 안내 */}
-            <div className='flex items-center gap-6'>
-              <Avatar className='w-20 h-20'>
-                {profileImage ? (
-                  <AvatarImage src={profileImage} alt='프로필 이미지' />
-                ) : (
-                  <AvatarFallback className='text-2xl bg-muted'>👤</AvatarFallback>
-                )}
-              </Avatar>
-              <div>
-                <p className='font-medium text-lg'>기본 프로필 이미지</p>
-                <p className='text-sm text-muted-foreground mt-1'>프로필 이미지를 설정해 주세요.</p>
-              </div>
-            </div>
-
-            {/* 우측 - 이미지 변경 버튼 */}
-            <Button onClick={handleImageUpload}>이미지 변경</Button>
-          </div>
-        </CardContent>
-      </Card>
+      {/* 숨겨진 파일 입력 */}
+      <input
+        ref={fileInputRef}
+        type='file'
+        accept='image/*'
+        onChange={handleFileChange}
+        className='hidden'
+      />
     </div>
   )
 }

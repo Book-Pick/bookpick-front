@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { loginSchema, type LoginFormData } from '../model/validationSchema'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth'
 
 export default function LoginPage() {
   const {
@@ -13,11 +14,16 @@ export default function LoginPage() {
   } = useForm<LoginFormData>({ resolver: zodResolver(loginSchema) })
 
   const navigate = useNavigate()
+  const { login, isLoading } = useAuth()
 
-  const onSubmit = (data: LoginFormData) => {
-    console.log('login', data)
-    localStorage.setItem('auth', JSON.stringify({ isLogin: 'true' }))
-    navigate('/onboarding')
+  const onSubmit = async (data: LoginFormData) => {
+    try {
+      await login(data.email, data.password)
+      navigate('/onboarding')
+    } catch (error) {
+      console.error('로그인 실패:', error)
+      // 에러 처리 로직 추가 가능
+    }
   }
 
   return (
@@ -58,8 +64,14 @@ export default function LoginPage() {
               )}
             </div>
 
-            <Button type='submit' variant='default' size='lg' className='w-full'>
-              로그인
+            <Button
+              type='submit'
+              variant='secondary'
+              size='lg'
+              className='w-full'
+              disabled={isLoading}
+            >
+              {isLoading ? '로그인 중...' : '로그인'}
             </Button>
           </form>
         </CardContent>

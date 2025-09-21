@@ -1,5 +1,3 @@
-export { ContentsLayoutOld } from './ContentsLayout_bak'
 export { MainLayout } from './MainLayout'
 export { ContentsLayout } from './ContentsLayout'
 export { AuthLayout } from './AuthLayout'
-export { MainLayoutOld } from './MainLayout_bak'
