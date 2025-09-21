@@ -66,7 +66,7 @@ const CurationCardFull = ({
         </div>
       </CardContent>
       <CardFooter className='mt-4 p-0'>
-        <div className='w-full flex flex-col bg-amber-100 py-5 px-6'>
+        <div className='w-full flex flex-col bg-amber-100 py-5 px-6 rounded-b-sm'>
           {/* Tag */}
           <div className='mb-7 flex gap-1 flex-wrap'>
             {tags.map((tag, index) => (

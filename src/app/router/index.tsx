@@ -4,9 +4,9 @@ import { createBrowserRouter } from 'react-router-dom'
 import { MainLayout, ContentsLayout, AuthLayout } from '@/app/layout'
 
 // 전역 페이지
-import HomePage from '@/pages/HomePage'
 import LandingPage from '@/pages/LandingPage'
 import UIPreview from '@/pages/UIPreview'
+import HomePageWrapper from '@/components/HomePageWrapper'
 
 // 인증
 import LoginPage from '@/features/auth/pages/LoginPage'
@@ -46,7 +46,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <HomePage />,
+        element: <HomePageWrapper />,
       },
       {
         path: '/ui-preview',

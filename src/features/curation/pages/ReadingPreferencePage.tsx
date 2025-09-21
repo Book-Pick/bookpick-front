@@ -267,7 +267,12 @@ export default function ReadingPreferencePage() {
 
           {/* 하단 버튼 */}
           <div className='flex flex-col sm:flex-row justify-center gap-4 pt-8 mb-10'>
-            <Button size='lg' onClick={handleComplete} className='w-full sm:w-auto'>
+            <Button
+              size='lg'
+              variant='secondary'
+              onClick={handleComplete}
+              className='w-full sm:w-auto'
+            >
               설정 완료하고 시작하기
             </Button>
             <Button variant='outline' size='lg' onClick={handleSkip} className='w-full sm:w-auto'>

@@ -1,7 +1,6 @@
 import MainBanner from '@/shared/components/MainBanner'
 import CurationCardBasic from '@/features/curation/components/CurationCardBasic'
 import CurationCardFull from '@/features/curation/components/CurationCardFull'
-import CurationCardFullOld from '@/features/curation/components/CurationCardFullOld'
 import { mockCurationData } from '@/data/mockCurationData'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui'
 import { useNavigate } from 'react-router-dom'
@@ -59,7 +58,7 @@ export default function HomePage() {
               <TabsContent value='like'>
                 <div className='flex flex-col gap-10 mt-6'>
                   {mockCurationData.slice(0, 4).map((curation) => (
-                    <CurationCardFullOld
+                    <CurationCardFull
                       key={curation.id}
                       similarity={curation.similarity}
                       title={curation.title}
