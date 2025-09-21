@@ -1,17 +1,10 @@
 import { createBrowserRouter } from 'react-router-dom'
 
 // 레이아웃
-import {
-  MainLayout,
-  ContentsLayout,
-  AuthLayout,
-  MainLayoutOld,
-  ContentsLayoutOld,
-} from '@/app/layout'
+import { MainLayout, ContentsLayout, AuthLayout } from '@/app/layout'
 
 // 전역 페이지
 import HomePage from '@/pages/HomePage'
-import HomePageOld from '@/pages/HomePage_bak'
 import LandingPage from '@/pages/LandingPage'
 import UIPreview from '@/pages/UIPreview'
 
@@ -23,7 +16,6 @@ import RegisterPage from '@/features/auth/pages/RegisterPage'
 import CurationCreatePage from '@/features/curation/pages/CurationCreatePage'
 import CurationEditPage from '@/features/curation/pages/CurationEditPage'
 import CurationDetailPage from '@/features/curation/pages/CurationDetailPage'
-import CurationDetailPageOld from '@/features/curation/pages/CurationDetailPage_bak'
 import CurationListPage from '@/features/curation/pages/CurationListPage'
 import CuratorProfilePage from '@/features/curation/pages/CuratorProfilePage'
 import ReadingPreferencePage from '@/features/curation/pages/ReadingPreferencePage'
@@ -40,7 +32,6 @@ import SettlementHistoryPage from '@/features/revenue/pages/SettlementHistoryPag
 
 // 마이페이지
 import MyDashboardPage from '@/features/user/pages/MyDashboardPage'
-// import MyProfilePage from '@/features/user/pages/MyProfilePage'
 import MyProfileEditPage from '@/features/user/pages/MyProfileEditPage'
 import MyCurationPage from '@/features/user/pages/MyCurationPage'
 import MyReadingHistoryPage from '@/features/user/pages/MyReadingHistoryPage'
@@ -108,27 +99,6 @@ export const router = createBrowserRouter([
           {
             path: 'onboarding',
             children: [{ index: true, element: <ReadingPreferencePage /> }],
-          },
-        ],
-      },
-    ],
-  },
-  // 비교용
-  {
-    path: '/',
-    element: <MainLayoutOld />,
-    children: [
-      {
-        path: '/bak',
-        element: <HomePageOld />,
-      },
-      {
-        path: '/',
-        element: <ContentsLayoutOld />,
-        children: [
-          {
-            path: 'curation',
-            children: [{ path: 'detail/bak/:id', element: <CurationDetailPageOld /> }],
           },
         ],
       },
