@@ -10,7 +10,7 @@ export interface AuthState {
 
 export interface AuthContextType extends AuthState {
   setAuthState: React.Dispatch<React.SetStateAction<AuthState>>
-  햣: (userData: Partial<User>) => void
+  updateUser: (userData: Partial<User>) => void
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined)
