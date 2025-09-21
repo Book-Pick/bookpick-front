@@ -1,3 +1,4 @@
 export { AuthProvider } from './AuthProvider'
 export { AuthContext, useAuth } from './AuthContext'
-export type { User, AuthState, AuthContextType } from './AuthContext'
+export type { AuthState, AuthContextType } from './AuthContext'
+export type { User } from '@/features/auth/types/auth.types'
