@@ -4,7 +4,6 @@ import { createBrowserRouter } from 'react-router-dom'
 import { MainLayout, ContentsLayout, AuthLayout } from '@/app/layout'
 
 // 전역 페이지
-import LandingPage from '@/pages/LandingPage'
 import UIPreview from '@/pages/UIPreview'
 import HomePageWrapper from '@/components/HomePageWrapper'
 
@@ -39,6 +38,10 @@ import MyReadingHistoryPage from '@/features/user/pages/MyReadingHistoryPage'
 // 에러페이지
 import NotFound from '@/shared/pages/NotFound'
 
+// 라우트 가드
+import ProtectedServiceRoute from '@/app/router/guards/ProtectedServiceRoute'
+import AuthRedirectRoute from '@/app/router/guards/AuthRedirectRoute'
+
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -53,12 +56,12 @@ export const router = createBrowserRouter([
         element: <UIPreview />,
       },
       {
-        path: '/landing',
-        element: <LandingPage />,
-      },
-      {
         path: '/',
-        element: <ContentsLayout />,
+        element: (
+          <ProtectedServiceRoute>
+            <ContentsLayout />
+          </ProtectedServiceRoute>
+        ),
         children: [
           {
             path: 'curation',
@@ -106,7 +109,11 @@ export const router = createBrowserRouter([
   },
   {
     path: '/',
-    element: <AuthLayout />,
+    element: (
+      <AuthRedirectRoute>
+        <AuthLayout />
+      </AuthRedirectRoute>
+    ),
     children: [
       {
         path: 'login',

@@ -8,8 +8,6 @@ import LandingPage from '@/pages/LandingPage'
 export default function HomePageWrapper() {
   const { isAuthenticated, isLoading } = useAuth()
 
-  console.log('로그인 상태', isAuthenticated)
-
   // 로딩 중일 때는 빈 화면 또는 로딩 스피너 표시
   if (isLoading) {
     return (
@@ -19,6 +17,5 @@ export default function HomePageWrapper() {
     )
   }
 
-  // 로그인 상태에 따라 다른 페이지 표시
   return isAuthenticated ? <HomePage /> : <LandingPage />
 }

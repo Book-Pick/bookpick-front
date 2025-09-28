@@ -3,8 +3,11 @@ import { Button, Input, Card, CardContent, CardFooter, CardTitle } from '@/share
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { registerSchema, type RegisterFormData } from '../model/validationSchema'
+import { useAuth } from '../hooks/useAuth.ts'
 
 export default function RegisterPage() {
+  const { useRegister } = useAuth()
+  const { mutate: registerMutate } = useRegister()
   const {
     register,
     handleSubmit,
@@ -12,12 +15,15 @@ export default function RegisterPage() {
   } = useForm<RegisterFormData>({ resolver: zodResolver(registerSchema) })
 
   const onSubmit = (data: RegisterFormData) => {
-    console.log(data)
+    registerMutate({
+      email: data.email,
+      password: data.password,
+    })
   }
 
   return (
     <div className='max-w-md w-full space-y-8'>
-      <Card className='px-4 py-10 rounded-2xl'>
+      <Card className='px-4 py-10 rounded-2xl border-0 bg-transparent sm:border sm:bg-card'>
         <CardTitle>
           <h2 className='text-2xl font-bold text-gray-900 px-6 mb-5'>회원가입</h2>
         </CardTitle>
