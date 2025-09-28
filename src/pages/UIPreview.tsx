@@ -29,8 +29,12 @@ import {
 } from '@/shared/ui'
 import { Heart, MessageSquare, CircleUser, Search, Settings, Menu } from 'lucide-react'
 import sampleImage from '@/assets/images/sample_image.jpeg'
+import sampleImage1 from '@/assets/images/sample_image_01.jpeg'
+import sampleImage2 from '@/assets/images/sample_image_02.jpeg'
+import sampleImage3 from '@/assets/images/sample_image_03.jpeg'
 import CurationCardFull from '@/features/curation/components/CurationCardFull'
 import CurationCardBasic from '@/features/curation/components/CurationCardBasic'
+import CurationCardSocial from '@/features/curation/components/CurationCardSocial'
 import CuratorProfileCard from '@/features/curation/components/CuratorProfileCard'
 import CurationPurchaseCard from '@/features/curation/components/CurationPurchaseCard'
 import { BookSearchSection } from '@/features/curation/components/BookSearchSection'
@@ -415,7 +419,30 @@ export default function UIPreview() {
                     views={156}
                     date='2025.08.25'
                     tags={['에세이', '성장', '힐링']}
+                    thumbnailSrc={sampleImage1}
                   />
+                </div>
+                <div>
+                  <h3 className='text-lg font-semibold mb-3'>SNS 스타일 큐레이션 카드</h3>
+                  <p className='text-sm text-gray-600 mb-4'>모바일 친화적인 소셜 미디어 스타일의 큐레이션 카드입니다.</p>
+                  <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl'>
+                    {mockCurationData.slice(0, 3).map((curation, index) => (
+                      <CurationCardSocial
+                        key={curation.id}
+                        similarity={curation.similarity}
+                        title={curation.title}
+                        description={curation.description}
+                        curator={curation.curator}
+                        curatorBio={`${curation.tags[0]} 전문 큐레이터`}
+                        likes={curation.likes}
+                        comments={curation.comments}
+                        views={curation.views}
+                        tags={curation.tags}
+                        thumbnailSrc={[sampleImage1, sampleImage2, sampleImage3][index]}
+                        onClick={() => console.log(`클릭된 큐레이션: ${curation.title}`)}
+                      />
+                    ))}
+                  </div>
                 </div>
               </div>
             </section>

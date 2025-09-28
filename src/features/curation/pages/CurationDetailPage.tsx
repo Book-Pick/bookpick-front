@@ -104,10 +104,10 @@ export default function CurationDetailPage() {
           <Badge key={1} variant='text' size='xs' className='text-base text-muted-foreground'>
             #에세이
           </Badge>
-          <Badge key={1} variant='text' size='xs' className='text-base text-muted-foreground'>
+          <Badge key={2} variant='text' size='xs' className='text-base text-muted-foreground'>
             #위로
           </Badge>
-          <Badge key={1} variant='text' size='xs' className='text-base text-muted-foreground'>
+          <Badge key={3} variant='text' size='xs' className='text-base text-muted-foreground'>
             #성장
           </Badge>
         </div>
