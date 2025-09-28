@@ -23,6 +23,7 @@ interface CurationCardFullProps {
   views: number
   date: string
   tags: string[]
+  thumbnailSrc?: string
   className?: string
   onClick?: () => void
 }
@@ -37,6 +38,7 @@ const CurationCardFull = ({
   views,
   date,
   tags,
+  thumbnailSrc,
   className,
   onClick,
 }: CurationCardFullProps) => {
@@ -61,7 +63,15 @@ const CurationCardFull = ({
             </p>
           </div>
           <div className='flex-[1.5]'>
-            <Thumbnail />
+            {thumbnailSrc ? (
+              <img
+                src={thumbnailSrc}
+                alt={title}
+                className='w-full h-full object-cover rounded-md'
+              />
+            ) : (
+              <Thumbnail />
+            )}
           </div>
         </div>
       </CardContent>

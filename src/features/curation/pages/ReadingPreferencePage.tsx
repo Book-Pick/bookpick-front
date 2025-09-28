@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import { X } from 'lucide-react'
 import {
   Button,
-  Input,
   Badge,
   Toggle,
   Card,
@@ -18,15 +17,20 @@ import {
   GENRES,
   KEYWORDS,
   READING_HABITS,
+  LIFE_BOOKS,
+  FAVORITE_AUTHORS,
+  type LifeBook,
 } from '../constants/preferences'
+import { LifeBookSearchSection } from '../components/LifeBookSearchSection'
+import { AuthorSearchSection } from '../components/AuthorSearchSection'
 
 export default function ReadingPreferencePage() {
   const navigate = useNavigate()
 
   // 상태 관리
   const [mbti, setMbti] = useState<string>('')
-  const [bookSearch, setBookSearch] = useState('')
-  const [selectedBooks, setSelectedBooks] = useState<string[]>([])
+  const [selectedLifeBooks, setSelectedLifeBooks] = useState<LifeBook[]>([])
+  const [selectedAuthors, setSelectedAuthors] = useState<string[]>([])
   const [readingMoods, setReadingMoods] = useState<string[]>([])
   const [readingHabits, setReadingHabits] = useState<string[]>([])
   const [genres, setGenres] = useState<string[]>([])
@@ -59,25 +63,31 @@ export default function ReadingPreferencePage() {
     )
   }
 
-  const addBook = () => {
-    if (
-      bookSearch.trim() &&
-      selectedBooks.length < 3 &&
-      !selectedBooks.includes(bookSearch.trim())
-    ) {
-      setSelectedBooks((prev) => [...prev, bookSearch.trim()])
-      setBookSearch('')
+  const handleLifeBookSelect = (book: LifeBook | null) => {
+    if (book && selectedLifeBooks.length < 3 && !selectedLifeBooks.find((b) => b.id === book.id)) {
+      setSelectedLifeBooks((prev) => [...prev, book])
     }
   }
 
-  const removeBook = (bookToRemove: string) => {
-    setSelectedBooks(selectedBooks.filter((book) => book !== bookToRemove))
+  const removeLifeBook = (bookToRemove: LifeBook) => {
+    setSelectedLifeBooks(selectedLifeBooks.filter((book) => book.id !== bookToRemove.id))
+  }
+
+  const handleAuthorSelect = (author: string) => {
+    if (selectedAuthors.length < 3 && !selectedAuthors.includes(author)) {
+      setSelectedAuthors((prev) => [...prev, author])
+    }
+  }
+
+  const removeAuthor = (authorToRemove: string) => {
+    setSelectedAuthors(selectedAuthors.filter((author) => author !== authorToRemove))
   }
 
   const handleComplete = () => {
     console.log('온보딩 데이터:', {
       mbti,
-      selectedBooks,
+      selectedLifeBooks,
+      selectedAuthors,
       readingMoods,
       readingHabits,
       genres,
@@ -117,8 +127,11 @@ export default function ReadingPreferencePage() {
             <Card className='border-0 border-b-1 rounded-none shadow-none pb-10'>
               <CardHeader className='px-0'>
                 <CardTitle className='text-xl'>이런 MBTI에게 추천합니다!</CardTitle>
+                <p className='text-xs text-muted-foreground'>
+                  ※ 해당사항이 없으시면 그냥 지나가셔도 좋아요!
+                </p>
               </CardHeader>
-              <CardContent className='px-0'>
+              <CardContent className='px-0 pt-4'>
                 <div className='w-full flex flex-wrap gap-2'>
                   {MBTI_TYPES.map((type) => (
                     <Toggle
@@ -135,40 +148,92 @@ export default function ReadingPreferencePage() {
               </CardContent>
             </Card>
 
-            {/* 질문 2: 인생 책/작가 */}
+            {/* 질문 2: 인생 책 */}
             <Card className='border-0 border-b-1 rounded-none shadow-none pb-10'>
               <CardHeader className='px-0'>
-                <CardTitle className='text-xl'>인생 책이나 좋아하는 작가를 알려주세요</CardTitle>
-                <p className='text-sm text-muted-foreground'>최대 3개까지 선택 가능합니다</p>
+                <CardTitle className='text-xl'>인생 책이 있다면 알려주세요</CardTitle>
+                <p className='text-xs text-muted-foreground'>
+                  ※ 최대 3권까지 선택 가능합니다. 해당사항이 없으시면 지나가셔도 좋아요! (현재는
+                  데미안, 어린왕자, 1984, 까뮈의 이방인, 호밀밭의 파수꾼, 젊은 베르테르의 슬픔,
+                  백년의 고독, 카라마조프의 형제들 검색 가능)
+                </p>
               </CardHeader>
-              <CardContent className='space-y-4 px-0'>
-                <div>
-                  <Input
-                    placeholder='책 제목이나 작가명을 검색하세요'
-                    value={bookSearch}
-                    onChange={(e) => setBookSearch(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && addBook()}
-                  />
-                </div>
-                {selectedBooks.length > 0 && (
+              <CardContent className='space-y-4 px-0 pt-4'>
+                {selectedLifeBooks.length > 0 && (
                   <div className='flex flex-wrap gap-2'>
-                    {selectedBooks.map((book) => (
+                    {selectedLifeBooks.map((book) => (
                       <Badge
-                        key={book}
+                        key={book.id}
                         variant='outline'
                         size='sm'
                         className='flex items-center gap-1'
                       >
-                        {book}
-                        <X
-                          size={12}
-                          className='cursor-pointer hover:text-destructive'
-                          onClick={() => removeBook(book)}
-                        />
+                        {book.title} - {book.author}
+                        <button
+                          type='button'
+                          className='ml-1 cursor-pointer hover:text-destructive'
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            console.log('on click life book')
+                            removeLifeBook(book)
+                          }}
+                        >
+                          <X size={12} />
+                        </button>
                       </Badge>
                     ))}
                   </div>
                 )}
+                <LifeBookSearchSection
+                  onBookSelect={handleLifeBookSelect}
+                  searchData={LIFE_BOOKS}
+                  placeholder='인생 책을 검색해보세요'
+                  maxSelections={3}
+                  currentCount={selectedLifeBooks.length}
+                />
+              </CardContent>
+            </Card>
+
+            {/* 질문 2b: 좋아하는 작가 */}
+            <Card className='border-0 border-b-1 rounded-none shadow-none pb-10'>
+              <CardHeader className='px-0'>
+                <CardTitle className='text-xl'>좋아하는 작가가 있다면 알려주세요</CardTitle>
+                <p className='text-xs text-muted-foreground'>
+                  ※ 최대 3명까지 선택 가능합니다. 해당사항이 없으시면 지나가셔도 좋아요!
+                </p>
+              </CardHeader>
+              <CardContent className='space-y-4 px-0 pt-4'>
+                {selectedAuthors.length > 0 && (
+                  <div className='flex flex-wrap gap-2'>
+                    {selectedAuthors.map((author) => (
+                      <Badge
+                        key={author}
+                        variant='outline'
+                        size='sm'
+                        className='flex items-center gap-1'
+                      >
+                        {author}
+                        <button
+                          type='button'
+                          className='ml-1 cursor-pointer hover:text-destructive'
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            removeAuthor(author)
+                          }}
+                        >
+                          <X size={12} />
+                        </button>
+                      </Badge>
+                    ))}
+                  </div>
+                )}
+                <AuthorSearchSection
+                  onAuthorSelect={handleAuthorSelect}
+                  searchData={FAVORITE_AUTHORS}
+                  placeholder='좋아하는 작가명을 검색하거나 직접 입력하세요'
+                  maxSelections={3}
+                  currentCount={selectedAuthors.length}
+                />
               </CardContent>
             </Card>
 
@@ -176,8 +241,11 @@ export default function ReadingPreferencePage() {
             <Card className='border-0 border-b-1 rounded-none shadow-none pb-10'>
               <CardHeader className='px-0'>
                 <CardTitle className='text-xl'>책을 읽을 때 선호하는 분위기는?</CardTitle>
+                <p className='text-xs text-muted-foreground'>
+                  ※ 해당사항이 없으시면 그냥 지나가셔도 좋아요!
+                </p>
               </CardHeader>
-              <CardContent className='px-0'>
+              <CardContent className='px-0 pt-4'>
                 <div className='flex flex-wrap gap-2'>
                   {READING_MOODS.map((mood) => (
                     <Toggle
@@ -198,8 +266,11 @@ export default function ReadingPreferencePage() {
             <Card className='border-0 border-b-1 rounded-none shadow-none pb-10'>
               <CardHeader className='px-0'>
                 <CardTitle className='text-xl'>평소 독서 습관은 어떤가요?</CardTitle>
+                <p className='text-xs text-muted-foreground'>
+                  ※ 해당사항이 없으시면 그냥 지나가셔도 좋아요!
+                </p>
               </CardHeader>
-              <CardContent className='px-0'>
+              <CardContent className='px-0 pt-4'>
                 <div className='space-y-3'>
                   {READING_HABITS.map((habit) => (
                     <div key={habit} className='flex items-center space-x-3'>
@@ -224,8 +295,11 @@ export default function ReadingPreferencePage() {
             <Card className='border-0 border-b-1 rounded-none shadow-none pb-10'>
               <CardHeader className='px-0'>
                 <CardTitle className='text-xl'>내가 좋아하는 장르는?</CardTitle>
+                <p className='text-xs text-muted-foreground'>
+                  ※ 해당사항이 없으시면 그냥 지나가셔도 좋아요!
+                </p>
               </CardHeader>
-              <CardContent className='px-0'>
+              <CardContent className='px-0 pt-4'>
                 <div className='flex flex-wrap gap-3'>
                   {GENRES.map((genre) => (
                     <Toggle
@@ -246,8 +320,11 @@ export default function ReadingPreferencePage() {
             <Card className='border-0 shadow-none'>
               <CardHeader className='px-0'>
                 <CardTitle className='text-xl'>주로 관심있는 키워드는?</CardTitle>
+                <p className='text-xs text-muted-foreground'>
+                  ※ 해당사항이 없으시면 그냥 지나가셔도 좋아요!
+                </p>
               </CardHeader>
-              <CardContent className='px-0'>
+              <CardContent className='px-0 pt-4'>
                 <div className='flex flex-wrap gap-3'>
                   {KEYWORDS.map((keyword) => (
                     <Toggle

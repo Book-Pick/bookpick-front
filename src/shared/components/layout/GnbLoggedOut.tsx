@@ -5,9 +5,13 @@ export function GnbLoggedOut() {
   const navigate = useNavigate()
 
   return (
-    <div className='flex items-center gap-4'>
-      <Button onClick={() => navigate('/login')}>로그인</Button>
-      <Button onClick={() => navigate('/register')}>회원가입</Button>
+    <div className='flex items-center gap-2'>
+      <Button variant='text' onClick={() => navigate('/login')}>
+        로그인
+      </Button>
+      <Button variant='text' onClick={() => navigate('/register')}>
+        회원가입
+      </Button>
     </div>
   )
 }

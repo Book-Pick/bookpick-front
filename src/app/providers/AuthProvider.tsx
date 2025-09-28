@@ -15,16 +15,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     isLoading: true,
   })
 
-  // 초기 로드 시 localStorage에서 인증 정보 복원
   useEffect(() => {
     const initializeAuth = () => {
       try {
-        const authData = localStorage.getItem('auth')
+        const authData = localStorage.getItem('bookpick-auth')
         if (authData) {
           const parsedAuth = JSON.parse(authData)
-          if (parsedAuth.isLogin === 'true' && parsedAuth.token) {
+          if (parsedAuth.user?.userId && parsedAuth.token?.accessToken) {
             setAuthState({
-              user: parsedAuth.user || null,
+              user: parsedAuth.user,
               token: parsedAuth.token,
               isAuthenticated: true,
               isLoading: false,
@@ -34,7 +33,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
       } catch (error) {
         console.error('Failed to parse auth data:', error)
-        localStorage.removeItem('auth')
+        localStorage.removeItem('bookpick-auth')
       }
       setAuthState((prev) => ({ ...prev, isLoading: false }))
     }
@@ -48,12 +47,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       const updatedUser = { ...prev.user, ...userData }
       const authData = {
-        isLogin: 'true',
-        token: prev.token,
         user: updatedUser,
+        token: prev.token,
       }
 
-      localStorage.setItem('auth', JSON.stringify(authData))
+      localStorage.setItem('bookpick-auth', JSON.stringify(authData))
 
       return {
         ...prev,
@@ -62,10 +60,27 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     })
   }, [])
 
+  /**
+   * 모든 인증 정보를 완전히 초기화
+   */
+  const clearAuth = useCallback(() => {
+    localStorage.removeItem('bookpick-auth')
+    // sessionStorage도 확인하여 제거 (혹시 있을 수 있는 세션 데이터)
+    sessionStorage.removeItem('bookpick-auth')
+
+    setAuthState({
+      user: null,
+      token: null,
+      isAuthenticated: false,
+      isLoading: false,
+    })
+  }, [])
+
   const contextValue = {
     ...authState,
     setAuthState,
     updateUser,
+    clearAuth,
   }
 
   return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
