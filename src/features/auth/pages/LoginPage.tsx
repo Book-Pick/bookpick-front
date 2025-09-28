@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Button, Input, Card, CardContent, CardFooter, CardTitle } from '@/shared/ui'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -6,6 +6,7 @@ import { loginSchema, type LoginFormData } from '../model/validationSchema'
 import { useAuth } from '../hooks/useAuth'
 
 export default function LoginPage() {
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
@@ -13,10 +14,18 @@ export default function LoginPage() {
   } = useForm<LoginFormData>({ resolver: zodResolver(loginSchema) })
 
   const { useLogin } = useAuth()
-  const { mutate: loginMutate, isPending } = useLogin()
+  const { mutateAsync: loginMutateAsync, isPending } = useLogin()
 
   const onSubmit = async (data: LoginFormData) => {
-    loginMutate(data)
+    try {
+      await loginMutateAsync(data)
+      // 약간의 딜레이 후 navigate (상태 업데이트 보장)
+      setTimeout(() => {
+        navigate('/onboarding')
+      }, 100)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (

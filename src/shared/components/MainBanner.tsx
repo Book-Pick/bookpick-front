@@ -1,5 +1,6 @@
 import { Button } from '@/shared/ui'
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import bannerBg01 from '@/assets/images/banner_bg_01.png'
 import bannerBg02 from '@/assets/images/banner_bg_02.jpeg'
 import bannerBg03 from '@/assets/images/banner_bg_03.jpeg'
@@ -8,6 +9,8 @@ import bannerBg04 from '@/assets/images/banner_bg_04.jpeg'
 const MainBanner = () => {
   const bannerImages = [bannerBg01, bannerBg02, bannerBg03, bannerBg04]
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -42,11 +45,8 @@ const MainBanner = () => {
           "당신에게 꼭 맞는 책, 북픽이 찾아드릴게요."<br></br>
           지금의 기분, 상황, 취향을 바탕으로 추천받는 독서 큐레이션
         </p>
-        <div className='flex flex-col sm:flex-row gap-3 sm:gap-4'>
-          <Button variant='secondary' size='default' className='sm:size-lg'>
-            <span className='font-semibold text-sm sm:text-base'>지금 시작하기</span>
-          </Button>
-          <Button size='default' className='sm:size-lg'>
+        <div className='flex flex-col sm:flex-row'>
+          <Button variant='secondary' size='lg' onClick={() => navigate('/onboarding')}>
             <span className='font-semibold text-sm sm:text-base'>독서취향 설정하기</span>
           </Button>
         </div>

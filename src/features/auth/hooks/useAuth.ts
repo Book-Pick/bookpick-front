@@ -12,7 +12,6 @@ export const useAuth = () => {
    * 로그인
    */
   const useLogin = () => {
-    const navigate = useNavigate()
     return useMutation({
       mutationFn: async (request: LoginRequest) => {
         setAuthState((prev) => ({ ...prev, isLoading: true }))
@@ -42,8 +41,6 @@ export const useAuth = () => {
             isAuthenticated: true,
             isLoading: false,
           })
-          // 첫 로그인 시 혹은 취향 설정이 안된 경우
-          navigate('/onboarding')
         } else {
           setAuthState((prev) => ({ ...prev, isLoading: false }))
         }
