@@ -15,7 +15,7 @@ export function AuthorSearchSection({
   searchData,
   placeholder = '작가명을 검색하세요',
   maxSelections = 3,
-  currentCount = 0
+  currentCount = 0,
 }: AuthorSearchSectionProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState<string[]>([])
@@ -29,18 +29,12 @@ export function AuthorSearchSection({
     setHasSearched(true)
     // 실제로는 API 호출이지만, 현재는 mockup 데이터 사용
     setTimeout(() => {
-      const filteredResults = searchData.filter(author =>
-        author.toLowerCase().includes(searchQuery.toLowerCase())
+      const filteredResults = searchData.filter((author) =>
+        author.toLowerCase().includes(searchQuery.toLowerCase()),
       )
       setSearchResults(filteredResults)
       setIsSearching(false)
     }, 300)
-  }
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      handleSearch()
-    }
   }
 
   const handleAuthorSelect = (author: string) => {
@@ -92,11 +86,7 @@ export function AuthorSearchSection({
               {isSearching ? '검색 중...' : '검색'}
             </Button>
             {searchQuery.trim() && (
-              <Button
-                variant="outline"
-                onClick={handleDirectAdd}
-                disabled={isMaxReached}
-              >
+              <Button variant='outline' onClick={handleDirectAdd} disabled={isMaxReached}>
                 추가
               </Button>
             )}

@@ -424,7 +424,9 @@ export default function UIPreview() {
                 </div>
                 <div>
                   <h3 className='text-lg font-semibold mb-3'>SNS 스타일 큐레이션 카드</h3>
-                  <p className='text-sm text-gray-600 mb-4'>모바일 친화적인 소셜 미디어 스타일의 큐레이션 카드입니다.</p>
+                  <p className='text-sm text-gray-600 mb-4'>
+                    모바일 친화적인 소셜 미디어 스타일의 큐레이션 카드입니다.
+                  </p>
                   <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl'>
                     {mockCurationData.slice(0, 3).map((curation, index) => (
                       <CurationCardSocial

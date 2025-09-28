@@ -44,6 +44,9 @@ importers:
       axios:
         specifier: ^1.12.2
         version: 1.12.2
+      bookpick-front:
+        specifier: 'link:'
+        version: 'link:'
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
