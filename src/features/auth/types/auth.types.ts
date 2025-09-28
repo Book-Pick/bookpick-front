@@ -1,11 +1,21 @@
+import type { ApiResponse } from '@/shared/api/api.types'
+
 export interface User {
-  id: string
+  userId: number
   email: string
-  name: string
-  profileImage?: string
-  role: 'user' | 'curator' | 'admin'
+  nickname?: string | null
+  bio?: string | null
+  profileImageUrl?: string | null
+  role?: 'user' | 'curator' | 'admin' // 필요할지 논의 필요
 }
 
+export interface Token {
+  accessToken: string
+  grantType?: string
+  refreshToken?: string
+}
+
+// Request Type
 export interface LoginRequest {
   email: string
   password: string
@@ -14,14 +24,22 @@ export interface LoginRequest {
 export interface RegisterRequest {
   email: string
   password: string
-  name: string
+}
+
+// Result Type
+export interface LoginResult extends User {
+  access: string
+}
+
+export interface RegisterResult {
+  userId: number
 }
 
 export interface AuthResponse {
   user: User
-  token: string
+  token: Token
 }
 
-export interface RefreshTokenRequest {
-  token: string
-}
+// Response Type
+export type RegisterResponse = ApiResponse<RegisterResult>
+export type LoginResponse = ApiResponse<LoginResult>

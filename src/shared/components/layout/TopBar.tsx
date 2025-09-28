@@ -1,12 +1,12 @@
 import { GnbLoggedIn } from './GnbLoggedIn'
 import { GnbLoggedOut } from './GnbLoggedOut'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '@/features/auth/hooks/useAuth'
 
 export function TopBar() {
   const navigate = useNavigate()
-  // TODO: store로 상태 관리
-  const authData = localStorage.getItem('auth')
-  const isLoggedIn = !!(authData && JSON.parse(authData)?.isLogin === 'true')
+  const { isAuthenticated } = useAuth()
+  const isLoggedIn = isAuthenticated
 
   const handleLogoClick = () => {
     navigate('/')
