@@ -11,6 +11,8 @@ export interface CurationData {
   date: string
   tags: string[]
   price: number
+  thumbnailImage?: string | null
+  thumbnailColor?: string | null
 }
 
 export const mockCurationData: CurationData[] = [
@@ -29,6 +31,8 @@ export const mockCurationData: CurationData[] = [
     date: '2024.01.15',
     tags: ['철학', '일상', '에세이'],
     price: 18500,
+    thumbnailImage: '/src/assets/images/sample_image_01.jpeg',
+    thumbnailColor: null,
   },
   {
     id: 2,
@@ -44,6 +48,8 @@ export const mockCurationData: CurationData[] = [
     date: '2024.01.12',
     tags: ['힐링', '에세이', '감성'],
     price: 15900,
+    thumbnailImage: null,
+    thumbnailColor: '#FEE2E2',
   },
   {
     id: 3,
@@ -59,6 +65,8 @@ export const mockCurationData: CurationData[] = [
     date: '2024.01.10',
     tags: ['자기계발', '성장', '비즈니스'],
     price: 22000,
+    thumbnailImage: '/src/assets/images/sample_image_02.jpeg',
+    thumbnailColor: null,
   },
   {
     id: 4,
@@ -74,6 +82,8 @@ export const mockCurationData: CurationData[] = [
     date: '2024.01.08',
     tags: ['추리소설', '미스터리', '스릴러'],
     price: 17500,
+    thumbnailImage: null,
+    thumbnailColor: '#FFEDD5',
   },
   {
     id: 5,
@@ -89,6 +99,8 @@ export const mockCurationData: CurationData[] = [
     date: '2024.01.05',
     tags: ['과학', '교양', '캐주얼'],
     price: 19800,
+    thumbnailImage: '/src/assets/images/sample_image_03.jpeg',
+    thumbnailColor: null,
   },
   {
     id: 6,
@@ -104,6 +116,8 @@ export const mockCurationData: CurationData[] = [
     date: '2024.01.03',
     tags: ['역사', '인문학', '교양'],
     price: 16500,
+    thumbnailImage: null,
+    thumbnailColor: '#FEF3C7',
   },
   {
     id: 7,
@@ -119,6 +133,8 @@ export const mockCurationData: CurationData[] = [
     date: '2023.12.28',
     tags: ['여행', '세계문화', '토어'],
     price: 14900,
+    thumbnailImage: '/src/assets/images/sample_image_01.jpeg',
+    thumbnailColor: null,
   },
   {
     id: 8,
@@ -134,5 +150,7 @@ export const mockCurationData: CurationData[] = [
     date: '2023.12.25',
     tags: ['창작', '예술', '자기계발'],
     price: 21000,
+    thumbnailImage: null,
+    thumbnailColor: '#ECFCCB',
   },
 ]

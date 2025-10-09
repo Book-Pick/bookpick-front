@@ -10,7 +10,7 @@ import {
   Button,
 } from '@/shared/ui'
 import { CircleUser, Heart, MessageSquare } from 'lucide-react'
-import Thumbnail from '@/shared/components/Thumbnail'
+import CurationThumbnail from './CurationThumbnail'
 import { ViewerIcon } from '@/assets/icons/ViewerIcon'
 
 interface CurationCardFullProps {
@@ -24,6 +24,7 @@ interface CurationCardFullProps {
   date: string
   tags: string[]
   thumbnailSrc?: string
+  thumbnailColor?: string | null
   className?: string
   onClick?: () => void
 }
@@ -39,6 +40,7 @@ const CurationCardFull = ({
   date,
   tags,
   thumbnailSrc,
+  thumbnailColor,
   className,
   onClick,
 }: CurationCardFullProps) => {
@@ -63,15 +65,12 @@ const CurationCardFull = ({
             </p>
           </div>
           <div className='flex-[1.5]'>
-            {thumbnailSrc ? (
-              <img
-                src={thumbnailSrc}
-                alt={title}
-                className='w-full h-full object-cover rounded-md'
-              />
-            ) : (
-              <Thumbnail />
-            )}
+            <CurationThumbnail
+              thumbnailImage={thumbnailSrc}
+              thumbnailColor={thumbnailColor}
+              title={title}
+              className='rounded-md'
+            />
           </div>
         </div>
       </CardContent>

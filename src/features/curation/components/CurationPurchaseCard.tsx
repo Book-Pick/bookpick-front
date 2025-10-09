@@ -25,11 +25,9 @@ const CurationPurchaseCard = ({
 
   return (
     <Card className={`py-4 pb-4 bg-neutral-100 border-0 ${className || ''}`}>
-      <CardHeader className='px-4'>
+      <CardHeader className='px-5'>
         <div>
-          <CardDescription className='text-neutral-600 font-medium mb-1'>
-            큐레이션 가격
-          </CardDescription>
+          <CardDescription className='text-neutral-600 font-medium mb-1'>가격</CardDescription>
           <CardTitle className='text-2xl font-bold'>{formatPrice(price, currency)}</CardTitle>
         </div>
         <CardAction className='self-center'>
@@ -41,12 +39,7 @@ const CurationPurchaseCard = ({
           >
             이 큐레이션 구매하기
           </Button>
-          <Button
-            size='lg'
-            variant='secondary'
-            onClick={handlePurchaseClick}
-            className='font-bold bg-neutral-300 text-white'
-          >
+          <Button size='lg' variant='outline' onClick={handlePurchaseClick}>
             장바구니
           </Button>
         </CardAction>

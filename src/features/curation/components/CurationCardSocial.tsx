@@ -10,7 +10,7 @@ import {
   Progress,
 } from '@/shared/ui'
 import { Heart, MessageSquare, User } from 'lucide-react'
-import Thumbnail from '@/shared/components/Thumbnail'
+import CurationThumbnail from './CurationThumbnail'
 import { ViewerIcon } from '@/assets/icons/ViewerIcon'
 
 interface CurationCardSocialProps {
@@ -25,6 +25,7 @@ interface CurationCardSocialProps {
   views: number
   tags: string[]
   thumbnailSrc?: string
+  thumbnailColor?: string | null
   className?: string
   onClick?: () => void
 }
@@ -41,6 +42,7 @@ const CurationCardSocial = ({
   views,
   tags,
   thumbnailSrc,
+  thumbnailColor,
   className,
   onClick,
 }: CurationCardSocialProps) => {
@@ -70,11 +72,11 @@ const CurationCardSocial = ({
 
       {/* 썸네일 */}
       <div className='w-full h-70 bg-gray-50 flex items-center justify-center overflow-hidden'>
-        {thumbnailSrc ? (
-          <img src={thumbnailSrc} alt={title} className='w-full h-full object-cover' />
-        ) : (
-          <Thumbnail />
-        )}
+        <CurationThumbnail
+          thumbnailImage={thumbnailSrc}
+          thumbnailColor={thumbnailColor}
+          title={title}
+        />
       </div>
 
       {/* 취향 유사도 */}

@@ -6,9 +6,6 @@ import { mockCurationData } from '@/data/mockCurationData'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui'
 import { useNavigate } from 'react-router-dom'
 import { ContentsLayout } from '@/app/layout'
-import sampleImage01 from '@/assets/images/sample_image_01.jpeg'
-import sampleImage02 from '@/assets/images/sample_image_02.jpeg'
-import sampleImage03 from '@/assets/images/sample_image_03.jpeg'
 
 export default function HomePage() {
   const navigate = useNavigate()
@@ -42,47 +39,43 @@ export default function HomePage() {
               </TabsList>
               <TabsContent value='similar'>
                 <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6'>
-                  {mockCurationData.slice(0, 6).map((curation, index) => {
-                    const thumbnailImages = [sampleImage01, sampleImage02, sampleImage03]
-                    return (
-                      <CurationCardSocial
-                        key={curation.id}
-                        similarity={curation.similarity}
-                        title={curation.title}
-                        description={curation.description}
-                        curator={curation.curator}
-                        likes={curation.likes}
-                        comments={curation.comments}
-                        views={curation.views}
-                        tags={curation.tags}
-                        thumbnailSrc={index < 3 ? thumbnailImages[index] : undefined}
-                        onClick={() => handleCardClick(curation.id)}
-                      />
-                    )
-                  })}
+                  {mockCurationData.slice(0, 6).map((curation) => (
+                    <CurationCardSocial
+                      key={curation.id}
+                      similarity={curation.similarity}
+                      title={curation.title}
+                      description={curation.description}
+                      curator={curation.curator}
+                      likes={curation.likes}
+                      comments={curation.comments}
+                      views={curation.views}
+                      tags={curation.tags}
+                      thumbnailSrc={curation.thumbnailImage || undefined}
+                      thumbnailColor={curation.thumbnailColor || undefined}
+                      onClick={() => handleCardClick(curation.id)}
+                    />
+                  ))}
                 </div>
               </TabsContent>
               <TabsContent value='like'>
                 <div className='flex flex-col gap-10 mt-6'>
-                  {mockCurationData.slice(0, 4).map((curation, index) => {
-                    const thumbnailImages = [sampleImage01, sampleImage02, sampleImage03]
-                    return (
-                      <CurationCardFull
-                        key={curation.id}
-                        similarity={curation.similarity}
-                        title={curation.title}
-                        description={curation.description}
-                        curator={curation.curator}
-                        likes={curation.likes}
-                        comments={curation.comments}
-                        views={curation.views}
-                        date={curation.date}
-                        tags={curation.tags}
-                        thumbnailSrc={index < 3 ? thumbnailImages[index] : undefined}
-                        onClick={() => handleCardClick(curation.id)}
-                      />
-                    )
-                  })}
+                  {mockCurationData.slice(0, 4).map((curation) => (
+                    <CurationCardFull
+                      key={curation.id}
+                      similarity={curation.similarity}
+                      title={curation.title}
+                      description={curation.description}
+                      curator={curation.curator}
+                      likes={curation.likes}
+                      comments={curation.comments}
+                      views={curation.views}
+                      date={curation.date}
+                      tags={curation.tags}
+                      thumbnailSrc={curation.thumbnailImage || undefined}
+                      thumbnailColor={curation.thumbnailColor || undefined}
+                      onClick={() => handleCardClick(curation.id)}
+                    />
+                  ))}
                 </div>
               </TabsContent>
               <TabsContent value='recent'>

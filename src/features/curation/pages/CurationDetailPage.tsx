@@ -1,7 +1,7 @@
 import CuratorProfileCard from '../components/CuratorProfileCard'
 import CurationPurchaseCard from '../components/CurationPurchaseCard'
 import CommentSection from '../components/CommentSection'
-import BookStoreMap from '../components/BookStoreMap'
+// import BookStoreMap from '../components/BookStoreMap'
 import { mockCuratorData } from '@/data/mockCuratorData'
 import { mockCurationData } from '@/data/mockCurationData'
 import { mockCommentData, type CommentData } from '@/data/mockCommentData'
@@ -80,8 +80,7 @@ export default function CurationDetailPage() {
   return (
     <>
       {/* 큐레이션 내용 */}
-      <div className='mb-15'>
-        <h2 className='font-title font-bold mb-10'>위로 받고 싶은 당신에게 추천드리는...</h2>
+      <div className='my-15'>
         {mockCuratorData.slice(0, 1).map((curator) => (
           <CuratorProfileCard
             key={curator.id}
@@ -101,13 +100,13 @@ export default function CurationDetailPage() {
           다시 읽었습니다.
         </p>
         <div className='flex gap-1'>
-          <Badge key={1} variant='text' size='xs' className='text-base text-muted-foreground'>
+          <Badge variant='outline' size='sm'>
             #에세이
           </Badge>
-          <Badge key={2} variant='text' size='xs' className='text-base text-muted-foreground'>
+          <Badge variant='outline' size='sm'>
             #위로
           </Badge>
-          <Badge key={3} variant='text' size='xs' className='text-base text-muted-foreground'>
+          <Badge variant='outline' size='sm'>
             #성장
           </Badge>
         </div>
@@ -122,7 +121,7 @@ export default function CurationDetailPage() {
         />
       ))}
       {/* 지도 */}
-      <BookStoreMap />
+      {/* <BookStoreMap /> */}
 
       {/* 댓글 및 피드백 */}
       <CommentSection
