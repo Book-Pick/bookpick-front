@@ -130,12 +130,69 @@ export default function UIPreview() {
             {/* Input Section */}
             <section className='bg-white rounded-lg p-6 shadow-sm'>
               <h2 className='text-2xl font-bold mb-6'>Input</h2>
-              <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-                <Input placeholder='기본 상태' />
-                <Input placeholder='포커스 상태' className='border-ring ring-ring/50 ring-[3px]' />
-                <Input placeholder='라벨과 함께' label='사용자 이름' />
-                <Input disabled value='비활성화 상태' />
-                <Input placeholder='에러 상태' errorMessage='8자리 이상 입력하세요' />
+              <div className='space-y-6'>
+                {/* Size Variants */}
+                <div>
+                  <h3 className='text-lg font-semibold mb-3'>사이즈 변형</h3>
+                  <div className='space-y-4'>
+                    <div className='flex items-center gap-4'>
+                      <div className='w-20 text-sm text-gray-600'>Small</div>
+                      <Input size='sm' placeholder='작은 입력' />
+                    </div>
+                    <div className='flex items-center gap-4'>
+                      <div className='w-20 text-sm text-gray-600'>Medium</div>
+                      <Input size='md' placeholder='기본 입력' />
+                    </div>
+                    <div className='flex items-center gap-4'>
+                      <div className='w-20 text-sm text-gray-600'>Large</div>
+                      <Input size='lg' placeholder='큰 입력' />
+                    </div>
+                  </div>
+                </div>
+
+                {/* States */}
+                <div>
+                  <h3 className='text-lg font-semibold mb-3'>상태별 변형</h3>
+                  <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+                    <Input placeholder='기본 상태' />
+                    <Input
+                      placeholder='포커스 상태'
+                      className='border-ring ring-ring/50 ring-[3px]'
+                    />
+                    <Input placeholder='라벨과 함께' label='사용자 이름' />
+                    <Input disabled value='비활성화 상태' />
+                    <Input placeholder='에러 상태' errorMessage='8자리 이상 입력하세요' />
+                    <Input
+                      placeholder='라벨과 에러'
+                      label='비밀번호'
+                      errorMessage='비밀번호를 입력하세요'
+                    />
+                  </div>
+                </div>
+
+                {/* Size with Labels and Errors */}
+                <div>
+                  <h3 className='text-lg font-semibold mb-3'>사이즈별 라벨과 에러</h3>
+                  <div className='space-y-4'>
+                    <div className='flex items-center gap-4'>
+                      <div className='w-20 text-sm text-gray-600'>Small</div>
+                      <Input
+                        size='sm'
+                        label='이메일'
+                        placeholder='small@example.com'
+                        errorMessage='올바른 이메일을 입력하세요'
+                      />
+                    </div>
+                    <div className='flex items-center gap-4'>
+                      <div className='w-20 text-sm text-gray-600'>Medium</div>
+                      <Input size='md' label='사용자명' placeholder='username' />
+                    </div>
+                    <div className='flex items-center gap-4'>
+                      <div className='w-20 text-sm text-gray-600'>Large</div>
+                      <Input size='lg' label='전화번호' placeholder='010-1234-5678' />
+                    </div>
+                  </div>
+                </div>
               </div>
             </section>
 

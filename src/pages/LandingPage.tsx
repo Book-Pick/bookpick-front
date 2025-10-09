@@ -1,5 +1,5 @@
 import LandingBanner from '@/shared/components/LandingBanner'
-import CurationCardFull from '@/features/curation/components/CurationCardFull'
+import CurationCardSocial from '@/features/curation/components/CurationCardSocial'
 import { mockCurationData } from '@/data/mockCurationData'
 
 export default function LandingPage() {
@@ -167,7 +167,7 @@ export default function LandingPage() {
             이런 큐레이션이 기다려요
           </h2>
           <div className='max-w-2xl mx-auto'>
-            <CurationCardFull
+            <CurationCardSocial
               similarity={randomCuration.similarity}
               title={randomCuration.title}
               description={randomCuration.description}
@@ -175,7 +175,6 @@ export default function LandingPage() {
               likes={randomCuration.likes}
               comments={randomCuration.comments}
               views={randomCuration.views}
-              date={randomCuration.date}
               tags={randomCuration.tags}
             />
           </div>

@@ -28,7 +28,7 @@ export interface RegisterRequest {
 
 // Result Type
 export interface LoginResult extends User {
-  access: string
+  accessToken: string
 }
 
 export interface RegisterResult {

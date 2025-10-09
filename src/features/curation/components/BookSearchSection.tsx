@@ -42,7 +42,7 @@ export function BookSearchSection({ selectedBook, onBookSelect }: BookSearchSect
 
   return (
     <div className='space-y-4'>
-      <h3 className='text-lg font-semibold'>어떤 책에 대한 감상인가요?</h3>
+      <h3 className='text-lg font-semibold'>어떤 책에 대한 감상인가요?*</h3>
 
       {selectedBook ? (
         <Card className='border-2 border-primary/20'>

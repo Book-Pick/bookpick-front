@@ -19,7 +19,7 @@ export const useAuth = () => {
         return response.data
       },
       onSuccess: (data) => {
-        if (data.userId && data.access) {
+        if (data.userId && data.accessToken) {
           const authData = {
             user: {
               userId: data.userId,
@@ -29,7 +29,7 @@ export const useAuth = () => {
               profileImageUrl: data.profileImageUrl,
             },
             token: {
-              accessToken: data.access,
+              accessToken: data.accessToken,
             },
           }
 

@@ -45,22 +45,17 @@ export function ThumbnailSelector({ thumbnail, onThumbnailChange }: ThumbnailSel
     <div className='space-y-4'>
       <h3 className='text-lg font-semibold'>썸네일 선택</h3>
 
-      <div className='relative'>
+      <div className='relative max-w-sm'>
         {previewUrl ? (
           <div className='relative group'>
             <img
               src={previewUrl}
               alt='썸네일 미리보기'
-              className='w-full h-48 object-cover rounded-lg border-2 border-dashed border-gray-300'
+              className='w-full h-70 object-cover rounded-lg border-2 border-dashed border-gray-300'
             />
             <div className='absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center'>
               <div className='flex gap-2'>
-                <Button
-                  size='sm'
-                  variant='secondary'
-                  onClick={handleClick}
-                  className='bg-white/90 hover:bg-white'
-                >
+                <Button size='sm' variant='secondary' onClick={handleClick}>
                   <Upload size={16} className='mr-2' />
                   새로 업로드
                 </Button>
@@ -79,7 +74,7 @@ export function ThumbnailSelector({ thumbnail, onThumbnailChange }: ThumbnailSel
         ) : (
           <div
             onClick={handleClick}
-            className='w-full h-48 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-gray-400 hover:bg-gray-50 transition-colors'
+            className='w-full h-70 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-gray-400 hover:bg-gray-50 transition-colors'
           >
             <Image size={48} className='text-gray-400 mb-2' />
             <p className='text-gray-500 font-medium'>썸네일 이미지 업로드</p>

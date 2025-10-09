@@ -8,7 +8,7 @@ interface ReviewSectionProps {
 export function ReviewSection({ content, onContentChange }: ReviewSectionProps) {
   return (
     <div className='space-y-4'>
-      <h3 className='text-lg font-semibold'>당신의 진솔한 감상을 들려주세요</h3>
+      <h3 className='text-lg font-semibold'>당신의 진솔한 감상을 들려주세요*</h3>
 
       <div className='space-y-2'>
         <Textarea

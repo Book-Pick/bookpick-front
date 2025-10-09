@@ -69,7 +69,7 @@ const CurationCardSocial = ({
       </CardHeader>
 
       {/* 썸네일 */}
-      <div className='w-full h-48 bg-gray-50 flex items-center justify-center overflow-hidden'>
+      <div className='w-full h-70 bg-gray-50 flex items-center justify-center overflow-hidden'>
         {thumbnailSrc ? (
           <img src={thumbnailSrc} alt={title} className='w-full h-full object-cover' />
         ) : (

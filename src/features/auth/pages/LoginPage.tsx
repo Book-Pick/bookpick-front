@@ -30,7 +30,7 @@ export default function LoginPage() {
 
   return (
     <div className='max-w-md w-full space-y-8'>
-      <Card className='px-4 py-10 rounded-2xl'>
+      <Card className='px-4 py-10 rounded-2xl border-0 bg-transparent sm:border sm:bg-card'>
         <CardTitle>
           <h2 className='text-2xl font-bold text-gray-900 px-6 mb-5'>로그인</h2>
         </CardTitle>

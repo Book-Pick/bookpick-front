@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { FileText } from 'lucide-react'
 import { Button, Card, CardContent } from '@/shared/ui'
 import { CurationTitleSection } from '../components/CurationTitleSection'
-import { ThumbnailSelector } from '../components/ThumbnailSelector'
+// import { ThumbnailSelector } from '../components/ThumbnailSelector'
 import { BookSearchSection } from '../components/BookSearchSection'
 import { ReviewSection } from '../components/ReviewSection'
 import { KeywordSection } from '../components/KeywordSection'
@@ -58,18 +58,22 @@ export default function CurationCreatePage() {
   return (
     <>
       {/* 제목 섹션 */}
-      <Card className='border-0 p-0'>
-        <CardContent className='p-0'>
-          <CurationTitleSection
-            title={title}
-            onTitleChange={setTitle}
-            selectedColor={selectedColor}
-            onColorChange={setSelectedColor}
-          />
-        </CardContent>
-      </Card>
-      <div className='py-8'>
-        <div className='space-y-8'>
+      <div className='w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]'>
+        <Card className='border-0 p-0'>
+          <CardContent className='p-0'>
+            <CurationTitleSection
+              title={title}
+              onTitleChange={setTitle}
+              selectedColor={selectedColor}
+              onColorChange={setSelectedColor}
+              thumbnail={thumbnail}
+              onThumbnailChange={setThumbnail}
+            />
+          </CardContent>
+        </Card>
+      </div>
+      <div className='pt-16 pb-8'>
+        <div className='space-y-4'>
           {/* 헤더 */}
           <div className='flex items-center justify-between'>
             <h1 className='text-2xl font-bold'>나만의 큐레이션 작성하기</h1>
@@ -80,28 +84,28 @@ export default function CurationCreatePage() {
           </div>
 
           {/* 썸네일 선택 */}
-          <Card>
+          {/* <Card className='rounded-none bg-transparent border-0 border-b'>
             <CardContent className='p-6'>
               <ThumbnailSelector thumbnail={thumbnail} onThumbnailChange={setThumbnail} />
             </CardContent>
-          </Card>
+          </Card> */}
 
           {/* 책 검색 */}
-          <Card>
+          <Card className='rounded-none bg-transparent border-0 border-b'>
             <CardContent className='p-6'>
               <BookSearchSection selectedBook={selectedBook} onBookSelect={setSelectedBook} />
             </CardContent>
           </Card>
 
           {/* 감상 작성 */}
-          <Card>
+          <Card className='rounded-none bg-transparent border-0 border-b'>
             <CardContent className='p-6'>
               <ReviewSection content={content} onContentChange={setContent} />
             </CardContent>
           </Card>
 
           {/* 키워드 추가 */}
-          <Card>
+          <Card className='rounded-none bg-transparent border-0'>
             <CardContent className='p-6'>
               <KeywordSection keywords={keywords} onKeywordsChange={setKeywords} />
             </CardContent>

@@ -20,7 +20,7 @@ export function GnbLoggedIn() {
   return (
     <div className='flex items-center gap-2'>
       {!isOnboarding && (
-        <Button size='lg' onClick={handleCreateClick} className='mr-2'>
+        <Button size='lg' onClick={handleCreateClick} className='mr-2 hidden md:flex'>
           <span className='font-semibold px-1'>큐레이션 작성</span>
         </Button>
       )}
