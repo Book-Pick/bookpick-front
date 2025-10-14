@@ -34,10 +34,10 @@ const CuratorProfileCard = ({
   }
 
   return (
-    <Card className={`py-4 pb-3 ${className || ''}`}>
-      <CardHeader className='px-7'>
-        <div className='flex gap-4 items-center'>
-          <div className='w-[100px] min-w-[100px] max-w-[100px] flex-shrink-0'>
+    <Card className={`py-4 pb-0 md:pb-3 bg-transparent ${className || ''}`}>
+      <CardHeader className='px-4 md:px-7'>
+        <div className='flex flex-col md:flex-row gap-4 items-center md:items-center'>
+          <div className='w-[80px] md:w-[100px] min-w-[80px] md:min-w-[100px] max-w-[80px] md:max-w-[100px] flex-shrink-0'>
             <AspectRatio ratio={1} className='w-full'>
               <div className='w-full h-full bg-neutral-200 rounded-full flex items-center justify-center overflow-hidden'>
                 {profileImage ? (
@@ -52,20 +52,32 @@ const CuratorProfileCard = ({
               </div>
             </AspectRatio>
           </div>
-          <div>
-            <CardTitle className='font-curation-title'>{name}</CardTitle>
-            <CardDescription className='mt-2'>
+          <div className='flex-1 text-center md:text-left'>
+            <CardTitle className='font-curation-title text-lg md:text-xl'>{name}</CardTitle>
+            <CardDescription className='mt-2 text-sm'>
               <p className='text-neutral-900'>선호 장르: {favoriteGenres.join(', ')}</p>
               <p className='text-neutral-600'>소개문구: {introduction}</p>
             </CardDescription>
           </div>
         </div>
-        <CardAction className='self-center'>
+        {/* 데스크톱용 버튼 */}
+        <CardAction className='hidden md:flex md:self-center'>
           <Button onClick={handleSubscribeClick} variant={isSubscribed ? 'outline' : 'default'}>
             {isSubscribed ? '구독취소' : '구독하기'}
           </Button>
         </CardAction>
       </CardHeader>
+
+      {/* 모바일용 버튼 */}
+      <div className='block md:hidden px-4 pb-4 pt-3'>
+        <Button
+          className='w-full'
+          onClick={handleSubscribeClick}
+          variant={isSubscribed ? 'outline' : 'default'}
+        >
+          {isSubscribed ? '구독취소' : '구독하기'}
+        </Button>
+      </div>
     </Card>
   )
 }

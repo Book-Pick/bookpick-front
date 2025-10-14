@@ -5,11 +5,15 @@ import CommentSection from '../components/CommentSection'
 import { mockCuratorData } from '@/data/mockCuratorData'
 import { mockCurationData } from '@/data/mockCurationData'
 import { mockCommentData, type CommentData } from '@/data/mockCommentData'
+import toast from 'react-hot-toast'
 import { Badge } from '@/shared/ui'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export default function CurationDetailPage() {
   const [comments, setComments] = useState<CommentData[]>(mockCommentData)
+
+  const navigate = useNavigate()
 
   const handleAddComment = (content: string) => {
     const newComment: CommentData = {
@@ -77,10 +81,20 @@ export default function CurationDetailPage() {
     )
   }
 
+  const handlePurchase = (curationId: number, price: number) => {
+    console.log(`큐레이션 ${curationId} 구매 요청, 가격: ${price}원`)
+    navigate('/order/complete')
+  }
+
+  const handleCart = (curationId: number, price: number) => {
+    console.log(`큐레이션 ${curationId} 장바구니 담기 요청, 가격: ${price}원`)
+    toast.success('큐레이션이 장바구니에 담겼습니다.')
+  }
+
   return (
     <>
       {/* 큐레이션 내용 */}
-      <div className='my-15'>
+      <div className='my-10 xl:my-15'>
         {mockCuratorData.slice(0, 1).map((curator) => (
           <CuratorProfileCard
             key={curator.id}
@@ -118,6 +132,8 @@ export default function CurationDetailPage() {
           curationId={curation.id}
           price={curation.price}
           className='bg-neutral-100'
+          onPurchase={handlePurchase}
+          onCart={handleCart}
         />
       ))}
       {/* 지도 */}
@@ -129,7 +145,7 @@ export default function CurationDetailPage() {
         onAddComment={handleAddComment}
         onReply={handleReply}
         onLike={handleLike}
-        className='mt-12'
+        className='mt-12 bg-transparent'
       />
     </>
   )

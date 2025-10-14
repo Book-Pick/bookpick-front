@@ -12,6 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/shared/ui'
+import toast from 'react-hot-toast'
 
 export default function MyProfileEditPage() {
   const navigate = useNavigate()
@@ -39,6 +40,7 @@ export default function MyProfileEditPage() {
   }
 
   const handleComplete = () => {
+    toast.success('프로필 설정이 완료되었습니다.')
     console.log('프로필 설정 완료:', { nickname, introduction, profileImage })
     navigate('/')
   }
@@ -50,7 +52,7 @@ export default function MyProfileEditPage() {
   return (
     <div className='w-[900px] mx-auto space-y-12'>
       {/* 상단 안내 문구 */}
-      <div className='text-center space-y-4'>
+      <div className='text-center space-y-4 my-15'>
         <h1 className='font-title'>이제 당신을 표현할 차례예요!</h1>
         <p className='text-lg text-muted-foreground leading-normal'>
           닉네임과 한 줄 소개로 당신만의 개성을 드러내 보세요.

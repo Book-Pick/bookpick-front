@@ -31,7 +31,7 @@ export const mockCurationData: CurationData[] = [
     date: '2024.01.15',
     tags: ['철학', '일상', '에세이'],
     price: 18500,
-    thumbnailImage: '/src/assets/images/sample_image_01.jpeg',
+    thumbnailImage: '/images/sample_image_01.jpeg',
     thumbnailColor: null,
   },
   {
@@ -65,7 +65,7 @@ export const mockCurationData: CurationData[] = [
     date: '2024.01.10',
     tags: ['자기계발', '성장', '비즈니스'],
     price: 22000,
-    thumbnailImage: '/src/assets/images/sample_image_02.jpeg',
+    thumbnailImage: '/images/sample_image_02.jpeg',
     thumbnailColor: null,
   },
   {
@@ -99,7 +99,7 @@ export const mockCurationData: CurationData[] = [
     date: '2024.01.05',
     tags: ['과학', '교양', '캐주얼'],
     price: 19800,
-    thumbnailImage: '/src/assets/images/sample_image_03.jpeg',
+    thumbnailImage: '/images/sample_image_03.jpeg',
     thumbnailColor: null,
   },
   {
@@ -133,7 +133,7 @@ export const mockCurationData: CurationData[] = [
     date: '2023.12.28',
     tags: ['여행', '세계문화', '토어'],
     price: 14900,
-    thumbnailImage: '/src/assets/images/sample_image_01.jpeg',
+    thumbnailImage: '/images/sample_image_01.jpeg',
     thumbnailColor: null,
   },
   {

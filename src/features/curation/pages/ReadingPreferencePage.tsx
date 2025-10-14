@@ -11,6 +11,7 @@ import {
   CardTitle,
   Checkbox,
 } from '@/shared/ui'
+import toast from 'react-hot-toast'
 import {
   MBTI_TYPES,
   READING_MOODS,
@@ -93,6 +94,7 @@ export default function ReadingPreferencePage() {
       genres,
       keywords,
     })
+    toast.success('독서 취향 설정이 완료되었습니다.')
     navigate('/mypage/profile')
   }
 
@@ -102,7 +104,7 @@ export default function ReadingPreferencePage() {
 
   return (
     <div className='max-w-[800px] mx-auto'>
-      <div className='text-center space-y-5 mb-15'>
+      <div className='text-center space-y-5 my-15'>
         <h2 className='font-title'>독서 취향 설정</h2>
         <div className='space-y-4'>
           <p className='text-lg font-semibold leading-normal'>
