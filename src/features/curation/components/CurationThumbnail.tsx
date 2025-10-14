@@ -15,7 +15,13 @@ const CurationThumbnail = ({
 }: CurationThumbnailProps) => {
   // 이미지가 있으면 이미지 표시
   if (thumbnailImage) {
-    return <img src={thumbnailImage} alt={title} className={`w-full h-full object-cover ${className || ''}`} />
+    return (
+      <img
+        src={thumbnailImage}
+        alt={title}
+        className={`w-full h-full object-cover ${className || ''}`}
+      />
+    )
   }
 
   // 컬러가 있으면 배경색 + 타이틀 표시
