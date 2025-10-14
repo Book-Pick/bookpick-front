@@ -14,7 +14,7 @@ export const authApi = {
    */
   login: async (request: LoginRequest): Promise<LoginResponse> => {
     try {
-      const response = await axios.post('/api/auth/login', request)
+      const response = await axios.post('/api/v1/auth/login', request)
       return response.data
     } catch (error: unknown) {
       const axiosError = error as { response?: { status?: number } }
@@ -30,7 +30,7 @@ export const authApi = {
    */
   register: async (request: RegisterRequest): Promise<RegisterResponse> => {
     try {
-      const response = await axios.post('/api/auth/signup', request)
+      const response = await axios.post('/api/v1/auth/signup', request)
       return response.data
     } catch (error: unknown) {
       const axiosError = error as { response?: { status?: number } }
@@ -45,7 +45,7 @@ export const authApi = {
    * 로그아웃 API
    */
   logout: async (): Promise<void> => {
-    const response = await axios.post('/api/auth/logout')
+    const response = await axios.post('/api/v1/auth/logout')
     console.log('로그아웃', response)
   },
 }

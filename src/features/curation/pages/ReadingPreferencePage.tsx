@@ -126,7 +126,7 @@ export default function ReadingPreferencePage() {
             {/* 질문 1: MBTI */}
             <Card className='border-0 border-b-1 rounded-none shadow-none pb-10'>
               <CardHeader className='px-0'>
-                <CardTitle className='text-xl'>이런 MBTI에게 추천합니다!</CardTitle>
+                <CardTitle className='text-xl'>MBTI를 알려주세요.</CardTitle>
                 <p className='text-xs text-muted-foreground'>
                   ※ 해당사항이 없으시면 그냥 지나가셔도 좋아요!
                 </p>
@@ -151,11 +151,13 @@ export default function ReadingPreferencePage() {
             {/* 질문 2: 인생 책 */}
             <Card className='border-0 border-b-1 rounded-none shadow-none pb-10'>
               <CardHeader className='px-0'>
-                <CardTitle className='text-xl'>인생 책이 있다면 알려주세요</CardTitle>
+                <CardTitle className='text-xl'>당신의 인생 책은 무엇인가요?</CardTitle>
                 <p className='text-xs text-muted-foreground'>
-                  ※ 최대 3권까지 선택 가능합니다. 해당사항이 없으시면 지나가셔도 좋아요! (현재는
-                  데미안, 어린왕자, 1984, 까뮈의 이방인, 호밀밭의 파수꾼, 젊은 베르테르의 슬픔,
-                  백년의 고독, 카라마조프의 형제들 검색 가능)
+                  ※ 최대 3권까지 선택 가능합니다. 해당사항이 없으시면 지나가셔도 좋아요!
+                </p>
+                <p className='text-xs text-muted-foreground'>
+                  (현재는 데미안, 어린왕자, 1984, 까뮈의 이방인, 호밀밭의 파수꾼, 젊은 베르테르의
+                  슬픔, 백년의 고독, 카라마조프의 형제들 검색 가능)
                 </p>
               </CardHeader>
               <CardContent className='space-y-4 px-0 pt-4'>
@@ -197,7 +199,7 @@ export default function ReadingPreferencePage() {
             {/* 질문 2b: 좋아하는 작가 */}
             <Card className='border-0 border-b-1 rounded-none shadow-none pb-10'>
               <CardHeader className='px-0'>
-                <CardTitle className='text-xl'>좋아하는 작가가 있다면 알려주세요</CardTitle>
+                <CardTitle className='text-xl'>좋아하는 작가가 있나요?</CardTitle>
                 <p className='text-xs text-muted-foreground'>
                   ※ 최대 3명까지 선택 가능합니다. 해당사항이 없으시면 지나가셔도 좋아요!
                 </p>
@@ -240,7 +242,7 @@ export default function ReadingPreferencePage() {
             {/* 질문 3: 독서 분위기 */}
             <Card className='border-0 border-b-1 rounded-none shadow-none pb-10'>
               <CardHeader className='px-0'>
-                <CardTitle className='text-xl'>책을 읽을 때 선호하는 분위기는?</CardTitle>
+                <CardTitle className='text-xl'>책을 읽을 때 어떤 분위기를 좋아하시나요?</CardTitle>
                 <p className='text-xs text-muted-foreground'>
                   ※ 해당사항이 없으시면 그냥 지나가셔도 좋아요!
                 </p>
@@ -265,7 +267,7 @@ export default function ReadingPreferencePage() {
             {/* 질문 4: 독서 습관 */}
             <Card className='border-0 border-b-1 rounded-none shadow-none pb-10'>
               <CardHeader className='px-0'>
-                <CardTitle className='text-xl'>평소 독서 습관은 어떤가요?</CardTitle>
+                <CardTitle className='text-xl'>평소에는 어떤 방식으로 책을 읽으시나요?</CardTitle>
                 <p className='text-xs text-muted-foreground'>
                   ※ 해당사항이 없으시면 그냥 지나가셔도 좋아요!
                 </p>
@@ -294,7 +296,7 @@ export default function ReadingPreferencePage() {
             {/* 질문 5: 좋아하는 장르 */}
             <Card className='border-0 border-b-1 rounded-none shadow-none pb-10'>
               <CardHeader className='px-0'>
-                <CardTitle className='text-xl'>내가 좋아하는 장르는?</CardTitle>
+                <CardTitle className='text-xl'>좋아하는 장르는 무엇인가요?</CardTitle>
                 <p className='text-xs text-muted-foreground'>
                   ※ 해당사항이 없으시면 그냥 지나가셔도 좋아요!
                 </p>
@@ -319,7 +321,7 @@ export default function ReadingPreferencePage() {
             {/* 질문 6: 관심 키워드 */}
             <Card className='border-0 shadow-none'>
               <CardHeader className='px-0'>
-                <CardTitle className='text-xl'>주로 관심있는 키워드는?</CardTitle>
+                <CardTitle className='text-xl'>어떤 키워드로 책 추천을 받고 싶으세요?</CardTitle>
                 <p className='text-xs text-muted-foreground'>
                   ※ 해당사항이 없으시면 그냥 지나가셔도 좋아요!
                 </p>
