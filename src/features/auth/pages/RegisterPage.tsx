@@ -12,7 +12,7 @@ export default function RegisterPage() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<RegisterFormData>({ resolver: zodResolver(registerSchema) })
+  } = useForm<RegisterFormData>({ resolver: zodResolver(registerSchema), mode: 'onTouched' })
 
   const onSubmit = (data: RegisterFormData) => {
     registerMutate({
@@ -25,9 +25,9 @@ export default function RegisterPage() {
     <div className='max-w-md w-full space-y-8'>
       <Card className='px-4 py-10 rounded-2xl border-0 bg-transparent sm:border sm:bg-card'>
         <CardTitle>
-          <h2 className='text-2xl font-bold text-gray-900 px-6 mb-5'>회원가입</h2>
+          <h2 className='text-2xl px-0 sm:px-6 mb-5'>회원가입</h2>
         </CardTitle>
-        <CardContent>
+        <CardContent className='px-0 sm:px-6'>
           <form onSubmit={handleSubmit(onSubmit)} className='space-y-6'>
             <div className='space-y-2'>
               <label htmlFor='email' className='text-sm font-medium leading-none'>
@@ -35,7 +35,7 @@ export default function RegisterPage() {
               </label>
               <Input
                 id='email'
-                type='email'
+                type='text'
                 placeholder='이메일을 입력해주세요'
                 {...register('email')}
                 className={errors.email ? 'border-destructive' : ''}

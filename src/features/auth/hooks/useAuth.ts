@@ -75,7 +75,6 @@ export const useAuth = () => {
         }
       },
       onError: (error) => {
-        console.error(error.message)
         toast.error(error.message || '회원가입에 실패했습니다.')
       },
     })

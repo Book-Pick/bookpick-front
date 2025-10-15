@@ -3,3 +3,12 @@ export interface ApiResponse<T> {
   data: T
   message?: string
 }
+
+export interface AxiosErrorResponse {
+  response?: {
+    status?: number
+    data?: {
+      message?: string
+    }
+  }
+}

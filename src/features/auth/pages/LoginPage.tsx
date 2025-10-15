@@ -11,7 +11,7 @@ export default function LoginPage() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormData>({ resolver: zodResolver(loginSchema) })
+  } = useForm<LoginFormData>({ resolver: zodResolver(loginSchema), mode: 'onTouched' })
 
   const { useLogin } = useAuth()
   const { mutateAsync: loginMutateAsync, isPending } = useLogin()
@@ -32,9 +32,9 @@ export default function LoginPage() {
     <div className='max-w-md w-full space-y-8'>
       <Card className='px-4 py-10 rounded-2xl border-0 bg-transparent sm:border sm:bg-card'>
         <CardTitle>
-          <h2 className='text-2xl font-bold text-gray-900 px-6 mb-5'>로그인</h2>
+          <h2 className='text-2xl px-0 sm:px-6 mb-5'>로그인</h2>
         </CardTitle>
-        <CardContent>
+        <CardContent className='px-0 sm:px-6'>
           <form onSubmit={handleSubmit(onSubmit)} className='space-y-6'>
             <div className='space-y-2'>
               <label htmlFor='email' className='text-sm font-medium leading-none'>
@@ -80,12 +80,13 @@ export default function LoginPage() {
 
         <CardFooter>
           <div className='w-full text-center space-y-2 mt-5'>
-            <Link
+            {/* 비밀번호 찾기 링크 (*작업 필요) */}
+            {/* <Link
               to='/forgot-password'
               className='text-sm text-gray-600 hover:text-gray-900 underline block'
             >
               비밀번호를 잊으셨나요?
-            </Link>
+            </Link> */}
             <Link
               to='/register'
               className='text-sm text-gray-600 hover:text-gray-900 underline block'

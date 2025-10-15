@@ -39,7 +39,7 @@ export const createAxiosClient = (
     (error) => {
       const { response } = error
       const status = response?.status
-      const message = response?.message
+      const message = response?.data?.message
 
       const redirectToLogin = () => {
         localStorage.removeItem('bookpick-auth')
@@ -51,33 +51,31 @@ export const createAxiosClient = (
         return Promise.reject(error)
       }
 
-      switch (status) {
-        case 401:
-          if (message.toUpperCase() === 'UNAUTHORIZED') {
-            toast.error('로그인 정보가 유효하지 않습니다.')
+      if (message) {
+        switch (status) {
+          // case 401:
+          //   toast.error(message)
+          //   break
+          case 403:
+            toast.error(message)
             redirectToLogin()
-          }
-          break
-        case 403:
-          if (message.toUpperCase() === 'FORBIDDEN') {
-            toast.error('서비스 접근 권한이 없습니다.')
-            localStorage.removeItem('bookpick-auth')
-            window.location.href = '/login'
-          }
-          break
-        case 400:
-          toast.error('잘못된 요청입니다.')
-          return Promise.reject(error)
-        case 500:
-          window.location.href = '/error'
-          toast.error('서버 오류가 발생했습니다.')
-          break
-        case 409:
-          // 409 에러는 API 레벨에서 커스텀 처리하도록 에러를 그대로 전달
-          return Promise.reject(error)
-        default:
-          toast.error(message || '알 수 없는 오류가 발생했습니다.')
+            break
+          // case 400:
+          //   toast.error(message)
+          //   break
+          case 500:
+            toast.error(message)
+            window.location.href = '/error'
+          // break
+          // case 409:
+          //   toast.error(message)
+          //   break
+          // default:
+          //   toast.error(message)
+        }
       }
+
+      return Promise.reject(error)
     },
   )
 

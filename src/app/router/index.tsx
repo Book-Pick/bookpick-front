@@ -91,7 +91,7 @@ export const router = createBrowserRouter([
           },
           {
             path: 'mypage',
-            // element: <MyProfilePage />,
+            // element: <MyProfilePage />,ƒA
             children: [
               { path: 'dashboard', element: <MyDashboardPage /> },
               { path: 'profile', element: <MyProfileEditPage /> },
