@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
 import { X } from 'lucide-react'
 import {
   Button,
@@ -11,7 +12,6 @@ import {
   CardTitle,
   Checkbox,
 } from '@/shared/ui'
-import toast from 'react-hot-toast'
 import {
   MBTI_TYPES,
   READING_MOODS,
@@ -25,9 +25,12 @@ import {
 } from '../constants/preferences'
 import { LifeBookSearchSection } from '../components/LifeBookSearchSection'
 import { AuthorSearchSection } from '../components/AuthorSearchSection'
+import { useCuration } from '../hooks/useCuration'
 
 export default function ReadingPreferencePage() {
   const navigate = useNavigate()
+  const { useSetReadingPreference } = useCuration()
+  const { mutate: setReadingPreferenceMutate, isPending } = useSetReadingPreference()
 
   // 상태 관리
   const [mbti, setMbti] = useState<string>('')
@@ -93,19 +96,24 @@ export default function ReadingPreferencePage() {
   }
 
   const handleComplete = () => {
-    const request = {
-      mbti: mbti,
-      favoriteBooks: selectedLifeBooks,
-      authors: selectedAuthors,
-      mood: readingMoods,
-      readingHabits: readingHabits,
-      preferredGenres: genres,
-      keywords: keywords,
-      readingStyles: readingStyles,
-    }
-    console.log('독서 취향 설정:', request)
-    toast.success('독서 취향 설정이 완료되었습니다.')
-    navigate('/mypage/profile')
+    setReadingPreferenceMutate(
+      {
+        mbti: mbti || null,
+        favoriteBooks: selectedLifeBooks,
+        authors: selectedAuthors,
+        mood: readingMoods,
+        readingHabits: readingHabits,
+        preferredGenres: genres,
+        keywords: keywords,
+        readingStyles: readingStyles,
+      },
+      {
+        onSuccess: () => {
+          toast.success('독서 취향이 성공적으로 설정되었습니다.')
+          navigate('/mypage/profile')
+        },
+      },
+    )
   }
 
   const handleSkip = () => {
@@ -387,11 +395,18 @@ export default function ReadingPreferencePage() {
               size='lg'
               variant='secondary'
               onClick={handleComplete}
+              disabled={isPending}
               className='w-full sm:w-auto'
             >
-              설정 완료하기
+              {isPending ? '저장 중...' : '설정 완료하기'}
             </Button>
-            <Button variant='outline' size='lg' onClick={handleSkip} className='w-full sm:w-auto'>
+            <Button
+              variant='outline'
+              size='lg'
+              onClick={handleSkip}
+              disabled={isPending}
+              className='w-full sm:w-auto'
+            >
               건너뛰기
             </Button>
           </div>

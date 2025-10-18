@@ -15,7 +15,7 @@ type Book = {
 // 독서 취향 타입
 export interface ReadingPreference {
   userId?: number
-  mbti?: string
+  mbti?: string | null
   favoriteBooks?: Array<Book>
   authors?: string[]
   mood?: string[]
