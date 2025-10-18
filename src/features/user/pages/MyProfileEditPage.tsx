@@ -50,47 +50,49 @@ export default function MyProfileEditPage() {
   }
 
   return (
-    <div className='w-[900px] mx-auto space-y-12'>
+    <div className='max-w-[900px] w-full mx-auto space-y-8 md:space-y-12 px-4 md:px-6'>
       {/* 상단 안내 문구 */}
-      <div className='text-center space-y-4 my-15'>
-        <h1 className='font-title'>이제 당신을 표현할 차례예요!</h1>
-        <p className='text-lg text-muted-foreground leading-normal'>
+      <div className='text-center space-y-3 md:space-y-4 my-8 md:my-15'>
+        <h1 className='font-title text-2xl md:text-4xl'>이제 당신을 표현할 차례예요!</h1>
+        <p className='text-base md:text-lg text-muted-foreground leading-normal'>
           닉네임과 한 줄 소개로 당신만의 개성을 드러내 보세요.
         </p>
       </div>
 
       {/* 통합 프로필 설정 카드 */}
-      <Card className='rounded-3xl'>
-        <CardHeader className='text-center pb-6 py-6'>
-          <CardTitle className='text-2xl font-semibold'>프로필 설정</CardTitle>
+      <Card className='rounded-2xl md:rounded-3xl'>
+        <CardHeader className='text-center pb-4 md:pb-6 py-4 md:py-6'>
+          <CardTitle className='text-xl md:text-2xl font-semibold'>프로필 설정</CardTitle>
         </CardHeader>
-        <CardContent className='p-8 pt-0'>
-          <div className='grid grid-cols-5 gap-8 items-start'>
-            {/* 좌측 40% - 프로필 이미지 설정 */}
-            <div className='col-span-2 space-y-4'>
+        <CardContent className='p-4 md:p-8 pt-0'>
+          <div className='grid grid-cols-1 md:grid-cols-5 gap-6 md:gap-8 items-start'>
+            {/* 프로필 이미지 설정 - 모바일에서는 상단, 데스크톱에서는 좌측 40% */}
+            <div className='md:col-span-2 space-y-4'>
               {/* 프로필 이미지 */}
-              <div className='flex flex-col items-center space-y-4'>
+              <div className='flex flex-col items-center space-y-3 md:space-y-4'>
                 <div
                   className='cursor-pointer hover:opacity-80 transition-opacity'
                   onClick={handleImageClick}
                 >
-                  <Avatar className='w-24 h-24'>
+                  <Avatar className='w-20 h-20 md:w-24 md:h-24'>
                     {profileImage ? (
                       <AvatarImage src={profileImage} alt='프로필 이미지' />
                     ) : (
-                      <AvatarFallback className='text-3xl bg-muted'>👤</AvatarFallback>
+                      <AvatarFallback className='text-2xl md:text-3xl bg-muted'>👤</AvatarFallback>
                     )}
                   </Avatar>
                 </div>
                 <div className='text-center'>
-                  <p className='font-medium text-lg'>프로필 이미지</p>
-                  <p className='text-sm text-muted-foreground mt-1'>이미지를 클릭하여 변경하세요</p>
+                  <p className='font-medium text-base md:text-lg'>프로필 이미지</p>
+                  <p className='text-xs md:text-sm text-muted-foreground mt-1'>
+                    이미지를 클릭하여 변경하세요
+                  </p>
                 </div>
               </div>
             </div>
 
-            {/* 우측 60% - 입력 필드들 */}
-            <div className='col-span-3 space-y-6'>
+            {/* 입력 필드들 - 모바일에서는 하단, 데스크톱에서는 우측 60% */}
+            <div className='md:col-span-3 space-y-5 md:space-y-6'>
               {/* 닉네임 */}
               <div className='space-y-2'>
                 <label htmlFor='nickname' className='text-sm font-medium'>
@@ -123,8 +125,8 @@ export default function MyProfileEditPage() {
                 </div>
               </div>
 
-              {/* 우측 하단 버튼 */}
-              <div className='flex w-full gap-2 pt-4'>
+              {/* 하단 버튼 */}
+              <div className='flex w-full gap-2 pt-2 md:pt-4'>
                 <Button variant='outline' onClick={handleSkip} className='flex-1'>
                   건너뛰기
                 </Button>
