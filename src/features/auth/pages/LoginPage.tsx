@@ -24,7 +24,7 @@ export default function LoginPage() {
         if (response?.isFirstLogin) {
           navigate('/onboarding')
         } else {
-          navigate('/')
+          navigate('/onboarding')
         }
       }, 100)
     } catch (error) {

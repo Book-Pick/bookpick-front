@@ -18,6 +18,7 @@ import {
   GENRES,
   KEYWORDS,
   READING_HABITS,
+  READING_STYLES,
   LIFE_BOOKS,
   FAVORITE_AUTHORS,
   type LifeBook,
@@ -36,6 +37,7 @@ export default function ReadingPreferencePage() {
   const [readingHabits, setReadingHabits] = useState<string[]>([])
   const [genres, setGenres] = useState<string[]>([])
   const [keywords, setKeywords] = useState<string[]>([])
+  const [readingStyles, setReadingStyles] = useState<string[]>([])
 
   // 토글 함수들
   const toggleMbti = (type: string) => {
@@ -64,6 +66,12 @@ export default function ReadingPreferencePage() {
     )
   }
 
+  const toggleReadingStyle = (style: string) => {
+    setReadingStyles((prev) =>
+      prev.includes(style) ? prev.filter((s) => s !== style) : [...prev, style],
+    )
+  }
+
   const handleLifeBookSelect = (book: LifeBook | null) => {
     if (book && selectedLifeBooks.length < 3 && !selectedLifeBooks.find((b) => b.id === book.id)) {
       setSelectedLifeBooks((prev) => [...prev, book])
@@ -85,15 +93,17 @@ export default function ReadingPreferencePage() {
   }
 
   const handleComplete = () => {
-    console.log('온보딩 데이터:', {
-      mbti,
-      selectedLifeBooks,
-      selectedAuthors,
-      readingMoods,
-      readingHabits,
-      genres,
-      keywords,
-    })
+    const request = {
+      mbti: mbti,
+      favoriteBooks: selectedLifeBooks,
+      authors: selectedAuthors,
+      mood: readingMoods,
+      readingHabits: readingHabits,
+      preferredGenres: genres,
+      keywords: keywords,
+      readingStyles: readingStyles,
+    }
+    console.log('독서 취향 설정:', request)
     toast.success('독서 취향 설정이 완료되었습니다.')
     navigate('/mypage/profile')
   }
@@ -321,7 +331,7 @@ export default function ReadingPreferencePage() {
             </Card>
 
             {/* 질문 6: 관심 키워드 */}
-            <Card className='border-0 shadow-none'>
+            <Card className='border-0 border-b-1 rounded-none shadow-none pb-10'>
               <CardHeader className='px-0'>
                 <CardTitle className='text-xl'>어떤 키워드로 책 추천을 받고 싶으세요?</CardTitle>
                 <p className='text-xs text-muted-foreground'>
@@ -344,6 +354,31 @@ export default function ReadingPreferencePage() {
                 </div>
               </CardContent>
             </Card>
+
+            {/* 질문 7: 나의 독서 성향 */}
+            <Card className='border-0 shadow-none'>
+              <CardHeader className='px-0'>
+                <CardTitle className='text-xl'>평소 어떤 스타일로 책을 즐기시나요?</CardTitle>
+                <p className='text-xs text-muted-foreground'>
+                  ※ 해당사항이 없으시면 그냥 지나가셔도 좋아요!
+                </p>
+              </CardHeader>
+              <CardContent className='px-0 pt-4'>
+                <div className='flex flex-wrap gap-3'>
+                  {READING_STYLES.map((style) => (
+                    <Toggle
+                      key={style}
+                      pressed={readingStyles.includes(style)}
+                      onPressedChange={() => toggleReadingStyle(style)}
+                      variant='outline'
+                      size='sm'
+                    >
+                      {style}
+                    </Toggle>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
           {/* 하단 버튼 */}
@@ -354,7 +389,7 @@ export default function ReadingPreferencePage() {
               onClick={handleComplete}
               className='w-full sm:w-auto'
             >
-              설정 완료하고 시작하기
+              설정 완료하기
             </Button>
             <Button variant='outline' size='lg' onClick={handleSkip} className='w-full sm:w-auto'>
               건너뛰기

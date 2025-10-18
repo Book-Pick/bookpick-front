@@ -25,13 +25,23 @@ export const READING_MOODS = [
   '퇴근 후',
   '따뜻한 차 한잔',
   '비 오는 날',
-  '지하철',
+  '눈 오는 날',
+  '지하철·버스',
   '카페',
   '침대에서',
   '공원',
   '도서관',
+  '서점에서',
   '새벽 시간',
   '주말 오후',
+  '점심시간',
+  '늦은 밤',
+  '잠들기 전',
+  '혼자만의 시간',
+  '창가에서',
+  '음악과 함께',
+  '여행 중',
+  '휴가 중',
 ] as const
 
 export const GENRES = [
@@ -77,27 +87,45 @@ export const READING_HABITS = [
   '독서 모임에 참여하는 편',
 ] as const
 
+export const READING_STYLES = [
+  '속독형',
+  '몰입형',
+  '정독형',
+  '취향 탐색형',
+  '스토리 중심',
+  '지식 위주',
+  '감성적',
+  '논리적',
+  '창의적',
+  '실용적',
+  '비평적',
+  '상상력 중시',
+  '느긋한 독서',
+  '깊이 있는 사색',
+  '가볍게 즐기기',
+] as const
+
 // 인생 책 목록 (검색용 mockup 데이터)
 export const LIFE_BOOKS = [
   {
     id: '1',
     title: '데미안',
     author: '헤르만 헤세',
-    image: '/images/book1.jpg',
+    image: '/images/demian_thumbnail.jpeg',
     isbn: '9788937461002',
   },
   {
     id: '2',
     title: '어린왕자',
     author: '생텍쥐페리',
-    image: '/images/book2.jpg',
+    image: '/images/little_prince_thumbnail.jpeg',
     isbn: '9788937460109',
   },
   {
     id: '3',
     title: '1984',
     author: '조지 오웰',
-    image: '/images/book3.jpg',
+    image: '/images/1984_thumbnail.jpeg',
     isbn: '9788937460388',
   },
   {
@@ -167,5 +195,6 @@ export type ReadingMood = (typeof READING_MOODS)[number]
 export type Genre = (typeof GENRES)[number]
 export type Keyword = (typeof KEYWORDS)[number]
 export type ReadingHabit = (typeof READING_HABITS)[number]
+export type ReadingStyle = (typeof READING_STYLES)[number]
 export type LifeBook = (typeof LIFE_BOOKS)[number]
 export type FavoriteAuthor = (typeof FAVORITE_AUTHORS)[number]
