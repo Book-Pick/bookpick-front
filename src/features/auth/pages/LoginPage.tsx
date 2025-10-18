@@ -18,10 +18,14 @@ export default function LoginPage() {
 
   const onSubmit = async (data: LoginFormData) => {
     try {
-      await loginMutateAsync(data)
+      const response = await loginMutateAsync(data)
       // 약간의 딜레이 후 navigate (상태 업데이트 보장)
       setTimeout(() => {
-        navigate('/onboarding')
+        if (response?.isFirstLogin) {
+          navigate('/onboarding')
+        } else {
+          navigate('/')
+        }
       }, 100)
     } catch (error) {
       console.error(error)

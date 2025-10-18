@@ -29,6 +29,7 @@ export interface RegisterRequest {
 // Result Type
 export interface LoginResult extends User {
   accessToken: string
+  isFirstLogin?: boolean
 }
 
 export interface RegisterResult {
