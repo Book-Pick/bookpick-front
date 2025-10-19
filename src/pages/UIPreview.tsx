@@ -534,6 +534,7 @@ export default function UIPreview() {
                     curationId={curation.id}
                     price={curation.price}
                     onPurchase={handlePurchase}
+                    onCart={handlePurchase}
                   />
                 ))}
               </div>
