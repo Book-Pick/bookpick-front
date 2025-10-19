@@ -18,7 +18,7 @@ const CurationPurchaseCard = ({
   onCart,
 }: CurationPurchaseCardProps) => {
   const handleCartClick = () => {
-    onCart?.(curationId, price)
+    onCart(curationId, price)
   }
 
   const handlePurchaseClick = () => {
@@ -56,7 +56,7 @@ const CurationPurchaseCard = ({
 
       {/* 모바일용 버튼 */}
       <div className='flex gap-3 md:hidden px-4 pb-4 pt-3'>
-        <Button size='lg' variant='outline' onClick={handlePurchaseClick} className='flex-1'>
+        <Button size='lg' variant='outline' onClick={handleCartClick} className='flex-1'>
           장바구니
         </Button>
         <Button

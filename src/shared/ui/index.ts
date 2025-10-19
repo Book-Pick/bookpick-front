@@ -19,3 +19,13 @@ export { Checkbox } from './checkbox'
 export { Popover, PopoverContent, PopoverTrigger } from './popover'
 export { Sheet, SheetContent, SheetHeader, SheetTitle } from './sheet'
 export { Progress } from './progress'
+export { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './accordion'
+export {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuLabel,
+  DropdownMenuGroup,
+} from './dropdown-menu'

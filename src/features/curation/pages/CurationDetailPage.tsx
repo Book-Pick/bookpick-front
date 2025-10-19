@@ -91,6 +91,15 @@ export default function CurationDetailPage() {
     toast.success('큐레이션이 장바구니에 담겼습니다.')
   }
 
+  const handleSubscribeToggle = (curatorId: number, isSubscribed: boolean) => {
+    console.log(`큐레이터 ${curatorId} 구독 상태 변경:`, isSubscribed ? '구독' : '구독취소')
+    if (isSubscribed) {
+      toast.success('큐레이터를 구독했습니다.')
+    } else {
+      toast.success('큐레이터의 구독을 취소했습니다.')
+    }
+  }
+
   return (
     <>
       {/* 큐레이션 내용 */}
@@ -103,6 +112,7 @@ export default function CurationDetailPage() {
             favoriteGenres={curator.favoriteGenres}
             introduction={curator.introduction}
             isSubscribed={curator.isSubscribed}
+            onSubscribeToggle={handleSubscribeToggle}
           />
         ))}
         <h3 className='font-curation-title my-12'>오늘, 나에게 작은 위로가 필요하다면</h3>

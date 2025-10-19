@@ -202,6 +202,32 @@ export const useCuration = () => {
     })
   }
 
+  /**
+   * 13. 인기순 큐레이션 조회 (likes 기준 정렬)
+   */
+  const useGetPopularCurations = (page: number = 1, limit: number = 10) => {
+    return useQuery({
+      queryKey: ['curations', 'popular', page, limit],
+      queryFn: async () => {
+        const response = await curationApi.getPopularCurations(page, limit)
+        return response.data
+      },
+    })
+  }
+
+  /**
+   * 14. 최신순 큐레이션 조회 (createdAt 기준 정렬)
+   */
+  const useGetRecentCurations = (page: number = 1, limit: number = 10) => {
+    return useQuery({
+      queryKey: ['curations', 'recent', page, limit],
+      queryFn: async () => {
+        const response = await curationApi.getRecentCurations(page, limit)
+        return response.data
+      },
+    })
+  }
+
   return {
     // Mutations
     useSetReadingPreference,
@@ -218,5 +244,7 @@ export const useCuration = () => {
     useGetCurationsByField,
     useGetMyCurations,
     useGetMyDraftCurations,
+    useGetPopularCurations,
+    useGetRecentCurations,
   }
 }

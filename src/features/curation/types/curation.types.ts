@@ -30,7 +30,7 @@ export interface ReadingPreference {
 // 큐레이션 타입
 export interface Curation {
   id: number
-  userId: number
+  userId?: number
   curator: string
   curatorId: number
   title: string
@@ -44,8 +44,8 @@ export interface Curation {
   views: number
   similarity?: number
   status: 'draft' | 'published'
-  createdAt: string
-  updatedAt: string
+  createdAt?: string
+  updatedAt?: string | null
 }
 
 // API Request 타입들

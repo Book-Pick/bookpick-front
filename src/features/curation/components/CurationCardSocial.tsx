@@ -14,7 +14,7 @@ import CurationThumbnail from './CurationThumbnail'
 import { ViewerIcon } from '@/assets/icons/ViewerIcon'
 
 interface CurationCardSocialProps {
-  similarity: number
+  similarity?: number
   title: string
   description: string
   curator: string
@@ -48,7 +48,7 @@ const CurationCardSocial = ({
 }: CurationCardSocialProps) => {
   return (
     <Card
-      className={`bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden max-w-sm mx-auto p-0 ${className || ''}`}
+      className={`w-full bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden max-w-sm mx-auto p-0 ${className || ''}`}
       onClick={onClick}
     >
       {/* 프로필 섹션 */}
@@ -80,13 +80,15 @@ const CurationCardSocial = ({
       </div>
 
       {/* 취향 유사도 */}
-      <div className='px-4 pt-3 pb-2'>
-        <div className='flex justify-between items-center mb-2'>
-          <span className='text-xs font-medium text-gray-700'>취향 유사도</span>
-          <span className='text-xs font-semibold text-primary'>{similarity}%</span>
+      {similarity && (
+        <div className='px-4 pt-3 pb-2'>
+          <div className='flex justify-between items-center mb-2'>
+            <span className='text-xs font-medium text-gray-700'>취향 유사도</span>
+            <span className='text-xs font-semibold text-primary'>{similarity}%</span>
+          </div>
+          <Progress value={similarity || 0} className='h-2' />
         </div>
-        <Progress value={similarity} className='h-2' />
-      </div>
+      )}
 
       {/* 컨텐츠 섹션 */}
       <CardContent className='p-4 pt-2'>
@@ -97,7 +99,7 @@ const CurationCardSocial = ({
         </div>
 
         {/* 키워드 태그 */}
-        <div className='flex flex-wrap gap-1 mb-4'>
+        <div className='flex flex-wrap gap-1'>
           {tags.slice(0, 3).map((tag, index) => (
             <Badge key={index} size='sm' variant='outline'>
               #{tag}
@@ -112,7 +114,7 @@ const CurationCardSocial = ({
       </CardContent>
 
       {/* 인터랙션 섹션 */}
-      <CardFooter className='p-4 pt-0'>
+      <CardFooter className='mt-auto p-4 pt-0 border-t border-gray-200'>
         <div className='flex items-center justify-end gap-4 w-full'>
           <button className='flex items-center gap-1 text-gray-600 hover:text-gray-800 transition-colors'>
             <ViewerIcon size={18} />

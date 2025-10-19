@@ -110,6 +110,7 @@ export default function ReadingPreferencePage() {
       {
         onSuccess: () => {
           toast.success('독서 취향이 성공적으로 설정되었습니다.')
+          // TODO: 온보딩 페이지에서만 프로필페이지로 가야함
           navigate('/mypage/profile')
         },
       },

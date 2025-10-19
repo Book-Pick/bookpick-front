@@ -1,18 +1,30 @@
 import MainBanner from '@/shared/components/MainBanner'
-import CurationCardBasic from '@/features/curation/components/CurationCardBasic'
-import CurationCardFull from '@/features/curation/components/CurationCardFull'
-import CurationCardSocial from '@/features/curation/components/CurationCardSocial'
-import { mockCurationData } from '@/data/mockCurationData'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui'
 import { useNavigate } from 'react-router-dom'
 import { ContentsLayout } from '@/app/layout'
+import CurationList from '@/features/curation/components/CurationList'
+import { useCuration } from '@/features/curation/hooks/useCuration'
 
 export default function HomePage() {
   const navigate = useNavigate()
+  const { useGetPersonalizedCurations, useGetPopularCurations, useGetRecentCurations } =
+    useCuration()
+
+  // API 호출
+  const { data: personalizedData, isLoading: isLoadingPersonalized } = useGetPersonalizedCurations(
+    1,
+    6,
+  )
+  const { data: popularData, isLoading: isLoadingPopular } = useGetPopularCurations(1, 6)
+  const { data: recentData, isLoading: isLoadingRecent } = useGetRecentCurations(1, 6)
 
   const handleCardClick = (curationId: number) => {
     navigate(`/curation/detail/${curationId}`)
   }
+
+  const similarCurations = personalizedData?.curations || []
+  const likeCurations = popularData?.curations || []
+  const recentCurations = recentData?.curations || []
 
   return (
     <div className='min-h-screen bg-background'>
@@ -38,61 +50,49 @@ export default function HomePage() {
                 </TabsTrigger>
               </TabsList>
               <TabsContent value='similar'>
-                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6'>
-                  {mockCurationData.slice(0, 6).map((curation) => (
-                    <CurationCardSocial
-                      key={curation.id}
-                      similarity={curation.similarity}
-                      title={curation.title}
-                      description={curation.description}
-                      curator={curation.curator}
-                      likes={curation.likes}
-                      comments={curation.comments}
-                      views={curation.views}
-                      tags={curation.tags}
-                      thumbnailSrc={curation.thumbnailImage || undefined}
-                      thumbnailColor={curation.thumbnailColor || undefined}
-                      onClick={() => handleCardClick(curation.id)}
-                    />
-                  ))}
-                </div>
+                {isLoadingPersonalized ? (
+                  <div className='flex justify-center items-center mt-6 py-20'>
+                    <p className='text-muted-foreground'>로딩 중...</p>
+                  </div>
+                ) : similarCurations?.length > 0 ? (
+                  <CurationList curations={similarCurations} onCardClick={handleCardClick} />
+                ) : (
+                  <div className='flex flex-col gap-6 mt-6'>
+                    <div className='flex flex-col gap-2'>
+                      <h3 className='font-title font-bold text-foreground'>큐레이션이 없습니다.</h3>
+                    </div>
+                  </div>
+                )}
               </TabsContent>
               <TabsContent value='like'>
-                <div className='flex flex-col gap-10 mt-6'>
-                  {mockCurationData.slice(0, 4).map((curation) => (
-                    <CurationCardFull
-                      key={curation.id}
-                      similarity={curation.similarity}
-                      title={curation.title}
-                      description={curation.description}
-                      curator={curation.curator}
-                      likes={curation.likes}
-                      comments={curation.comments}
-                      views={curation.views}
-                      date={curation.date}
-                      tags={curation.tags}
-                      thumbnailSrc={curation.thumbnailImage || undefined}
-                      thumbnailColor={curation.thumbnailColor || undefined}
-                      onClick={() => handleCardClick(curation.id)}
-                    />
-                  ))}
-                </div>
+                {isLoadingPopular ? (
+                  <div className='flex justify-center items-center mt-6 py-20'>
+                    <p className='text-muted-foreground'>로딩 중...</p>
+                  </div>
+                ) : likeCurations?.length > 0 ? (
+                  <CurationList curations={likeCurations} onCardClick={handleCardClick} />
+                ) : (
+                  <div className='flex flex-col gap-6 mt-6'>
+                    <div className='flex flex-col gap-2'>
+                      <h3 className='font-title font-bold text-foreground'>큐레이션이 없습니다.</h3>
+                    </div>
+                  </div>
+                )}
               </TabsContent>
               <TabsContent value='recent'>
-                <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mt-6'>
-                  {mockCurationData.map((curation) => (
-                    <CurationCardBasic
-                      key={curation.id}
-                      similarity={curation.similarity}
-                      title={curation.title}
-                      description={curation.description}
-                      curator={curation.curator}
-                      likes={curation.likes}
-                      comments={curation.comments}
-                      onClick={() => handleCardClick(curation.id)}
-                    />
-                  ))}
-                </div>
+                {isLoadingRecent ? (
+                  <div className='flex justify-center items-center mt-6 py-20'>
+                    <p className='text-muted-foreground'>로딩 중...</p>
+                  </div>
+                ) : recentCurations?.length > 0 ? (
+                  <CurationList curations={recentCurations} onCardClick={handleCardClick} />
+                ) : (
+                  <div className='flex flex-col gap-6 mt-6'>
+                    <div className='flex flex-col gap-2'>
+                      <h3 className='font-title font-bold text-foreground'>큐레이션이 없습니다.</h3>
+                    </div>
+                  </div>
+                )}
               </TabsContent>
             </Tabs>
           </div>

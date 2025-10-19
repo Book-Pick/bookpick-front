@@ -31,6 +31,8 @@ import {
   mockGetMyCurationsResponse,
   mockGetMyDraftCurationsResponse,
   mockDeleteCurationResponse,
+  mockGetPopularCurationsResponse,
+  mockGetRecentCurationsResponse,
 } from './mockCurationApiData'
 
 // const axios = createAxiosClient(import.meta.env.VITE_APP_BOOKPICK_API_URL)
@@ -357,6 +359,58 @@ export const curationApi = {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(mockDeleteCurationResponse)
+      }, 500)
+    })
+  },
+
+  /**
+   * 13. 인기순 큐레이션 조회 (likes 기준 정렬)
+   */
+  getPopularCurations: async (
+    page: number = 1,
+    limit: number = 10,
+  ): Promise<GetCurationsResponse> => {
+    // try {
+    //   const response = await axios.get(`${urlPrefix}/curations/popular`, {
+    //     params: { page, limit },
+    //   })
+    //   return response.data
+    // } catch (error: unknown) {
+    //   const axiosError = error as AxiosErrorResponse
+    //   throw error
+    // }
+
+    // 목업 데이터 반환
+    console.log('인기순 큐레이션 조회 요청:', { page, limit })
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(mockGetPopularCurationsResponse)
+      }, 500)
+    })
+  },
+
+  /**
+   * 14. 최신순 큐레이션 조회 (createdAt 기준 정렬)
+   */
+  getRecentCurations: async (
+    page: number = 1,
+    limit: number = 10,
+  ): Promise<GetCurationsResponse> => {
+    // try {
+    //   const response = await axios.get(`${urlPrefix}/curations/recent`, {
+    //     params: { page, limit },
+    //   })
+    //   return response.data
+    // } catch (error: unknown) {
+    //   const axiosError = error as AxiosErrorResponse
+    //   throw error
+    // }
+
+    // 목업 데이터 반환
+    console.log('최신순 큐레이션 조회 요청:', { page, limit })
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(mockGetRecentCurationsResponse)
       }, 500)
     })
   },
