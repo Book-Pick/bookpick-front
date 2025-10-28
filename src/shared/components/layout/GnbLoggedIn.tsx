@@ -31,7 +31,7 @@ export function GnbLoggedIn() {
   }
 
   const handleMyPageClick = () => {
-    navigate('/mypage/profile')
+    navigate('/mypage/dashboard')
   }
 
   const handleCartClick = () => {
@@ -54,7 +54,11 @@ export function GnbLoggedIn() {
       )}
 
       {/* 데스크톱: 프로필 아이콘만 */}
-      <Avatar size='sm' className='ring-1 ring-white/30 hidden sm:flex'>
+      <Avatar
+        size='sm'
+        className='ring-1 ring-white/30 hidden sm:flex cursor-pointer'
+        onClick={handleMyPageClick}
+      >
         <AvatarImage src={profileImageUrl} alt='profile' className='object-cover' />
         <AvatarFallback>
           <span>북픽</span>

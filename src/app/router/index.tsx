@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
 
 // 레이아웃
-import { MainLayout, ContentsLayout, AuthLayout } from '@/app/layout'
+import { MainLayout, ContentsLayout, AuthLayout, DashboardLayout } from '@/app/layout'
 
 // 전역 페이지
 import UIPreview from '@/pages/UIPreview'
@@ -90,18 +90,27 @@ export const router = createBrowserRouter([
             ],
           },
           {
+            path: 'onboarding',
+            children: [{ index: true, element: <ReadingPreferencePage /> }],
+          },
+        ],
+      },
+      {
+        path: '/',
+        element: (
+          <ProtectedServiceRoute>
+            <DashboardLayout />
+          </ProtectedServiceRoute>
+        ),
+        children: [
+          {
             path: 'mypage',
-            // element: <MyProfilePage />,ƒA
             children: [
               { path: 'dashboard', element: <MyDashboardPage /> },
               { path: 'profile', element: <MyProfileEditPage /> },
               { path: 'curation', element: <MyCurationPage /> },
               { path: 'reading-history', element: <MyReadingHistoryPage /> },
             ],
-          },
-          {
-            path: 'onboarding',
-            children: [{ index: true, element: <ReadingPreferencePage /> }],
           },
         ],
       },

@@ -213,4 +213,15 @@ body {
   .font-meta {
     @apply text-sm font-medium text-muted-foreground;
   }
+  .font-body {
+    @apply text-sm md:text-base font-normal text-foreground;
+  }
+
+  .font-label {
+    @apply text-sm md:text-base font-medium text-foreground;
+  }
+
+  .font-stat-value {
+    @apply text-3xl md:text-[34px] font-semibold text-foreground leading-none;
+  }
 }
