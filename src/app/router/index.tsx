@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
 
 // 레이아웃
-import { MainLayout, ContentsLayout, AuthLayout, DashboardLayout } from '@/app/layout'
+import { MainLayout, ContentsLayout, AuthLayout } from '@/app/layout'
 
 // 전역 페이지
 import UIPreview from '@/pages/UIPreview'
@@ -31,6 +31,7 @@ import SettlementHistoryPage from '@/features/revenue/pages/SettlementHistoryPag
 
 // 마이페이지
 import MyDashboardPage from '@/features/user/pages/MyDashboardPage'
+import MyProfileSettingsPage from '@/features/user/pages/MyProfileSettingsPage'
 import MyProfileEditPage from '@/features/user/pages/MyProfileEditPage'
 import MyCurationPage from '@/features/user/pages/MyCurationPage'
 import MyReadingHistoryPage from '@/features/user/pages/MyReadingHistoryPage'
@@ -74,6 +75,15 @@ export const router = createBrowserRouter([
             ],
           },
           {
+            path: 'mypage',
+            children: [
+              { path: 'dashboard', element: <MyDashboardPage /> },
+              { path: 'profile', element: <MyProfileEditPage /> },
+              { path: 'curation', element: <MyCurationPage /> },
+              { path: 'reading-history', element: <MyReadingHistoryPage /> },
+            ],
+          },
+          {
             path: 'order',
             children: [
               { path: 'checkout/:curationId', element: <OrderCheckoutPage /> },
@@ -91,25 +101,9 @@ export const router = createBrowserRouter([
           },
           {
             path: 'onboarding',
-            children: [{ index: true, element: <ReadingPreferencePage /> }],
-          },
-        ],
-      },
-      {
-        path: '/',
-        element: (
-          <ProtectedServiceRoute>
-            <DashboardLayout />
-          </ProtectedServiceRoute>
-        ),
-        children: [
-          {
-            path: 'mypage',
             children: [
-              { path: 'dashboard', element: <MyDashboardPage /> },
-              { path: 'profile', element: <MyProfileEditPage /> },
-              { path: 'curation', element: <MyCurationPage /> },
-              { path: 'reading-history', element: <MyReadingHistoryPage /> },
+              { index: true, element: <ReadingPreferencePage /> },
+              { path: 'profile', element: <MyProfileSettingsPage /> },
             ],
           },
         ],

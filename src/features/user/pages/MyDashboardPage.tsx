@@ -43,12 +43,12 @@ const mockFeedbacks = [
 
 export default function MyDashboardPage() {
   return (
-    <div className='flex flex-col gap-[60px] my-10 xl:my-15'>
+    <div className='flex flex-col gap-8 md:gap-[60px] my-6 md:my-10 xl:my-15'>
       {/* 페이지 제목 */}
-      <h1 className='font-title'>마이페이지</h1>
+      <h2 className='font-title'>마이페이지</h2>
 
-      {/* 메인 콘텐츠 - Grid 레이아웃 (컬럼 1:2, 행 2:3 비율) */}
-      <div className='grid grid-cols-[minmax(0,1fr)_minmax(0,2fr)] grid-rows-[2fr_3fr] gap-10'>
+      {/* 메인 콘텐츠 - 모바일: 1열, 데스크톱: 2열 Grid 레이아웃 */}
+      <div className='flex flex-col gap-6 md:grid md:grid-cols-[minmax(0,3fr)_minmax(0,7fr)] md:grid-rows-[2fr_3fr]'>
         {/* Row 1, Col 1: 프로필 카드 */}
         <ProfileCard
           name={mockUserData.name}
