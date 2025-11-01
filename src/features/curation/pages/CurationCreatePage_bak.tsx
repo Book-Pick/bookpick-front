@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { FileText } from 'lucide-react'
 import {
   Button,
   Card,
@@ -15,11 +16,12 @@ import { CurationTitleSection } from '../components/CurationTitleSection'
 import { BookSearchSection } from '../components/BookSearchSection'
 import { ReviewSection } from '../components/ReviewSection'
 import { KeywordSection } from '../components/KeywordSection'
-import { COLOR_PALETTE, type SearchBook } from '../constants/curationCreateData'
+import { DraftListSheet } from '../components/DraftListSheet'
+import { COLOR_PALETTE, type SearchBook, type DraftCuration } from '../constants/curationCreateData'
 import { READING_MOODS, GENRES, KEYWORDS, READING_STYLES } from '../constants/preferences'
 import toast from 'react-hot-toast'
 
-export default function CurationEditPage() {
+export default function CurationCreatePage() {
   const navigate = useNavigate()
 
   // 상태 관리
@@ -29,6 +31,7 @@ export default function CurationEditPage() {
   const [selectedBook, setSelectedBook] = useState<SearchBook | null>(null)
   const [content, setContent] = useState('')
   const [keywords, setKeywords] = useState<string[]>([])
+  const [isDraftSheetOpen, setIsDraftSheetOpen] = useState(false)
 
   // 추천 대상 상태 관리
   const [recommendedMoods, setRecommendedMoods] = useState<string[]>([])
@@ -59,10 +62,6 @@ export default function CurationEditPage() {
     setRecommendedStyles((prev) =>
       prev.includes(style) ? prev.filter((s) => s !== style) : [...prev, style],
     )
-  }
-
-  const handleCancel = () => {
-    navigate('/mypage/curation')
   }
 
   const handleSaveDraft = () => {
@@ -100,6 +99,12 @@ export default function CurationEditPage() {
     navigate('/mypage/curation')
   }
 
+  const handleLoadDraft = (draft: DraftCuration) => {
+    setTitle(draft.title)
+    setContent(draft.content)
+    // 다른 필드들은 draft 데이터에 따라 설정
+  }
+
   return (
     <>
       {/* 제목 섹션 */}
@@ -120,7 +125,17 @@ export default function CurationEditPage() {
       <div className='pt-8 sm:pt-16 pb-8'>
         <div className='space-y-4'>
           {/* 헤더 */}
-          <h1 className='text-2xl font-bold'>나만의 추천사 작성하기</h1>
+          <div className='flex flex-col-reverse md:flex-row items-start md:items-center justify-between gap-8 sm:gap-4'>
+            <h1 className='text-2xl font-bold'>나만의 추천사 작성하기</h1>
+            <Button
+              variant='outline'
+              onClick={() => setIsDraftSheetOpen(true)}
+              className='self-end md:self-auto'
+            >
+              <FileText size={16} className='mr-2' />
+              임시 저장된 글 가져오기
+            </Button>
+          </div>
 
           {/* 썸네일 선택 */}
           {/* <Card className='rounded-none bg-transparent border-0 border-b'>
@@ -254,9 +269,6 @@ export default function CurationEditPage() {
 
           {/* 하단 버튼 */}
           <div className='flex flex-col sm:flex-row justify-center gap-4 pt-8'>
-            <Button variant='outline' size='lg' onClick={handleCancel} className='w-full sm:w-auto'>
-              취소
-            </Button>
             <Button
               variant='outline'
               size='lg'
@@ -275,6 +287,13 @@ export default function CurationEditPage() {
             </Button>
           </div>
         </div>
+
+        {/* 임시 저장 목록 Sheet */}
+        <DraftListSheet
+          isOpen={isDraftSheetOpen}
+          onClose={() => setIsDraftSheetOpen(false)}
+          onSelectDraft={handleLoadDraft}
+        />
       </div>
     </>
   )

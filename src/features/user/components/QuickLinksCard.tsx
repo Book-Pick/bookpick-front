@@ -6,7 +6,7 @@ interface QuickLink {
 }
 
 const quickLinks: QuickLink[] = [
-  { label: '좋아요 한 추천사', path: '/mypage/liked-curations' },
+  { label: '좋아요 한 추천사', path: '/mypage/likes' },
   { label: '내 추천사 관리', path: '/mypage/curation' },
   { label: '주문 내역', path: '/order/history' },
   { label: '읽은 책 관리', path: '/mypage/reading-history' },

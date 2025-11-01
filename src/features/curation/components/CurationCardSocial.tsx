@@ -8,12 +8,14 @@ import {
   AvatarFallback,
   AvatarImage,
   Progress,
+  Checkbox,
 } from '@/shared/ui'
 import { Heart, MessageSquare, User } from 'lucide-react'
 import CurationThumbnail from './CurationThumbnail'
 import { ViewerIcon } from '@/assets/icons/ViewerIcon'
 
 interface CurationCardSocialProps {
+  id?: number | string
   similarity?: number
   title: string
   description: string
@@ -28,9 +30,13 @@ interface CurationCardSocialProps {
   thumbnailColor?: string | null
   className?: string
   onClick?: () => void
+  editMode?: boolean
+  isSelected?: boolean
+  onSelect?: (id: number | string) => void
 }
 
 const CurationCardSocial = ({
+  id,
   similarity,
   title,
   description,
@@ -45,19 +51,39 @@ const CurationCardSocial = ({
   thumbnailColor,
   className,
   onClick,
+  editMode = false,
+  isSelected = false,
+  onSelect,
 }: CurationCardSocialProps) => {
   return (
     <Card
-      className={`w-full bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden max-w-sm mx-auto p-0 ${className || ''}`}
+      className={`w-full bg-white border rounded-xl shadow-sm overflow-hidden max-w-sm mx-auto p-0 transition-all focus:outline-none focus-visible:outline-none ${
+        editMode && isSelected ? 'border-primary border-2' : 'border-gray-200'
+      } ${editMode ? 'cursor-pointer' : ''} ${className || ''}`}
       onClick={onClick}
     >
       {/* 썸네일 - 맨 상단 */}
-      <div className='w-full h-50 bg-gray-50 flex items-center justify-center overflow-hidden'>
+      <div className='w-full h-50 bg-gray-50 flex items-center justify-center overflow-hidden relative'>
         <CurationThumbnail
           thumbnailImage={thumbnailSrc}
           thumbnailColor={thumbnailColor}
           title={title}
         />
+        {/* 체크박스 - editMode일 때만 표시 */}
+        {editMode && (
+          <div className='absolute top-3 right-3 z-10'>
+            <Checkbox
+              checked={isSelected}
+              onCheckedChange={(checked) => {
+                if (id !== undefined && onSelect) {
+                  onSelect(id)
+                }
+              }}
+              className='w-5 h-5 bg-white border-2 border-gray-300 focus:outline-none focus-visible:ring-0'
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
+        )}
       </div>
 
       {/* 프로필 섹션 - 썸네일 아래 */}
