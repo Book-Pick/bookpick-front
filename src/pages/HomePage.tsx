@@ -28,11 +28,12 @@ export default function HomePage() {
 
   return (
     <div className='min-h-screen bg-background'>
-      {/* 메인 배너 섹션 */}
-      <MainBanner />
+      <div className='hidden xs:block'>
+        <MainBanner />
+      </div>
       {/* 메인 컨텐츠 영역 */}
       <ContentsLayout>
-        <section className='mb-16'>
+        <section className='mt-5 xs:mt-0 mb-16'>
           <div className='flex justify-between items-center mb-8'>
             <h2 className='font-title font-bold text-foreground'>내 취향에 맞는 큐레이션</h2>
           </div>

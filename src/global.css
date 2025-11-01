@@ -97,6 +97,7 @@ body {
 }
 
 @theme {
+  --breakpoint-xs: 475px;
   --font-pretendard: 'Pretendard', sans-serif;
   --font-wanted:
     'Wanted Sans Variable', 'Wanted Sans', -apple-system, BlinkMacSystemFont, system-ui, 'Segoe UI',

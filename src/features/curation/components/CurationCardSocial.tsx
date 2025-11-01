@@ -57,8 +57,8 @@ const CurationCardSocial = ({
 }: CurationCardSocialProps) => {
   return (
     <Card
-      className={`w-full bg-white border rounded-xl shadow-sm overflow-hidden max-w-sm mx-auto p-0 transition-all focus:outline-none focus-visible:outline-none ${
-        editMode && isSelected ? 'border-primary border-2' : 'border-gray-200'
+      className={`w-full bg-white border rounded-xl overflow-hidden max-w-sm mx-auto p-0 transition-all focus:outline-none focus-visible:outline-none ${
+        editMode && isSelected ? 'border-primary shadow-md' : 'border-gray-200 shadow-sm'
       } ${editMode ? 'cursor-pointer' : ''} ${className || ''}`}
       onClick={onClick}
     >
@@ -74,7 +74,7 @@ const CurationCardSocial = ({
           <div className='absolute top-3 right-3 z-10'>
             <Checkbox
               checked={isSelected}
-              onCheckedChange={(checked) => {
+              onCheckedChange={() => {
                 if (id !== undefined && onSelect) {
                   onSelect(id)
                 }

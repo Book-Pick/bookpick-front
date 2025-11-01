@@ -12,7 +12,7 @@ import {
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '@/features/auth/hooks/useAuth'
 import { useAuth as useAuthContext } from '@/app/providers'
-import { PenSquare, ShoppingCart, LogOut, User } from 'lucide-react'
+import { ShoppingCart, LogOut, User } from 'lucide-react'
 
 export function GnbLoggedIn() {
   const navigate = useNavigate()
@@ -46,9 +46,12 @@ export function GnbLoggedIn() {
     <div className='flex items-center gap-2'>
       {!isOnboarding && (
         <>
-          {/* 데스크톱: 텍스트 버튼 */}
-          <Button size='lg' onClick={handleCreateClick} className='mr-2 hidden sm:flex'>
-            <span className='font-semibold px-1'>추천사 작성</span>
+          <Button
+            onClick={handleCreateClick}
+            className='mr-2 px-3 py-2 sm:px-6 sm:py-3 text-sm sm:text-base'
+          >
+            <span className='font-semibold px-1 hidden sm:inline'>추천사 작성</span>
+            <span className='font-semibold px-1 sm:hidden'>+ 작성</span>
           </Button>
         </>
       )}
@@ -78,15 +81,6 @@ export function GnbLoggedIn() {
           </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end' className='w-48'>
-          {!isOnboarding && (
-            <>
-              <DropdownMenuItem onClick={handleCreateClick}>
-                <PenSquare size={16} className='hover:text-white' />
-                <span>추천사 작성</span>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-            </>
-          )}
           <DropdownMenuItem onClick={handleMyPageClick}>
             <User size={16} className='hover:text-white' />
             <span>마이페이지</span>
