@@ -1,5 +1,5 @@
 import React from 'react'
-import { TopBar, Footer } from '@/shared/components/layout'
+import { TopBar } from '@/shared/components/layout'
 import { Outlet } from 'react-router-dom'
 
 export const MainLayout: React.FC = () => {
