@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Card, CardHeader, CardContent, Button, Textarea } from '@/shared/ui'
+import { Card, CardHeader, CardContent, Textarea } from '@/shared/ui'
 import { MessageCircle } from 'lucide-react'
 import CommentItem from './CommentItem'
 
@@ -62,6 +62,12 @@ const CommentSection = ({
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
             className='mb-3 min-h-[100px] rounded-none'
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault()
+                handleSubmit()
+              }
+            }}
           />
         </div>
       </CardContent>

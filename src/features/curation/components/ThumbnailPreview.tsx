@@ -105,4 +105,3 @@ const ThumbnailPreview = ({
 }
 
 export default ThumbnailPreview
-
