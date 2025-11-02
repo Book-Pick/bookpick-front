@@ -121,10 +121,10 @@ export default function MyProfileEditPage() {
 
       {/* 하단 버튼 */}
       <div className='flex justify-center gap-4 pt-8 mb-10'>
-        <Button variant='outline' size='lg' onClick={handleCancel} className='w-full sm:w-auto'>
+        <Button variant='outline' size='lg' onClick={handleCancel} className='flex-1 sm:flex-none'>
           취소하기
         </Button>
-        <Button variant='secondary' size='lg' onClick={handleSave} className='w-full sm:w-auto'>
+        <Button variant='secondary' size='lg' onClick={handleSave} className='flex-1 sm:flex-none'>
           저장하기
         </Button>
       </div>
