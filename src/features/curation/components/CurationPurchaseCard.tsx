@@ -34,7 +34,7 @@ const CurationPurchaseCard = ({
       <CardHeader className='px-4 md:px-5'>
         <div className='text-center md:text-left'>
           <CardDescription className='text-neutral-600 font-medium mb-1'>가격</CardDescription>
-          <CardTitle className='text-2xl md:text-3xl font-bold'>
+          <CardTitle className='text-xl md:text-2xl font-bold'>
             {formatPrice(price, currency)}
           </CardTitle>
         </div>
@@ -65,7 +65,7 @@ const CurationPurchaseCard = ({
           onClick={handlePurchaseClick}
           className='flex-1 font-bold'
         >
-          이 큐레이션 구매하기
+          구매하러 가기
         </Button>
       </div>
     </Card>

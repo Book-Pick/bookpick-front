@@ -9,9 +9,11 @@ import toast from 'react-hot-toast'
 import { Badge } from '@/shared/ui'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Heart } from 'lucide-react'
 
 export default function CurationDetailPage() {
   const [comments, setComments] = useState<CommentData[]>(mockCommentData)
+  const [isLiked, setIsLiked] = useState(false)
 
   const navigate = useNavigate()
 
@@ -123,29 +125,26 @@ export default function CurationDetailPage() {
           아니라, 서툴지만 한 걸음씩 나아가는 모습이 마치 내 이야기 같아서 몇 번이고 그 페이지를
           다시 읽었습니다.
         </p>
-        <div className='flex gap-1'>
-          <Badge variant='outline' size='sm'>
-            #에세이
-          </Badge>
-          <Badge variant='outline' size='sm'>
-            #위로
-          </Badge>
-          <Badge variant='outline' size='sm'>
-            #성장
-          </Badge>
+        <div className='flex justify-between items-center'>
+          <div className='flex gap-1'>
+            <Badge variant='outline' size='sm'>
+              #에세이
+            </Badge>
+            <Badge variant='outline' size='sm'>
+              #위로
+            </Badge>
+            <Badge variant='outline' size='sm'>
+              #성장
+            </Badge>
+          </div>
+          <button onClick={() => setIsLiked(!isLiked)} className='flex flex-col items-center gap-1'>
+            <Heart
+              className={`size-6 text-red-300 transition-all ${isLiked ? 'fill-red-300' : ''}`}
+            />
+            <span className='text-sm font-medium text-red-300'>좋아요</span>
+          </button>
         </div>
       </div>
-      {/* 큐레이션 구매 정보 */}
-      {mockCurationData.slice(0, 1).map((curation) => (
-        <CurationPurchaseCard
-          key={curation.id}
-          curationId={curation.id}
-          price={curation.price}
-          className='bg-neutral-100'
-          onPurchase={handlePurchase}
-          onCart={handleCart}
-        />
-      ))}
       {/* 지도 */}
       {/* <BookStoreMap /> */}
 
@@ -155,8 +154,20 @@ export default function CurationDetailPage() {
         onAddComment={handleAddComment}
         onReply={handleReply}
         onLike={handleLike}
-        className='mt-12 bg-transparent'
+        className='bg-transparent'
       />
+
+      {/* 큐레이션 구매 정보 */}
+      {mockCurationData.slice(0, 1).map((curation) => (
+        <CurationPurchaseCard
+          key={curation.id}
+          curationId={curation.id}
+          price={curation.price}
+          className='mt-10 bg-neutral-100'
+          onPurchase={handlePurchase}
+          onCart={handleCart}
+        />
+      ))}
     </>
   )
 }

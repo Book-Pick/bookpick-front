@@ -33,7 +33,7 @@ const CommentSection = ({
     <Card className={`${className || ''}`}>
       <CardHeader>
         <div className='flex items-center justify-between mb-5'>
-          <h3 className='text-xl font-semibold'>댓글 및 피드백</h3>
+          <h3 className='text-xl font-semibold'>댓글</h3>
           {/* <Badge variant='outline' size='sm'>
             <MessageCircle className='w-3 h-3 mr-1' />
             {comments.length}개
@@ -63,11 +63,6 @@ const CommentSection = ({
             onChange={(e) => setNewComment(e.target.value)}
             className='mb-3 min-h-[100px] rounded-none'
           />
-          <div className='flex justify-end'>
-            <Button onClick={handleSubmit} disabled={!newComment.trim()}>
-              댓글 작성
-            </Button>
-          </div>
         </div>
       </CardContent>
     </Card>
