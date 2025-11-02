@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom'
+import type { RouteObject } from 'react-router-dom'
 
 // 레이아웃
 import { MainLayout, ContentsLayout, AuthLayout } from '@/app/layout'
@@ -31,9 +31,11 @@ import SettlementHistoryPage from '@/features/revenue/pages/SettlementHistoryPag
 
 // 마이페이지
 import MyDashboardPage from '@/features/user/pages/MyDashboardPage'
+import MyProfileSettingsPage from '@/features/user/pages/MyProfileSettingsPage'
 import MyProfileEditPage from '@/features/user/pages/MyProfileEditPage'
 import MyCurationPage from '@/features/user/pages/MyCurationPage'
 import MyReadingHistoryPage from '@/features/user/pages/MyReadingHistoryPage'
+import MyLikesPage from '@/features/user/pages/MyLikesPage'
 
 // 에러페이지
 import NotFound from '@/shared/pages/NotFound'
@@ -42,7 +44,7 @@ import NotFound from '@/shared/pages/NotFound'
 import ProtectedServiceRoute from '@/app/router/guards/ProtectedServiceRoute'
 import AuthRedirectRoute from '@/app/router/guards/AuthRedirectRoute'
 
-export const router = createBrowserRouter([
+export const routerConfig: RouteObject[] = [
   {
     path: '/',
     element: <MainLayout />,
@@ -74,6 +76,16 @@ export const router = createBrowserRouter([
             ],
           },
           {
+            path: 'mypage',
+            children: [
+              { path: 'dashboard', element: <MyDashboardPage /> },
+              { path: 'profile', element: <MyProfileEditPage /> },
+              { path: 'curation', element: <MyCurationPage /> },
+              { path: 'reading-history', element: <MyReadingHistoryPage /> },
+              { path: 'likes', element: <MyLikesPage /> },
+            ],
+          },
+          {
             path: 'order',
             children: [
               { path: 'checkout/:curationId', element: <OrderCheckoutPage /> },
@@ -90,18 +102,11 @@ export const router = createBrowserRouter([
             ],
           },
           {
-            path: 'mypage',
-            // element: <MyProfilePage />,ƒA
-            children: [
-              { path: 'dashboard', element: <MyDashboardPage /> },
-              { path: 'profile', element: <MyProfileEditPage /> },
-              { path: 'curation', element: <MyCurationPage /> },
-              { path: 'reading-history', element: <MyReadingHistoryPage /> },
-            ],
-          },
-          {
             path: 'onboarding',
-            children: [{ index: true, element: <ReadingPreferencePage /> }],
+            children: [
+              { index: true, element: <ReadingPreferencePage /> },
+              { path: 'profile', element: <MyProfileSettingsPage /> },
+            ],
           },
         ],
       },
@@ -129,4 +134,7 @@ export const router = createBrowserRouter([
     path: '*',
     element: <NotFound />,
   },
-])
+]
+
+// 하위 호환성을 위해 router도 export (필요시 사용)
+export const router = routerConfig

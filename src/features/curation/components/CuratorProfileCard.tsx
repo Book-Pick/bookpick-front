@@ -62,7 +62,7 @@ const CuratorProfileCard = ({
         </div>
         {/* 데스크톱용 버튼 */}
         <CardAction className='hidden md:flex md:self-center'>
-          <Button onClick={handleSubscribeClick} variant={isSubscribed ? 'outline' : 'default'}>
+          <Button onClick={handleSubscribeClick} variant={isSubscribed ? 'outline' : 'secondary'}>
             {isSubscribed ? '구독취소' : '구독하기'}
           </Button>
         </CardAction>
@@ -73,7 +73,7 @@ const CuratorProfileCard = ({
         <Button
           className='w-full'
           onClick={handleSubscribeClick}
-          variant={isSubscribed ? 'outline' : 'default'}
+          variant={isSubscribed ? 'outline' : 'secondary'}
         >
           {isSubscribed ? '구독취소' : '구독하기'}
         </Button>

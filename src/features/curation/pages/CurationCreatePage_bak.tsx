@@ -10,16 +10,13 @@ import {
   AccordionItem,
   AccordionTrigger,
   AccordionContent,
-  Input,
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  TabsContent,
 } from '@/shared/ui'
+import { CurationTitleSection } from '../components/CurationTitleSection'
+// import { ThumbnailSelector } from '../components/ThumbnailSelector'
 import { BookSearchSection } from '../components/BookSearchSection'
 import { ReviewSection } from '../components/ReviewSection'
+import { KeywordSection } from '../components/KeywordSection'
 import { DraftListSheet } from '../components/DraftListSheet'
-import ThumbnailPreview from '../components/ThumbnailPreview'
 import { COLOR_PALETTE, type SearchBook, type DraftCuration } from '../constants/curationCreateData'
 import { READING_MOODS, GENRES, KEYWORDS, READING_STYLES } from '../constants/preferences'
 import toast from 'react-hot-toast'
@@ -33,6 +30,7 @@ export default function CurationCreatePage() {
   const [thumbnail, setThumbnail] = useState<File | null>(null)
   const [selectedBook, setSelectedBook] = useState<SearchBook | null>(null)
   const [content, setContent] = useState('')
+  const [keywords, setKeywords] = useState<string[]>([])
   const [isDraftSheetOpen, setIsDraftSheetOpen] = useState(false)
 
   // 추천 대상 상태 관리
@@ -66,19 +64,6 @@ export default function CurationCreatePage() {
     )
   }
 
-  const handleColorSelect = (color: string) => {
-    setSelectedColor(color)
-    setThumbnail(null)
-  }
-
-  const handleThumbnailSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null
-    setThumbnail(file)
-    if (file) {
-      setSelectedColor(COLOR_PALETTE[0].value)
-    }
-  }
-
   const handleSaveDraft = () => {
     // 임시 저장 로직
     console.log('임시 저장:', {
@@ -87,6 +72,7 @@ export default function CurationCreatePage() {
       thumbnail,
       selectedBook,
       content,
+      keywords,
       recommendedMoods,
       recommendedGenres,
       recommendedKeywords,
@@ -103,6 +89,7 @@ export default function CurationCreatePage() {
       thumbnail,
       selectedBook,
       content,
+      keywords,
       recommendedMoods,
       recommendedGenres,
       recommendedKeywords,
@@ -120,6 +107,21 @@ export default function CurationCreatePage() {
 
   return (
     <>
+      {/* 제목 섹션 */}
+      <div className='w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]'>
+        <Card className='border-0 p-0'>
+          <CardContent className='p-0'>
+            <CurationTitleSection
+              title={title}
+              onTitleChange={setTitle}
+              selectedColor={selectedColor}
+              onColorChange={setSelectedColor}
+              thumbnail={thumbnail}
+              onThumbnailChange={setThumbnail}
+            />
+          </CardContent>
+        </Card>
+      </div>
       <div className='pt-8 sm:pt-16 pb-8'>
         <div className='space-y-4'>
           {/* 헤더 */}
@@ -135,94 +137,39 @@ export default function CurationCreatePage() {
             </Button>
           </div>
 
-          {/* 1. 추천사 제목 입력 */}
-          <Card className='rounded-none bg-transparent border-0 border-b'>
+          {/* 썸네일 선택 */}
+          {/* <Card className='rounded-none bg-transparent border-0 border-b'>
             <CardContent className='p-6'>
-              <div className='space-y-4'>
-                <h3 className='text-lg font-semibold'>1. 추천사 제목을 적어주세요!</h3>
-                <Input
-                  placeholder='제목을 입력해 주세요'
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  maxLength={100}
-                  className='text-lg'
-                />
-                <div className='text-sm text-muted-foreground text-right'>{title.length}/100</div>
-              </div>
+              <ThumbnailSelector thumbnail={thumbnail} onThumbnailChange={setThumbnail} />
             </CardContent>
-          </Card>
+          </Card> */}
 
-          {/* 2. 책 검색 */}
+          {/* 책 검색 */}
           <Card className='rounded-none bg-transparent border-0 border-b'>
             <CardContent className='p-6'>
               <BookSearchSection selectedBook={selectedBook} onBookSelect={setSelectedBook} />
             </CardContent>
           </Card>
 
-          {/* 3. 감상 작성 */}
+          {/* 감상 작성 */}
           <Card className='rounded-none bg-transparent border-0 border-b'>
             <CardContent className='p-6'>
               <ReviewSection content={content} onContentChange={setContent} />
             </CardContent>
           </Card>
 
-          {/* 4. 썸네일 선택 */}
+          {/* 키워드 추가 */}
           <Card className='rounded-none bg-transparent border-0 border-b'>
             <CardContent className='p-6'>
-              <div className='space-y-4'>
-                <h3 className='text-lg font-semibold'>4. 썸네일을 선택해 주세요!</h3>
-                <p className='text-sm text-muted-foreground'>
-                  단색 또는 썸네일 이미지 중 하나를 선택할 수 있습니다.
-                </p>
-
-                <Tabs defaultValue='color' variant='button'>
-                  <TabsList>
-                    <TabsTrigger value='color'>단색</TabsTrigger>
-                    <TabsTrigger value='image'>이미지 업로드</TabsTrigger>
-                  </TabsList>
-
-                  {/* 배경 색상 탭 */}
-                  <TabsContent value='color' className='space-y-4 mt-4'>
-                    <div className='w-fit border p-4 rounded-xl space-y-3'>
-                      <div className='flex flex-wrap gap-2'>
-                        {COLOR_PALETTE.filter((color) => color.name.includes('400')).map(
-                          (color) => (
-                            <button
-                              key={color.value}
-                              onClick={() => handleColorSelect(color.value)}
-                              className={`w-12 h-12 rounded-lg border-2 transition-all hover:scale-105 ${
-                                selectedColor === color.value && !thumbnail
-                                  ? 'ring-2 ring-primary ring-offset-2'
-                                  : 'border-gray-200 hover:border-gray-300'
-                              }`}
-                              style={{ backgroundColor: color.value }}
-                              title={color.name}
-                            />
-                          ),
-                        )}
-                      </div>
-                    </div>
-                  </TabsContent>
-
-                  {/* 썸네일 이미지 탭 */}
-                  <TabsContent value='image' className='space-y-4 mt-4'>
-                    <ThumbnailPreview
-                      thumbnail={thumbnail}
-                      onThumbnailSelect={handleThumbnailSelect}
-                      title={title}
-                      content={content}
-                    />
-                  </TabsContent>
-                </Tabs>
-              </div>
+              <KeywordSection keywords={keywords} onKeywordsChange={setKeywords} />
             </CardContent>
           </Card>
 
-          {/* 5. 이런 독서가에게 추천합니다 */}
+          {/* 이런 독서가에게 추천합니다 */}
           <Card className='rounded-none bg-transparent border-0'>
             <CardContent className='p-6'>
               <div className='space-y-4'>
-                <h3 className='text-lg font-semibold'>이런 독서가에게 추천합니다.</h3>
+                <h3 className='text-lg font-semibold'>이런 독서가에게 추천합니다</h3>
                 <p className='text-sm text-muted-foreground'>
                   이 추천사가 어떤 독서가에게 도움이 될지 선택해주세요. (선택사항)
                 </p>

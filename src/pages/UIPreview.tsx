@@ -52,6 +52,7 @@ export default function UIPreview() {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
   const [isToggled, setIsToggled] = useState(false)
   const [isChecked, setIsChecked] = useState(false)
+  const [selectedCurations, setSelectedCurations] = useState<number[]>([])
 
   const handleSubscribeToggle = (curatorId: number, isSubscribed: boolean) => {
     console.log(`큐레이터 ${curatorId} 구독 상태 변경:`, isSubscribed ? '구독' : '구독취소')
@@ -59,6 +60,18 @@ export default function UIPreview() {
 
   const handlePurchase = (curationId: number, price: number) => {
     console.log(`큐레이션 ${curationId} 구매 요청, 가격: ${price}원`)
+  }
+
+  const handleSelectCuration = (id: number | string) => {
+    const numId = typeof id === 'string' ? parseInt(id) : id
+    setSelectedCurations((prev) =>
+      prev.includes(numId) ? prev.filter((i) => i !== numId) : [...prev, numId],
+    )
+  }
+
+  const handleDeleteSelected = () => {
+    console.log('선택된 큐레이션 삭제:', selectedCurations)
+    alert(`${selectedCurations.length}개의 큐레이션이 선택되었습니다.`)
   }
 
   return (
@@ -488,6 +501,7 @@ export default function UIPreview() {
                     {mockCurationData.slice(0, 3).map((curation, index) => (
                       <CurationCardSocial
                         key={curation.id}
+                        id={curation.id}
                         similarity={curation.similarity}
                         title={curation.title}
                         description={curation.description}
@@ -499,6 +513,52 @@ export default function UIPreview() {
                         tags={curation.tags}
                         thumbnailSrc={[sampleImage1, sampleImage2, sampleImage3][index]}
                         onClick={() => console.log(`클릭된 큐레이션: ${curation.title}`)}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <h3 className='text-lg font-semibold mb-3'>편집 모드 (EditMode)</h3>
+                  <p className='text-sm text-gray-600 mb-4'>
+                    체크박스로 여러 큐레이션을 선택하여 삭제할 수 있습니다. 카드를 클릭하거나
+                    체크박스를 클릭하여 선택하세요.
+                  </p>
+                  <div className='mb-4 flex items-center gap-3'>
+                    <Button
+                      variant='destructive'
+                      size='sm'
+                      onClick={handleDeleteSelected}
+                      disabled={selectedCurations.length === 0}
+                    >
+                      선택 삭제 ({selectedCurations.length})
+                    </Button>
+                    <Button
+                      variant='outline'
+                      size='sm'
+                      onClick={() => setSelectedCurations([])}
+                      disabled={selectedCurations.length === 0}
+                    >
+                      선택 해제
+                    </Button>
+                  </div>
+                  <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl'>
+                    {mockCurationData.slice(0, 3).map((curation, index) => (
+                      <CurationCardSocial
+                        key={curation.id}
+                        id={curation.id}
+                        similarity={curation.similarity}
+                        title={curation.title}
+                        description={curation.description}
+                        curator={curation.curator}
+                        curatorBio={`${curation.tags[0]} 전문 큐레이터`}
+                        likes={curation.likes}
+                        comments={curation.comments}
+                        views={curation.views}
+                        tags={curation.tags}
+                        thumbnailSrc={[sampleImage1, sampleImage2, sampleImage3][index]}
+                        editMode={true}
+                        isSelected={selectedCurations.includes(curation.id)}
+                        onSelect={handleSelectCuration}
                       />
                     ))}
                   </div>

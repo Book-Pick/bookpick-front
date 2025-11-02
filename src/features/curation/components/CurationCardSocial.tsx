@@ -8,12 +8,14 @@ import {
   AvatarFallback,
   AvatarImage,
   Progress,
+  Checkbox,
 } from '@/shared/ui'
 import { Heart, MessageSquare, User } from 'lucide-react'
 import CurationThumbnail from './CurationThumbnail'
 import { ViewerIcon } from '@/assets/icons/ViewerIcon'
 
 interface CurationCardSocialProps {
+  id?: number | string
   similarity?: number
   title: string
   description: string
@@ -28,9 +30,13 @@ interface CurationCardSocialProps {
   thumbnailColor?: string | null
   className?: string
   onClick?: () => void
+  editMode?: boolean
+  isSelected?: boolean
+  onSelect?: (id: number | string) => void
 }
 
 const CurationCardSocial = ({
+  id,
   similarity,
   title,
   description,
@@ -45,14 +51,43 @@ const CurationCardSocial = ({
   thumbnailColor,
   className,
   onClick,
+  editMode = false,
+  isSelected = false,
+  onSelect,
 }: CurationCardSocialProps) => {
   return (
     <Card
-      className={`w-full bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden max-w-sm mx-auto p-0 ${className || ''}`}
+      className={`w-full bg-white border rounded-xl overflow-hidden max-w-sm mx-auto p-0 transition-all focus:outline-none focus-visible:outline-none ${
+        editMode && isSelected ? 'border-primary shadow-md' : 'border-gray-200 shadow-sm'
+      } ${editMode ? 'cursor-pointer' : ''} ${className || ''}`}
       onClick={onClick}
     >
-      {/* 프로필 섹션 */}
-      <CardHeader className='px-4 pt-4 pb-0'>
+      {/* 썸네일 - 맨 상단 */}
+      <div className='w-full h-50 bg-gray-50 flex items-center justify-center overflow-hidden relative'>
+        <CurationThumbnail
+          thumbnailImage={thumbnailSrc}
+          thumbnailColor={thumbnailColor}
+          title={title}
+        />
+        {/* 체크박스 - editMode일 때만 표시 */}
+        {editMode && (
+          <div className='absolute top-3 right-3 z-10'>
+            <Checkbox
+              checked={isSelected}
+              onCheckedChange={() => {
+                if (id !== undefined && onSelect) {
+                  onSelect(id)
+                }
+              }}
+              className='w-5 h-5 bg-white border-2 border-gray-300 focus:outline-none focus-visible:ring-0'
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
+        )}
+      </div>
+
+      {/* 프로필 섹션 - 썸네일 아래 */}
+      <CardHeader className='px-4 pt-2 pb-0'>
         <div className='flex items-center gap-3'>
           <Avatar className='w-10 h-10'>
             {curatorImage ? (
@@ -70,33 +105,24 @@ const CurationCardSocial = ({
         </div>
       </CardHeader>
 
-      {/* 썸네일 */}
-      <div className='w-full h-70 bg-gray-50 flex items-center justify-center overflow-hidden'>
-        <CurationThumbnail
-          thumbnailImage={thumbnailSrc}
-          thumbnailColor={thumbnailColor}
-          title={title}
-        />
-      </div>
-
-      {/* 취향 유사도 */}
-      {similarity && (
-        <div className='px-4 pt-3 pb-2'>
-          <div className='flex justify-between items-center mb-2'>
-            <span className='text-xs font-medium text-gray-700'>취향 유사도</span>
-            <span className='text-xs font-semibold text-primary'>{similarity}%</span>
-          </div>
-          <Progress value={similarity || 0} className='h-2' />
-        </div>
-      )}
-
       {/* 컨텐츠 섹션 */}
-      <CardContent className='p-4 pt-2'>
+      <CardContent className='p-4 pt-0'>
         {/* 제목과 설명 */}
-        <div className='mb-4'>
+        <div className='mb-3'>
           <h3 className='font-semibold text-sm text-gray-900 line-clamp-2 mb-2'>{title}</h3>
           <p className='text-xs text-gray-600 line-clamp-3 leading-relaxed'>{description}</p>
         </div>
+
+        {/* 취향 유사도 - 태그 위로 이동 */}
+        {similarity && (
+          <div className='mb-3'>
+            <div className='flex justify-between items-center mb-2'>
+              <span className='text-xs font-medium text-gray-700'>취향 유사도</span>
+              <span className='text-xs font-semibold text-primary'>{similarity}%</span>
+            </div>
+            <Progress value={similarity || 0} className='h-2' />
+          </div>
+        )}
 
         {/* 키워드 태그 */}
         <div className='flex flex-wrap gap-1'>
