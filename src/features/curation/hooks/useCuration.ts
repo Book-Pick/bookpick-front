@@ -228,6 +228,21 @@ export const useCuration = () => {
     })
   }
 
+  /**
+   * 15. 책 검색
+   */
+  const useSearchBooks = () => {
+    return useMutation({
+      mutationFn: async (keyword: string) => {
+        const response = await curationApi.searchBooks(keyword)
+        return response.data
+      },
+      onError: (error: Error) => {
+        toast.error(error.message || '책 검색에 실패했습니다.')
+      },
+    })
+  }
+
   return {
     // Mutations
     useSetReadingPreference,
@@ -236,6 +251,7 @@ export const useCuration = () => {
     useSaveCuration,
     useUpdateCuration,
     useDeleteCuration,
+    useSearchBooks,
 
     // Queries
     useGetReadingPreference,

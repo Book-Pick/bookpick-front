@@ -21,10 +21,11 @@ export default function LoginPage() {
       const response = await loginMutateAsync(data)
       // 약간의 딜레이 후 navigate (상태 업데이트 보장)
       setTimeout(() => {
+        console.log('response', response)
         if (response?.isFirstLogin) {
           navigate('/onboarding')
         } else {
-          navigate('/onboarding')
+          navigate('/')
         }
       }, 100)
     } catch (error) {

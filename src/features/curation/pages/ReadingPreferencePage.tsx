@@ -4,31 +4,39 @@ import { Button } from '@/shared/ui'
 import ReadingPreferenceForm from '../components/ReadingPreferenceForm'
 import { useReadingPreferenceForm } from '../hooks/useReadingPreferenceForm'
 import { useCuration } from '../hooks/useCuration'
+import { useAuth } from '@/app/providers'
 
 export default function ReadingPreferencePage() {
   const navigate = useNavigate()
+  const { isFirstLogin } = useAuth()
   const { useSetReadingPreference } = useCuration()
   const { mutate: setReadingPreferenceMutate, isPending } = useSetReadingPreference()
+
+  // 빈 폼으로 시작
   const { formData, handlers, getFormData } = useReadingPreferenceForm()
 
   const handleSubmit = () => {
     const data = getFormData()
+    console.log('독서 취향', data)
     setReadingPreferenceMutate(
       {
         mbti: data.mbti || null,
-        favoriteBooks: data.selectedLifeBooks,
-        authors: data.selectedAuthors,
-        mood: data.readingMoods,
+        favoriteBooks: data.selectedLifeBooks.map((book) => book.title),
+        // authors: data.selectedAuthors,
+        moods: data.readingMoods,
         readingHabits: data.readingHabits,
-        preferredGenres: data.genres,
+        genres: data.genres,
         keywords: data.keywords,
-        readingStyles: data.readingStyles,
+        trends: data.readingStyles,
       },
       {
         onSuccess: () => {
           toast.success('독서 취향이 성공적으로 설정되었습니다.')
-          // TODO: 온보딩 페이지에서만 프로필페이지로 가야함
-          navigate('/onboarding/profile')
+          if (isFirstLogin) {
+            navigate('/mypage/profile')
+          } else {
+            navigate('/')
+          }
         },
       },
     )

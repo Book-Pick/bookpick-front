@@ -7,7 +7,6 @@ import {
   KEYWORDS,
   READING_HABITS,
   READING_STYLES,
-  LIFE_BOOKS,
   FAVORITE_AUTHORS,
   type LifeBook,
 } from '../constants/preferences'
@@ -70,10 +69,6 @@ export default function ReadingPreferenceForm({ formData, handlers }: ReadingPre
               <p className='text-xs text-muted-foreground'>
                 ※ 최대 3권까지 선택 가능합니다. 해당사항이 없으시면 지나가셔도 좋아요!
               </p>
-              <p className='text-xs text-muted-foreground'>
-                (현재는 데미안, 어린왕자, 1984, 까뮈의 이방인, 호밀밭의 파수꾼, 젊은 베르테르의
-                슬픔, 백년의 고독, 카라마조프의 형제들 검색 가능)
-              </p>
             </CardHeader>
             <CardContent className='space-y-4 px-0 pt-4'>
               {formData.selectedLifeBooks.length > 0 && (
@@ -102,7 +97,6 @@ export default function ReadingPreferenceForm({ formData, handlers }: ReadingPre
               )}
               <LifeBookSearchSection
                 onBookSelect={handlers.handleLifeBookSelect}
-                searchData={LIFE_BOOKS}
                 placeholder='인생 책을 검색해보세요'
                 maxSelections={3}
                 currentCount={formData.selectedLifeBooks.length}

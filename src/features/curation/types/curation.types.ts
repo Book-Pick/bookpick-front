@@ -14,17 +14,15 @@ type Book = {
 
 // 독서 취향 타입
 export interface ReadingPreference {
-  userId?: number
+  preferenceId?: number
   mbti?: string | null
-  favoriteBooks?: Array<Book>
-  authors?: string[]
-  mood?: string[]
+  favoriteBooks?: string[]
+  authors?: string[] // 추후 추가 예정 필드
+  moods?: string[]
   readingHabits?: string[]
-  preferredGenres?: string[]
+  genres?: string[]
   keywords?: string[]
-  readingStyles?: string[]
-  createdAt?: string
-  updatedAt?: string
+  trends?: string[]
 }
 
 // 큐레이션 타입
@@ -85,6 +83,26 @@ export interface PaginatedCurations {
   limit: number
 }
 
+// 책 검색 결과
+export interface BookSearchResult {
+  title: string
+  author: string
+  image: string
+  isbn?: string // 서버에서 제공하지 않을 수 있음
+}
+
+export interface PageInfo {
+  currentPage: number
+  totalPages: number
+  totalElements: number
+  hasNext: boolean
+}
+
+export interface PaginatedBooks {
+  books: BookSearchResult[]
+  pageInfo: PageInfo
+}
+
 // API Response 타입들
 export type SetReadingPreferenceResponse = ApiResponse<ReadingPreference>
 
@@ -101,3 +119,5 @@ export type SaveCurationResponse = ApiResponse<Curation>
 export type UpdateCurationResponse = ApiResponse<Curation>
 
 export type DeleteCurationResponse = ApiResponse<null>
+
+export type GetBooksResponse = ApiResponse<PaginatedBooks>

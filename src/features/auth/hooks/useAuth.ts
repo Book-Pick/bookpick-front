@@ -40,6 +40,7 @@ export const useAuth = () => {
             token: authData.token,
             isAuthenticated: true,
             isLoading: false,
+            isFirstLogin: data.isFirstLogin ?? false,
           })
         } else {
           setAuthState((prev) => ({ ...prev, isLoading: false }))
@@ -52,6 +53,7 @@ export const useAuth = () => {
           token: null,
           isAuthenticated: false,
           isLoading: false,
+          isFirstLogin: false,
         })
         toast.error(error.message || '로그인에 실패했습니다.')
       },
@@ -102,6 +104,7 @@ export const useAuth = () => {
           token: null,
           isAuthenticated: false,
           isLoading: false,
+          isFirstLogin: false,
         })
       },
     })

@@ -23,7 +23,7 @@ export const createAxiosClient = (
         try {
           const parsed = JSON.parse(authData)
           if (parsed.token?.accessToken) {
-            config.headers.Authorization = `Bearer ${parsed.token.accessToken}`
+            config.headers.Authorization = `${parsed.token.accessToken}`
           }
         } catch (error) {
           console.error('Failed to parse auth data:', error)
