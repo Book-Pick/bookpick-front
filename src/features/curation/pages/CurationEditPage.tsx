@@ -12,10 +12,10 @@ import {
 } from '@/shared/ui'
 import { CurationTitleSection } from '../components/CurationTitleSection'
 // import { ThumbnailSelector } from '../components/ThumbnailSelector'
-import { BookSearchSection } from '../components/BookSearchSection'
+import { BookSearchSection, type BookItem } from '../components/BookSearchSection'
 import { ReviewSection } from '../components/ReviewSection'
 import { KeywordSection } from '../components/KeywordSection'
-import { COLOR_PALETTE, type SearchBook } from '../constants/curationCreateData'
+import { COLOR_PALETTE } from '../constants/curationCreateData'
 import { READING_MOODS, GENRES, KEYWORDS, READING_STYLES } from '../constants/preferences'
 import toast from 'react-hot-toast'
 
@@ -26,7 +26,7 @@ export default function CurationEditPage() {
   const [title, setTitle] = useState('')
   const [selectedColor, setSelectedColor] = useState(COLOR_PALETTE[0].value as string)
   const [thumbnail, setThumbnail] = useState<File | null>(null)
-  const [selectedBook, setSelectedBook] = useState<SearchBook | null>(null)
+  const [selectedBook, setSelectedBook] = useState<BookItem | null>(null)
   const [content, setContent] = useState('')
   const [keywords, setKeywords] = useState<string[]>([])
 
@@ -132,7 +132,11 @@ export default function CurationEditPage() {
           {/* 책 검색 */}
           <Card className='rounded-none bg-transparent border-0 border-b'>
             <CardContent className='p-6'>
-              <BookSearchSection selectedBook={selectedBook} onBookSelect={setSelectedBook} />
+              <BookSearchSection
+                selectedBook={selectedBook}
+                onBookSelect={setSelectedBook}
+                title='2. 어떤 책에 대한 감상인가요?*'
+              />
             </CardContent>
           </Card>
 

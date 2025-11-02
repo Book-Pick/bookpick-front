@@ -16,22 +16,26 @@ import {
   TabsTrigger,
   TabsContent,
 } from '@/shared/ui'
-import { BookSearchSection } from '../components/BookSearchSection'
+import { BookSearchSection, type BookItem } from '../components/BookSearchSection'
 import { ReviewSection } from '../components/ReviewSection'
 import { DraftListSheet } from '../components/DraftListSheet'
 import ThumbnailPreview from '../components/ThumbnailPreview'
-import { COLOR_PALETTE, type SearchBook, type DraftCuration } from '../constants/curationCreateData'
+import { COLOR_PALETTE, type DraftCuration } from '../constants/curationCreateData'
 import { READING_MOODS, GENRES, KEYWORDS, READING_STYLES } from '../constants/preferences'
 import toast from 'react-hot-toast'
+import type { CreateCurationRequest } from '../types/curation.types'
+import { useCuration } from '../hooks/useCuration'
 
 export default function CurationCreatePage() {
   const navigate = useNavigate()
+  const { useCreateCuration } = useCuration()
+  const { mutate: createCurationMutate, isPending } = useCreateCuration()
 
   // 상태 관리
   const [title, setTitle] = useState('')
   const [selectedColor, setSelectedColor] = useState(COLOR_PALETTE[0].value as string)
   const [thumbnail, setThumbnail] = useState<File | null>(null)
-  const [selectedBook, setSelectedBook] = useState<SearchBook | null>(null)
+  const [selectedBook, setSelectedBook] = useState<BookItem | null>(null)
   const [content, setContent] = useState('')
   const [isDraftSheetOpen, setIsDraftSheetOpen] = useState(false)
 
@@ -96,20 +100,35 @@ export default function CurationCreatePage() {
   }
 
   const handlePublish = () => {
-    // 큐레이션 등록 로직
-    console.log('큐레이션 등록:', {
+    const request: CreateCurationRequest = {
       title,
-      selectedColor,
-      thumbnail,
-      selectedBook,
-      content,
-      recommendedMoods,
-      recommendedGenres,
-      recommendedKeywords,
-      recommendedStyles,
+      thumbnail: {
+        imageUrl: thumbnail,
+        imageColor: selectedColor,
+      },
+      book: {
+        title: selectedBook?.title || '',
+        author: selectedBook?.author || '',
+        isbn: selectedBook?.isbn,
+      },
+      review: content,
+      recommend: {
+        moods: recommendedMoods,
+        genres: recommendedGenres,
+        keywords: recommendedKeywords,
+        styles: recommendedStyles,
+      },
+    }
+    console.log('큐레이션 등록 요청:', request)
+    createCurationMutate(request, {
+      onSuccess: () => {
+        toast.success('큐레이션이 등록되었습니다.')
+        navigate('/mypage/curation')
+      },
+      onError: (error: Error) => {
+        toast.error(error.message || '큐레이션 등록에 실패했습니다.')
+      },
     })
-    toast.success('큐레이션이 등록되었습니다.')
-    navigate('/mypage/curation')
   }
 
   const handleLoadDraft = (draft: DraftCuration) => {
@@ -155,7 +174,11 @@ export default function CurationCreatePage() {
           {/* 2. 책 검색 */}
           <Card className='rounded-none bg-transparent border-0 border-b'>
             <CardContent className='p-6'>
-              <BookSearchSection selectedBook={selectedBook} onBookSelect={setSelectedBook} />
+              <BookSearchSection
+                selectedBook={selectedBook}
+                onBookSelect={setSelectedBook}
+                title='2. 어떤 책에 대한 감상인가요?*'
+              />
             </CardContent>
           </Card>
 
@@ -335,8 +358,9 @@ export default function CurationCreatePage() {
               size='lg'
               onClick={handlePublish}
               className='w-full sm:w-auto'
+              disabled={isPending}
             >
-              추천사 등록하기
+              {isPending ? '저장 중...' : '추천사 등록하기'}
             </Button>
           </div>
         </div>

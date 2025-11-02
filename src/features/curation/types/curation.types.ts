@@ -5,11 +5,11 @@
 import type { ApiResponse } from '@/shared/api/api.types'
 
 type Book = {
-  id: string
+  id?: string
   title: string
   author: string
-  image: string
-  isbn: string
+  image?: string
+  isbn?: string
 }
 
 // 독서 취향 타입
@@ -58,13 +58,24 @@ export interface GetCurationsByFieldRequest {
   limit?: number
 }
 
+export type Thumbnail = {
+  imageUrl: File | null
+  imageColor: string | null
+}
+
+export interface RecommendTags {
+  moods?: string[]
+  genres?: string[]
+  keywords?: string[]
+  styles?: string[]
+}
+
 export interface CreateCurationRequest {
   title: string
-  description: string
-  tags: string[]
+  thumbnail: Thumbnail
   book: Book
-  thumbnailImage?: string | null
-  thumbnailColor?: string | null
+  review: string
+  recommend: RecommendTags
 }
 
 export interface SaveCurationRequest extends CreateCurationRequest {
@@ -83,14 +94,6 @@ export interface PaginatedCurations {
   limit: number
 }
 
-// 책 검색 결과
-export interface BookSearchResult {
-  title: string
-  author: string
-  image: string
-  isbn?: string // 서버에서 제공하지 않을 수 있음
-}
-
 export interface PageInfo {
   currentPage: number
   totalPages: number
@@ -99,7 +102,7 @@ export interface PageInfo {
 }
 
 export interface PaginatedBooks {
-  books: BookSearchResult[]
+  books: Book[]
   pageInfo: PageInfo
 }
 

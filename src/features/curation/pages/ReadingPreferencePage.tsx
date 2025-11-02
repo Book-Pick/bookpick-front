@@ -33,7 +33,7 @@ export default function ReadingPreferencePage() {
         onSuccess: () => {
           toast.success('독서 취향이 성공적으로 설정되었습니다.')
           if (isFirstLogin) {
-            navigate('/mypage/profile')
+            navigate('/onboarding/profile')
           } else {
             navigate('/')
           }

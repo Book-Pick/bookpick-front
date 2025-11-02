@@ -20,12 +20,10 @@ import { createAxiosClient } from '@/shared/api/axiosClient'
 
 // 목업 데이터 import
 import {
-  mockGetReadingPreferenceResponse,
   mockUpdateReadingPreferenceResponse,
   mockGetCurationsResponse,
   mockGetPersonalizedCurationsResponse,
   mockGetCurationsByFieldResponse,
-  mockCreateCurationResponse,
   mockSaveCurationResponse,
   mockUpdateCurationResponse,
   mockGetMyCurationsResponse,
@@ -63,13 +61,12 @@ export const curationApi = {
   getReadingPreference: async (): Promise<GetReadingPreferenceResponse> => {
     try {
       const response = await axios.get(`${urlPrefix}/reading-preference`)
-      
       // authors 필드가 없으면 빈 배열로 추가 (추후 추가 예정 필드)
       const data = response.data.data
       if (data && !data.authors) {
         data.authors = []
       }
-      
+
       return response.data
     } catch (error: unknown) {
       const axiosError = error as AxiosErrorResponse
@@ -211,24 +208,23 @@ export const curationApi = {
    * 7. 큐레이션 작성
    */
   createCuration: async (request: CreateCurationRequest): Promise<CreateCurationResponse> => {
-    // try {
-    //   const response = await axios.post(`${urlPrefix}/curations`, request)
-    //   return response.data
-    // } catch (error: unknown) {
-    //   const axiosError = error as AxiosErrorResponse
-    //   if (axiosError.response?.status === 400) {
-    //     throw new Error('잘못된 요청입니다.')
-    //   }
-    //   throw error
-    // }
-
+    try {
+      const response = await axios.post(`${urlPrefix}/curations`, request)
+      return response.data
+    } catch (error: unknown) {
+      const axiosError = error as AxiosErrorResponse
+      if (axiosError.response?.status === 400) {
+        throw new Error('잘못된 요청입니다.')
+      }
+      throw error
+    }
     // 목업 데이터 반환
-    console.log('큐레이션 작성 요청:', request)
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(mockCreateCurationResponse)
-      }, 500)
-    })
+    // console.log('큐레이션 작성 요청:', request)
+    // return new Promise((resolve) => {
+    //   setTimeout(() => {
+    //     resolve(mockCreateCurationResponse)
+    //   }, 500)
+    // })
   },
 
   /**
