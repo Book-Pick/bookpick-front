@@ -5,26 +5,24 @@
 import type { ApiResponse } from '@/shared/api/api.types'
 
 type Book = {
-  id: string
+  id?: string
   title: string
   author: string
-  image: string
-  isbn: string
+  image?: string
+  isbn?: string
 }
 
 // 독서 취향 타입
 export interface ReadingPreference {
-  userId?: number
+  preferenceId?: number
   mbti?: string | null
-  favoriteBooks?: Array<Book>
-  authors?: string[]
-  mood?: string[]
+  favoriteBooks?: string[]
+  authors?: string[] // 추후 추가 예정 필드
+  moods?: string[]
   readingHabits?: string[]
-  preferredGenres?: string[]
+  genres?: string[]
   keywords?: string[]
-  readingStyles?: string[]
-  createdAt?: string
-  updatedAt?: string
+  trends?: string[]
 }
 
 // 큐레이션 타입
@@ -60,13 +58,24 @@ export interface GetCurationsByFieldRequest {
   limit?: number
 }
 
+export type Thumbnail = {
+  imageUrl: File | null
+  imageColor: string | null
+}
+
+export interface RecommendTags {
+  moods?: string[]
+  genres?: string[]
+  keywords?: string[]
+  styles?: string[]
+}
+
 export interface CreateCurationRequest {
   title: string
-  description: string
-  tags: string[]
+  thumbnail: Thumbnail
   book: Book
-  thumbnailImage?: string | null
-  thumbnailColor?: string | null
+  review: string
+  recommend: RecommendTags
 }
 
 export interface SaveCurationRequest extends CreateCurationRequest {
@@ -85,6 +94,18 @@ export interface PaginatedCurations {
   limit: number
 }
 
+export interface PageInfo {
+  currentPage: number
+  totalPages: number
+  totalElements: number
+  hasNext: boolean
+}
+
+export interface PaginatedBooks {
+  books: Book[]
+  pageInfo: PageInfo
+}
+
 // API Response 타입들
 export type SetReadingPreferenceResponse = ApiResponse<ReadingPreference>
 
@@ -101,3 +122,5 @@ export type SaveCurationResponse = ApiResponse<Curation>
 export type UpdateCurationResponse = ApiResponse<Curation>
 
 export type DeleteCurationResponse = ApiResponse<null>
+
+export type GetBooksResponse = ApiResponse<PaginatedBooks>

@@ -15,34 +15,17 @@ import type {
   DeleteCurationResponse,
 } from '../types/curation.types'
 
-// 목업 독서 취향 데이터
+// 목업 독서 취향 데이터 (API 스펙에 맞춤)
 export const mockReadingPreference: ReadingPreference = {
-  userId: 1,
+  preferenceId: 1,
   mbti: 'INFJ',
-  favoriteBooks: [
-    {
-      id: '1',
-      title: '데미안',
-      author: '헤르만 헤세',
-      image: '/images/demian_thumbnail.jpeg',
-      isbn: '9788937461002',
-    },
-    {
-      id: '2',
-      title: '어린왕자',
-      author: '생텍쥐페리',
-      image: '/images/little_prince_thumbnail.jpeg',
-      isbn: '9788937460109',
-    },
-  ],
+  favoriteBooks: ['데미안', '어린왕자', '1984'],
   authors: ['무라카미 하루키', '김영하'],
-  mood: ['퇴근 후', '카페', '침대에서'],
+  moods: ['퇴근 후', '카페', '침대에서'],
   readingHabits: ['한 번에 완독하는 편', '밑줄 긋거나 형광펜으로 표시하는 편'],
-  preferredGenres: ['소설', '에세이', '심리학'],
+  genres: ['소설', '에세이', '심리학'],
   keywords: ['위로', '성장', '공감'],
-  readingStyles: ['몰입형', '감성적', '깊이 있는 사색'],
-  createdAt: '2024-01-15T10:00:00Z',
-  updatedAt: '2024-01-15T10:00:00Z',
+  trends: ['몰입형', '감성적', '깊이 있는 사색'],
 }
 
 // 목업 큐레이션 데이터
@@ -562,5 +545,35 @@ export const mockGetRecentCurationsResponse: GetCurationsResponse = {
     total: 18,
     page: 1,
     limit: 10,
+  },
+}
+
+export const mockGetBooksResponse = {
+  status: 200,
+  message: '책 검색 결과입니다.',
+  data: {
+    books: [
+      {
+        title: '1984',
+        author: '조지 오웰',
+        image: '/images/1984_thumbnail.jpeg',
+      },
+      {
+        title: '데미안',
+        author: '헤르만 헤세',
+        image: '/images/demian_thumbnail.jpg',
+      },
+      {
+        title: '어린 왕자',
+        author: '앙투안 드 생텍쥐페리',
+        image: '/images/little_prince_thumbnail.jpeg',
+      },
+    ],
+    pageInfo: {
+      currentPage: 1,
+      totalPages: 5,
+      totalElements: 45,
+      hasNext: true,
+    },
   },
 }

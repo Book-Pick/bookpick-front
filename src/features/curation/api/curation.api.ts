@@ -13,19 +13,17 @@ import type {
   UpdateCurationRequest,
   UpdateCurationResponse,
   DeleteCurationResponse,
+  GetBooksResponse,
 } from '../types/curation.types'
-// import type { AxiosErrorResponse } from '@/shared/api/api.types'
-// import { createAxiosClient } from '@/shared/api/axiosClient'
+import type { AxiosErrorResponse } from '@/shared/api/api.types'
+import { createAxiosClient } from '@/shared/api/axiosClient'
 
 // 목업 데이터 import
 import {
-  mockSetReadingPreferenceResponse,
-  mockGetReadingPreferenceResponse,
   mockUpdateReadingPreferenceResponse,
   mockGetCurationsResponse,
   mockGetPersonalizedCurationsResponse,
   mockGetCurationsByFieldResponse,
-  mockCreateCurationResponse,
   mockSaveCurationResponse,
   mockUpdateCurationResponse,
   mockGetMyCurationsResponse,
@@ -35,8 +33,8 @@ import {
   mockGetRecentCurationsResponse,
 } from './mockCurationApiData'
 
-// const axios = createAxiosClient(import.meta.env.VITE_APP_BOOKPICK_API_URL)
-// const urlPrefix = '/api/v1/curation'
+const axios = createAxiosClient(import.meta.env.VITE_APP_BOOKPICK_API_URL)
+const urlPrefix = '/api/v1'
 
 export const curationApi = {
   /**
@@ -45,48 +43,51 @@ export const curationApi = {
   setReadingPreference: async (
     request: SetReadingPreferenceRequest,
   ): Promise<SetReadingPreferenceResponse> => {
-    // try {
-    //   const response = await axios.post(`${urlPrefix}/preferences`, request)
-    //   return response.data
-    // } catch (error: unknown) {
-    //   const axiosError = error as AxiosErrorResponse
-    //   if (axiosError.response?.status === 400) {
-    //     throw new Error('잘못된 요청입니다.')
-    //   }
-    //   throw error
-    // }
-
-    // 목업 데이터 반환
-    console.log('독서 취향 설정 요청:', request)
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(mockSetReadingPreferenceResponse)
-      }, 500)
-    })
+    try {
+      const response = await axios.post(`${urlPrefix}/reading-preference`, request)
+      return response.data
+    } catch (error: unknown) {
+      const axiosError = error as AxiosErrorResponse
+      if (axiosError.response?.status === 400) {
+        throw new Error('잘못된 요청입니다.')
+      }
+      throw error
+    }
   },
 
   /**
    * 2. 독서 취향 조회
    */
   getReadingPreference: async (): Promise<GetReadingPreferenceResponse> => {
-    // try {
-    //   const response = await axios.get(`${urlPrefix}/preferences`)
-    //   return response.data
-    // } catch (error: unknown) {
-    //   const axiosError = error as AxiosErrorResponse
-    //   if (axiosError.response?.status === 404) {
-    //     throw new Error('독서 취향을 찾을 수 없습니다.')
-    //   }
-    //   throw error
-    // }
+    try {
+      const response = await axios.get(`${urlPrefix}/reading-preference`)
+      // authors 필드가 없으면 빈 배열로 추가 (추후 추가 예정 필드)
+      const data = response.data.data
+      if (data && !data.authors) {
+        data.authors = []
+      }
 
-    // 목업 데이터 반환
-    console.log('독서 취향 조회 요청')
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(mockGetReadingPreferenceResponse)
-      }, 500)
-    })
+      return response.data
+    } catch (error: unknown) {
+      const axiosError = error as AxiosErrorResponse
+      if (axiosError.response?.status === 404) {
+        // 404는 데이터가 없는 경우로 처리 (에러가 아님)
+        return {
+          status: 404,
+          message: '독서 취향 데이터가 없습니다.',
+          data: null,
+        }
+      }
+      throw error
+    }
+
+    // 목업 데이터 반환 (개발/테스트용)
+    // console.log('독서 취향 조회 요청')
+    // return new Promise((resolve) => {
+    //   setTimeout(() => {
+    //     resolve(mockGetReadingPreferenceResponse)
+    //   }, 500)
+    // })
   },
 
   /**
@@ -207,24 +208,23 @@ export const curationApi = {
    * 7. 큐레이션 작성
    */
   createCuration: async (request: CreateCurationRequest): Promise<CreateCurationResponse> => {
-    // try {
-    //   const response = await axios.post(`${urlPrefix}/curations`, request)
-    //   return response.data
-    // } catch (error: unknown) {
-    //   const axiosError = error as AxiosErrorResponse
-    //   if (axiosError.response?.status === 400) {
-    //     throw new Error('잘못된 요청입니다.')
-    //   }
-    //   throw error
-    // }
-
+    try {
+      const response = await axios.post(`${urlPrefix}/curations`, request)
+      return response.data
+    } catch (error: unknown) {
+      const axiosError = error as AxiosErrorResponse
+      if (axiosError.response?.status === 400) {
+        throw new Error('잘못된 요청입니다.')
+      }
+      throw error
+    }
     // 목업 데이터 반환
-    console.log('큐레이션 작성 요청:', request)
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(mockCreateCurationResponse)
-      }, 500)
-    })
+    // console.log('큐레이션 작성 요청:', request)
+    // return new Promise((resolve) => {
+    //   setTimeout(() => {
+    //     resolve(mockCreateCurationResponse)
+    //   }, 500)
+    // })
   },
 
   /**
@@ -413,5 +413,29 @@ export const curationApi = {
         resolve(mockGetRecentCurationsResponse)
       }, 500)
     })
+  },
+
+  /**
+   * 15. 책 검색
+   */
+  searchBooks: async (keyword: string): Promise<GetBooksResponse> => {
+    try {
+      const response = await axios.post(`${urlPrefix}/book/search`, {
+        keyword,
+      })
+      return response.data
+    } catch (error: unknown) {
+      const axiosError = error as AxiosErrorResponse
+      console.error('책 검색 에러:', axiosError)
+      throw error
+    }
+
+    // 목업 데이터 반환
+    // console.log('책 검색 요청:', keyword)
+    // return new Promise((resolve) => {
+    //   setTimeout(() => {
+    //     resolve(mockGetBooksResponse)
+    //   }, 500)
+    // })
   },
 }

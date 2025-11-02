@@ -6,6 +6,7 @@ export interface AuthState {
   token: Token | null
   isAuthenticated: boolean
   isLoading: boolean
+  isFirstLogin: boolean
 }
 
 export interface AuthContextType extends AuthState {
