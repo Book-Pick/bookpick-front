@@ -344,12 +344,12 @@ export default function CurationCreatePage() {
           </Card>
 
           {/* 하단 버튼 */}
-          <div className='flex flex-col sm:flex-row justify-center gap-4 pt-8'>
+          <div className='flex justify-center gap-4 pt-8'>
             <Button
               variant='outline'
               size='lg'
               onClick={handleSaveDraft}
-              className='w-full sm:w-auto'
+              className='flex-1 sm:flex-none'
             >
               임시 저장
             </Button>
@@ -357,10 +357,10 @@ export default function CurationCreatePage() {
               variant='secondary'
               size='lg'
               onClick={handlePublish}
-              className='w-full sm:w-auto'
+              className='flex-1 sm:flex-none'
               disabled={isPending}
             >
-              {isPending ? '저장 중...' : '추천사 등록하기'}
+              {isPending ? '저장 중...' : '등록하기'}
             </Button>
           </div>
         </div>

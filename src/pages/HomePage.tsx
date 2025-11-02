@@ -1,4 +1,5 @@
 import MainBanner from '@/shared/components/MainBanner'
+import { EditorPickSection } from '@/shared/components/EditorPickSection'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui'
 import { useNavigate } from 'react-router-dom'
 import { ContentsLayout } from '@/app/layout'
@@ -26,6 +27,30 @@ export default function HomePage() {
   const likeCurations = popularData?.curations || []
   const recentCurations = recentData?.curations || []
 
+  // 에디터 픽 데이터
+  const editorPicks = [
+    {
+      id: '1',
+      title: '#에겐남 독자들의 추천사 모음',
+      imageUrl: '/images/sample_image_01.jpeg',
+    },
+    {
+      id: '2',
+      title: '#INFP 책방지기의 가을 도서 추천사',
+      imageUrl: '/images/sample_image_02.jpeg',
+    },
+    {
+      id: '3',
+      title: '#가을 강가에서 소설을',
+      imageUrl: '/images/sample_image_03.jpeg',
+    },
+  ]
+
+  const handleEditorPickClick = (id: string) => {
+    console.log('Editor pick clicked:', id)
+    // TODO: 에디터 픽 상세 페이지로 이동
+  }
+
   return (
     <div className='min-h-screen bg-background'>
       <div className='hidden xs:block'>
@@ -33,10 +58,19 @@ export default function HomePage() {
       </div>
       {/* 메인 컨텐츠 영역 */}
       <ContentsLayout>
+        {/* 에디터 픽 섹션 */}
+        <section className='mb-[50px]'>
+          <EditorPickSection
+            title='에디터가 엄선한 #가을 #낭만 #여행'
+            picks={editorPicks}
+            onCardClick={handleEditorPickClick}
+          />
+        </section>
+
         <section className='mt-5 xs:mt-0 mb-16'>
-          <div className='flex justify-between items-center mb-8'>
+          {/* <div className='flex justify-between items-center mb-8'>
             <h2 className='font-title font-bold text-foreground'>내 취향에 맞는 큐레이션</h2>
-          </div>
+          </div> */}
           <div className='flex w-full flex-col gap-6'>
             <Tabs defaultValue='similar'>
               <TabsList>
