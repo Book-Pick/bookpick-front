@@ -4,13 +4,16 @@
 
 import type { ApiResponse } from '@/shared/api/api.types'
 
-type Book = {
+export type Book = {
   id?: string
   title: string
   author: string
   image?: string
   isbn?: string
 }
+
+// BookSearchSection에서 사용하는 별칭
+export type BookSearchResult = Book
 
 // 독서 취향 타입
 export interface ReadingPreference {

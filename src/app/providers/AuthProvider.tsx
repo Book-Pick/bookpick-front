@@ -13,6 +13,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     token: null,
     isAuthenticated: false,
     isLoading: true,
+    isFirstLogin: false,
   })
 
   useEffect(() => {
@@ -27,6 +28,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
               token: parsedAuth.token,
               isAuthenticated: true,
               isLoading: false,
+              isFirstLogin: false,
             })
             return
           }
@@ -73,6 +75,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       token: null,
       isAuthenticated: false,
       isLoading: false,
+      isFirstLogin: false,
     })
   }, [])
 

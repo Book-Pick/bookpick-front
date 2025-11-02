@@ -37,16 +37,15 @@ import CurationCardBasic from '@/features/curation/components/CurationCardBasic'
 import CurationCardSocial from '@/features/curation/components/CurationCardSocial'
 import CuratorProfileCard from '@/features/curation/components/CuratorProfileCard'
 import CurationPurchaseCard from '@/features/curation/components/CurationPurchaseCard'
-import { BookSearchSection } from '@/features/curation/components/BookSearchSection'
+import { BookSearchSection, type BookItem } from '@/features/curation/components/BookSearchSection'
 import { ThumbnailSelector } from '@/features/curation/components/ThumbnailSelector'
 import Thumbnail from '@/shared/components/Thumbnail'
 import { mockCuratorData } from '@/data/mockCuratorData'
 import { mockCurationData } from '@/data/mockCurationData'
-import type { SearchBook } from '@/features/curation/constants/curationCreateData'
 import { useState } from 'react'
 
 export default function UIPreview() {
-  const [selectedBook, setSelectedBook] = useState<SearchBook | null>(null)
+  const [selectedBook, setSelectedBook] = useState<BookItem | null>(null)
   const [thumbnail, setThumbnail] = useState<File | null>(null)
   const [isSheetOpen, setIsSheetOpen] = useState(false)
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
@@ -72,6 +71,10 @@ export default function UIPreview() {
   const handleDeleteSelected = () => {
     console.log('선택된 큐레이션 삭제:', selectedCurations)
     alert(`${selectedCurations.length}개의 큐레이션이 선택되었습니다.`)
+  }
+
+  const handleBookSelect = (book: BookItem | null) => {
+    setSelectedBook(book)
   }
 
   return (
@@ -603,7 +606,7 @@ export default function UIPreview() {
             {/* Book Search Section */}
             <section className='bg-white rounded-lg p-6 shadow-sm'>
               <h2 className='text-2xl font-bold mb-6'>책 검색 섹션</h2>
-              <BookSearchSection selectedBook={selectedBook} onBookSelect={setSelectedBook} />
+              <BookSearchSection selectedBook={selectedBook} onBookSelect={handleBookSelect} />
             </section>
 
             {/* Thumbnail Selector Section */}
