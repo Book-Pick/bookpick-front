@@ -105,66 +105,6 @@ export const READING_STYLES = [
   '가볍게 즐기기',
 ] as const
 
-// 인생 책 목록 (검색용 mockup 데이터)
-export const LIFE_BOOKS = [
-  {
-    id: '1',
-    title: '데미안',
-    author: '헤르만 헤세',
-    image: '/images/demian_thumbnail.jpeg',
-    isbn: '9788937461002',
-  },
-  {
-    id: '2',
-    title: '어린왕자',
-    author: '생텍쥐페리',
-    image: '/images/little_prince_thumbnail.jpeg',
-    isbn: '9788937460109',
-  },
-  {
-    id: '3',
-    title: '1984',
-    author: '조지 오웰',
-    image: '/images/1984_thumbnail.jpeg',
-    isbn: '9788937460388',
-  },
-  {
-    id: '4',
-    title: '까뮈의 이방인',
-    author: '알베르 까뮈',
-    image: '/images/book4.jpg',
-    isbn: '9788937460692',
-  },
-  {
-    id: '5',
-    title: '호밀밭의 파수꾼',
-    author: 'J.D. 샐린저',
-    image: '/images/book5.jpg',
-    isbn: '9788937460845',
-  },
-  {
-    id: '6',
-    title: '젊은 베르테르의 슬픔',
-    author: '요한 볼프강 폰 괴테',
-    image: '/images/book6.jpg',
-    isbn: '9788937460234',
-  },
-  {
-    id: '7',
-    title: '백년의 고독',
-    author: '가브리엘 가르시아 마르케스',
-    image: '/images/book7.jpg',
-    isbn: '9788937460777',
-  },
-  {
-    id: '8',
-    title: '카라마조프의 형제들',
-    author: '표도르 도스토예프스키',
-    image: '/images/book8.jpg',
-    isbn: '9788937460456',
-  },
-] as const
-
 // 좋아하는 작가 목록 (검색용 mockup 데이터)
 export const FAVORITE_AUTHORS = [
   '무라카미 하루키',
@@ -196,5 +136,4 @@ export type Genre = (typeof GENRES)[number]
 export type Keyword = (typeof KEYWORDS)[number]
 export type ReadingHabit = (typeof READING_HABITS)[number]
 export type ReadingStyle = (typeof READING_STYLES)[number]
-export type LifeBook = (typeof LIFE_BOOKS)[number]
 export type FavoriteAuthor = (typeof FAVORITE_AUTHORS)[number]

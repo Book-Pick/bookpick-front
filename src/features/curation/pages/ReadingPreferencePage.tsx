@@ -3,31 +3,27 @@ import toast from 'react-hot-toast'
 import { Button } from '@/shared/ui'
 import ReadingPreferenceForm from '../components/ReadingPreferenceForm'
 import { useReadingPreferenceForm } from '../hooks/useReadingPreferenceForm'
-import { useCuration } from '../hooks/useCuration'
+import { useSetReadingPreference } from '../hooks/useCuration'
 import { useAuth } from '@/app/providers'
 
 export default function ReadingPreferencePage() {
   const navigate = useNavigate()
   const { isFirstLogin } = useAuth()
-  const { useSetReadingPreference } = useCuration()
   const { mutate: setReadingPreferenceMutate, isPending } = useSetReadingPreference()
 
-  // 빈 폼으로 시작
-  const { formData, handlers, getFormData } = useReadingPreferenceForm()
+  const { formData, handlers } = useReadingPreferenceForm()
 
   const handleSubmit = () => {
-    const data = getFormData()
-    console.log('독서 취향', data)
     setReadingPreferenceMutate(
       {
-        mbti: data.mbti || null,
-        favoriteBooks: data.selectedLifeBooks.map((book) => book.title),
-        // authors: data.selectedAuthors,
-        moods: data.readingMoods,
-        readingHabits: data.readingHabits,
-        genres: data.genres,
-        keywords: data.keywords,
-        trends: data.readingStyles,
+        mbti: formData.mbti || null,
+        favoriteBooks: formData.selectedLifeBooks.map((book) => book.title),
+        // authors: formData.selectedAuthors,
+        moods: formData.readingMoods,
+        readingHabits: formData.readingHabits,
+        genres: formData.genres,
+        keywords: formData.keywords,
+        trends: formData.readingStyles,
       },
       {
         onSuccess: () => {
@@ -64,9 +60,9 @@ export default function ReadingPreferencePage() {
           </div>
         </div>
       </div>
+
       <ReadingPreferenceForm formData={formData} handlers={handlers} />
 
-      {/* 하단 버튼 */}
       <div className='flex flex-col sm:flex-row justify-center gap-4 pt-8 mb-10'>
         <Button
           size='lg'

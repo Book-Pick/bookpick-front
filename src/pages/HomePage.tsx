@@ -4,12 +4,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui'
 import { useNavigate } from 'react-router-dom'
 import { ContentsLayout } from '@/app/layout'
 import CurationList from '@/features/curation/components/CurationList'
-import { useCuration } from '@/features/curation/hooks/useCuration'
+import {
+  useGetPersonalizedCurations,
+  useGetPopularCurations,
+  useGetRecentCurations,
+} from '@/features/curation/hooks/useCuration'
 
 export default function HomePage() {
   const navigate = useNavigate()
-  const { useGetPersonalizedCurations, useGetPopularCurations, useGetRecentCurations } =
-    useCuration()
 
   // API 호출
   const { data: personalizedData, isLoading: isLoadingPersonalized } = useGetPersonalizedCurations(

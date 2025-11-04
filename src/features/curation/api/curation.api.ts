@@ -50,6 +50,8 @@ export const curationApi = {
       const axiosError = error as AxiosErrorResponse
       if (axiosError.response?.status === 400) {
         throw new Error('잘못된 요청입니다.')
+      } else if (axiosError.response?.status === 409) {
+        throw new Error('이미 독서 취향이 설정되어 있습니다.')
       }
       throw error
     }
@@ -96,27 +98,27 @@ export const curationApi = {
   updateReadingPreference: async (
     request: UpdateReadingPreferenceRequest,
   ): Promise<UpdateReadingPreferenceResponse> => {
-    // try {
-    //   const response = await axios.put(`${urlPrefix}/preferences`, request)
-    //   return response.data
-    // } catch (error: unknown) {
-    //   const axiosError = error as AxiosErrorResponse
-    //   if (axiosError.response?.status === 400) {
-    //     throw new Error('잘못된 요청입니다.')
-    //   }
-    //   if (axiosError.response?.status === 404) {
-    //     throw new Error('독서 취향을 찾을 수 없습니다.')
-    //   }
-    //   throw error
-    // }
+    try {
+      const response = await axios.patch(`${urlPrefix}/reading-preference`, request)
+      return response.data
+    } catch (error: unknown) {
+      const axiosError = error as AxiosErrorResponse
+      if (axiosError.response?.status === 400) {
+        throw new Error('잘못된 요청입니다.')
+      }
+      if (axiosError.response?.status === 404) {
+        throw new Error('독서 취향을 찾을 수 없습니다.')
+      }
+      throw error
+    }
 
     // 목업 데이터 반환
-    console.log('독서 취향 수정 요청:', request)
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(mockUpdateReadingPreferenceResponse)
-      }, 500)
-    })
+    // console.log('독서 취향 수정 요청:', request)
+    // return new Promise((resolve) => {
+    //   setTimeout(() => {
+    //     resolve(mockUpdateReadingPreferenceResponse)
+    //   }, 500)
+    // })
   },
 
   /**

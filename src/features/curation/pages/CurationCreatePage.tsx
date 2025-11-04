@@ -24,11 +24,10 @@ import { COLOR_PALETTE, type DraftCuration } from '../constants/curationCreateDa
 import { READING_MOODS, GENRES, KEYWORDS, READING_STYLES } from '../constants/preferences'
 import toast from 'react-hot-toast'
 import type { CreateCurationRequest } from '../types/curation.types'
-import { useCuration } from '../hooks/useCuration'
+import { useCreateCuration } from '../hooks/useCuration'
 
 export default function CurationCreatePage() {
   const navigate = useNavigate()
-  const { useCreateCuration } = useCuration()
   const { mutate: createCurationMutate, isPending } = useCreateCuration()
 
   // 상태 관리

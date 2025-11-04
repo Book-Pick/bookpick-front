@@ -8,26 +8,17 @@ import {
   READING_HABITS,
   READING_STYLES,
   FAVORITE_AUTHORS,
-  type LifeBook,
 } from '../constants/preferences'
-import { LifeBookSearchSection } from './LifeBookSearchSection'
+import { BookSearchSection } from './BookSearchSection'
 import { AuthorSearchSection } from './AuthorSearchSection'
-import type { ReadingPreferenceFormData } from '../hooks/useReadingPreferenceForm'
+import type {
+  ReadingPreferenceFormData,
+  ReadingPreferenceFormHandlers,
+} from '../hooks/useReadingPreferenceForm'
 
 interface ReadingPreferenceFormProps {
   formData: ReadingPreferenceFormData
-  handlers: {
-    toggleMbti: (type: string) => void
-    toggleReadingMood: (mood: string) => void
-    toggleReadingHabit: (habit: string) => void
-    toggleGenre: (genre: string) => void
-    toggleKeyword: (keyword: string) => void
-    toggleReadingStyle: (style: string) => void
-    handleLifeBookSelect: (book: LifeBook | null) => void
-    removeLifeBook: (book: LifeBook) => void
-    handleAuthorSelect: (author: string) => void
-    removeAuthor: (author: string) => void
-  }
+  handlers: ReadingPreferenceFormHandlers
 }
 
 export default function ReadingPreferenceForm({ formData, handlers }: ReadingPreferenceFormProps) {
@@ -77,7 +68,7 @@ export default function ReadingPreferenceForm({ formData, handlers }: ReadingPre
                     <Badge
                       key={book.id}
                       variant='outline'
-                      size='sm'
+                      size='default'
                       className='flex items-center gap-1'
                     >
                       {book.title} - {book.author}
@@ -95,11 +86,12 @@ export default function ReadingPreferenceForm({ formData, handlers }: ReadingPre
                   ))}
                 </div>
               )}
-              <LifeBookSearchSection
-                onBookSelect={handlers.handleLifeBookSelect}
-                placeholder='인생 책을 검색해보세요'
+              <BookSearchSection
+                onBookAdd={handlers.handleLifeBookSelect}
                 maxSelections={3}
                 currentCount={formData.selectedLifeBooks.length}
+                placeholder='책 제목이나 작가명을 검색하세요'
+                showSelectedInline={false}
               />
             </CardContent>
           </Card>
@@ -119,7 +111,7 @@ export default function ReadingPreferenceForm({ formData, handlers }: ReadingPre
                     <Badge
                       key={author}
                       variant='outline'
-                      size='sm'
+                      size='default'
                       className='flex items-center gap-1'
                     >
                       {author}

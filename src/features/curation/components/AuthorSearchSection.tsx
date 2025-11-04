@@ -70,7 +70,7 @@ export function AuthorSearchSection({
                 setSearchQuery(e.target.value)
                 setHasSearched(false)
               }}
-              onKeyPress={(e) => {
+              onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   if (searchResults.length > 0) {
                     handleSearch()

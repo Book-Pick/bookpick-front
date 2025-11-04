@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Search, BookOpen } from 'lucide-react'
 import { Input, Button, Card, CardContent } from '@/shared/ui'
-import { useCuration } from '../hooks/useCuration'
+import { useSearchBooks } from '../hooks/useCuration'
 import type { BookSearchResult } from '../types/curation.types'
 
 export interface BookItem {
@@ -38,7 +38,6 @@ export function BookSearchSection({
 }: BookSearchSectionProps) {
   const [searchQuery, setSearchQuery] = useState('')
 
-  const { useSearchBooks } = useCuration()
   const { mutate: searchBooks, data, isPending, reset } = useSearchBooks()
 
   const isSingleMode = maxSelections === 1 && onBookSelect !== undefined

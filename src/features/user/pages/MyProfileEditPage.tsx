@@ -1,22 +1,51 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, Input, Textarea, Avatar, AvatarImage, AvatarFallback } from '@/shared/ui'
 import toast from 'react-hot-toast'
 import ReadingPreferenceForm from '@/features/curation/components/ReadingPreferenceForm'
 import { useReadingPreferenceForm } from '@/features/curation/hooks/useReadingPreferenceForm'
+import {
+  useGetReadingPreference,
+  useUpdateReadingPreference,
+} from '@/features/curation/hooks/useCuration'
 
-// 마이페이지 - 프로필 수정 페이지
+// Todo: 이 페이지가 첫 프로필 설정, 독서 취향 설정일 경우 고려 필요! =>
+// 프로필 수정 버튼에서부터 프로필 정보/독서 취향 정보가 없으면 프로필 세팅 페이지로 보내는게 나을 것 같음(/onboarding)
+
 export default function MyProfileEditPage() {
   const navigate = useNavigate()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  // 프로필 상태 관리
+  // 프로필 상태
   const [nickname, setNickname] = useState('')
   const [introduction, setIntroduction] = useState('')
   const [profileImage, setProfileImage] = useState<string>('')
 
-  // 독서 취향 상태 관리
-  const { formData, handlers, getFormData } = useReadingPreferenceForm()
+  const { data: readingPreference } = useGetReadingPreference()
+  const { mutate: updateReadingPreferenceMutate, isPending } = useUpdateReadingPreference()
+
+  const initialFormData = useMemo(
+    () => ({
+      mbti: readingPreference?.mbti || '',
+      // 임시 처리
+      selectedLifeBooks:
+        readingPreference?.favoriteBooks?.map((title) => ({
+          id: title,
+          title: title,
+          author: '알 수 없음',
+          isbn: '',
+        })) || [],
+      selectedAuthors: readingPreference?.authors || [],
+      readingMoods: readingPreference?.moods || [],
+      readingHabits: readingPreference?.readingHabits || [],
+      genres: readingPreference?.genres || [],
+      keywords: readingPreference?.keywords || [],
+      readingStyles: readingPreference?.trends || [],
+    }),
+    [readingPreference],
+  )
+
+  const { formData, handlers } = useReadingPreferenceForm(initialFormData)
 
   const handleImageClick = () => {
     fileInputRef.current?.click()
@@ -35,10 +64,25 @@ export default function MyProfileEditPage() {
   }
 
   const handleSave = () => {
-    const preferenceData = getFormData()
-    toast.success('프로필이 저장되었습니다.')
-    console.log('프로필 저장:', { nickname, introduction, profileImage, preferenceData })
-    navigate('/mypage/dashboard')
+    // Todo: 1. 프로필 저장
+    // 2. 독서 취향 설정
+    updateReadingPreferenceMutate(
+      {
+        mbti: formData.mbti || null,
+        favoriteBooks: formData.selectedLifeBooks.map((book) => book.title),
+        // authors: formData.selectedAuthors,
+        moods: formData.readingMoods,
+        readingHabits: formData.readingHabits,
+        genres: formData.genres,
+        keywords: formData.keywords,
+        trends: formData.readingStyles,
+      },
+      {
+        onSuccess: () => {
+          toast.success('독서 취향이 성공적으로 설정되었습니다.')
+        },
+      },
+    )
   }
 
   const handleCancel = () => {
@@ -124,8 +168,14 @@ export default function MyProfileEditPage() {
         <Button variant='outline' size='lg' onClick={handleCancel} className='flex-1 sm:flex-none'>
           취소하기
         </Button>
-        <Button variant='secondary' size='lg' onClick={handleSave} className='flex-1 sm:flex-none'>
-          저장하기
+        <Button
+          variant='secondary'
+          size='lg'
+          onClick={handleSave}
+          className='flex-1 sm:flex-none'
+          disabled={isPending}
+        >
+          {isPending ? '저장 중...' : '저장하기'}
         </Button>
       </div>
 
