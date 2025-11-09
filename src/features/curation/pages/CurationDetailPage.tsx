@@ -139,9 +139,9 @@ export default function CurationDetailPage() {
           </div>
           <button onClick={() => setIsLiked(!isLiked)} className='flex flex-col items-center gap-1'>
             <Heart
-              className={`size-6 text-red-300 transition-all ${isLiked ? 'fill-red-300' : ''}`}
+              className={`size-6 text-accent transition-all ${isLiked ? 'fill-accent' : ''}`}
             />
-            <span className='text-sm font-medium text-red-300'>좋아요</span>
+            <span className='text-sm font-medium text-accent'>좋아요</span>
           </button>
         </div>
       </div>

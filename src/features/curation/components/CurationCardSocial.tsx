@@ -33,6 +33,7 @@ interface CurationCardSocialProps {
   editMode?: boolean
   isSelected?: boolean
   onSelect?: (id: number | string) => void
+  isLiked?: boolean
 }
 
 const CurationCardSocial = ({
@@ -54,6 +55,7 @@ const CurationCardSocial = ({
   editMode = false,
   isSelected = false,
   onSelect,
+  isLiked = false,
 }: CurationCardSocialProps) => {
   return (
     <Card
@@ -63,7 +65,7 @@ const CurationCardSocial = ({
       onClick={onClick}
     >
       {/* 썸네일 - 맨 상단 */}
-      <div className='w-full h-50 bg-gray-50 flex items-center justify-center overflow-hidden relative'>
+      <div className='w-full h-40 bg-gray-50 flex items-center justify-center overflow-hidden relative'>
         <CurationThumbnail
           thumbnailImage={thumbnailSrc}
           thumbnailColor={thumbnailColor}
@@ -117,10 +119,21 @@ const CurationCardSocial = ({
         {similarity && (
           <div className='mb-3'>
             <div className='flex justify-between items-center mb-2'>
-              <span className='text-xs font-medium text-gray-700'>취향 유사도</span>
-              <span className='text-xs font-semibold text-primary'>{similarity}%</span>
+              <span
+                className={`text-xs font-medium ${(similarity || 0) >= 80 ? 'text-accent' : 'text-point'}`}
+              >
+                취향 유사도
+              </span>
+              <span
+                className={`text-xs font-semibold ${(similarity || 0) >= 80 ? 'text-accent' : 'text-point'}`}
+              >
+                {similarity}%
+              </span>
             </div>
-            <Progress value={similarity || 0} className='h-2' />
+            <Progress
+              value={similarity || 0}
+              className={`h-2 ${(similarity || 0) >= 80 ? 'bg-accent' : 'bg-point'}`}
+            />
           </div>
         )}
 
@@ -146,8 +159,8 @@ const CurationCardSocial = ({
             <ViewerIcon size={18} />
             <span className='text-sm font-medium'>{views}</span>
           </button>
-          <button className='flex items-center gap-1 text-gray-600 hover:text-red-500 transition-colors'>
-            <Heart size={18} />
+          <button className='flex items-center gap-1 text-gray-600 hover:text-accent transition-colors'>
+            <Heart size={18} className={isLiked ? 'fill-current text-accent' : ''} />
             <span className='text-sm font-medium'>{likes}</span>
           </button>
           <button className='flex items-center gap-1 text-gray-600 hover:text-blue-500 transition-colors'>

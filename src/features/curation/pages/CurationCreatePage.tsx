@@ -142,7 +142,7 @@ export default function CurationCreatePage() {
         <div className='space-y-4'>
           {/* 헤더 */}
           <div className='flex flex-col-reverse md:flex-row items-start md:items-center justify-between gap-8 sm:gap-4'>
-            <h1 className='text-2xl font-bold'>나만의 추천사 작성하기</h1>
+            <h1 className='text-2xl font-bold px-5'>나만의 추천사 작성하기</h1>
             <Button
               variant='outline'
               onClick={() => setIsDraftSheetOpen(true)}
@@ -353,7 +353,6 @@ export default function CurationCreatePage() {
               임시 저장
             </Button>
             <Button
-              variant='secondary'
               size='lg'
               onClick={handlePublish}
               className='flex-1 sm:flex-none'

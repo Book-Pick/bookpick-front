@@ -39,6 +39,7 @@ import MyLikesPage from '@/features/user/pages/MyLikesPage'
 
 // 에러페이지
 import NotFound from '@/shared/pages/NotFound'
+import ServerError from '@/shared/pages/ServerError'
 
 // 라우트 가드
 import ProtectedServiceRoute from '@/app/router/guards/ProtectedServiceRoute'
@@ -129,6 +130,10 @@ export const routerConfig: RouteObject[] = [
         element: <RegisterPage />,
       },
     ],
+  },
+  {
+    path: '/error',
+    element: <ServerError />,
   },
   {
     path: '*',

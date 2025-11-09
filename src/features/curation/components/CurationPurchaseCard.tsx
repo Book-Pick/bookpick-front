@@ -42,11 +42,11 @@ const CurationPurchaseCard = ({
         <CardAction className='hidden md:flex md:self-center'>
           <Button
             size='lg'
-            variant='accent'
+            variant='point'
             onClick={handlePurchaseClick}
             className='mr-2 font-bold'
           >
-            이 추천사 구매하기
+            구매하러 가기
           </Button>
           <Button size='lg' variant='outline' onClick={handleCartClick}>
             장바구니
@@ -56,14 +56,14 @@ const CurationPurchaseCard = ({
 
       {/* 모바일용 버튼 */}
       <div className='flex gap-3 md:hidden px-4 pb-4 pt-3'>
-        <Button size='lg' variant='outline' onClick={handleCartClick} className='flex-1'>
+        <Button size='lg' variant='outline' onClick={handleCartClick} className='flex-[1]'>
           장바구니
         </Button>
         <Button
           size='lg'
-          variant='accent'
+          variant='point'
           onClick={handlePurchaseClick}
-          className='flex-1 font-bold'
+          className='flex-[3] font-bold'
         >
           구매하러 가기
         </Button>

@@ -22,7 +22,7 @@ export default function ProfileCard({
       <div className='flex flex-col md:flex-row items-center gap-4 md:gap-[17px] w-full'>
         <Avatar className='w-[70px] h-[70px] md:w-[80px] md:h-[80px] flex-shrink-0'>
           <AvatarImage src={avatarUrl} alt={name} />
-          <AvatarFallback className='bg-[#D7DEE9] text-[#2A3D54] text-lg md:text-xl font-semibold'>
+          <AvatarFallback className='bg-secondary text-secondary-foreground text-lg md:text-xl font-semibold'>
             {name.charAt(0)}
           </AvatarFallback>
         </Avatar>
@@ -34,12 +34,7 @@ export default function ProfileCard({
           <p className='text-sm font-medium text-muted-foreground'>{introduction}</p>
         </div>
       </div>
-      <Button
-        className='w-full'
-        size='lg'
-        variant='secondary'
-        onClick={() => navigate('/mypage/profile')}
-      >
+      <Button className='w-full' size='lg' onClick={() => navigate('/mypage/profile')}>
         프로필 수정
       </Button>
     </div>

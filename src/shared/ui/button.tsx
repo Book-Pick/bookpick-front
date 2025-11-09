@@ -19,6 +19,7 @@ const buttonVariants = cva(
         text: '',
         link: 'text-primary underline-offset-4 hover:underline',
         accent: 'bg-accent text-accent-foreground shadow-xs',
+        point: 'bg-point text-point-foreground shadow-xs',
       },
       size: {
         xs: 'h-6 rounded-sm gap-1 px-2 text-xs has-[>svg]:px-1.5',

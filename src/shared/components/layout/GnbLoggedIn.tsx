@@ -48,7 +48,6 @@ export function GnbLoggedIn() {
         <>
           <Button
             onClick={handleCreateClick}
-            variant='secondary'
             className='mr-2 px-3 py-2 sm:px-6 sm:py-3 text-sm sm:text-base'
           >
             <span className='font-semibold px-1 hidden sm:inline'>추천사 작성</span>
