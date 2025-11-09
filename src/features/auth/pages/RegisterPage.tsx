@@ -75,7 +75,7 @@ export default function RegisterPage() {
               )}
             </div>
 
-            <Button type='submit' variant='secondary' size='lg' className='w-full'>
+            <Button type='submit' size='lg' className='w-full'>
               회원가입
             </Button>
           </form>

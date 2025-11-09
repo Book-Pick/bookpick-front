@@ -513,7 +513,7 @@ export default function UIPreview() {
                         likes={curation.likes}
                         comments={curation.comments}
                         views={curation.views}
-                        tags={curation.tags}
+                        tags={curation.tags.join(', ')}
                         thumbnailSrc={[sampleImage1, sampleImage2, sampleImage3][index]}
                         onClick={() => console.log(`클릭된 큐레이션: ${curation.title}`)}
                       />
@@ -557,7 +557,7 @@ export default function UIPreview() {
                         likes={curation.likes}
                         comments={curation.comments}
                         views={curation.views}
-                        tags={curation.tags}
+                        tags={curation.tags.join(', ')}
                         thumbnailSrc={[sampleImage1, sampleImage2, sampleImage3][index]}
                         editMode={true}
                         isSelected={selectedCurations.includes(curation.id)}

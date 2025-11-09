@@ -4,30 +4,35 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui'
 import { useNavigate } from 'react-router-dom'
 import { ContentsLayout } from '@/app/layout'
 import CurationList from '@/features/curation/components/CurationList'
-import {
-  useGetPersonalizedCurations,
-  useGetPopularCurations,
-  useGetRecentCurations,
-} from '@/features/curation/hooks/useCuration'
+import { useGetCurations } from '@/features/curation/hooks/useCuration'
 
 export default function HomePage() {
   const navigate = useNavigate()
 
   // API 호출
-  const { data: personalizedData, isLoading: isLoadingPersonalized } = useGetPersonalizedCurations(
-    1,
-    6,
-  )
-  const { data: popularData, isLoading: isLoadingPopular } = useGetPopularCurations(1, 6)
-  const { data: recentData, isLoading: isLoadingRecent } = useGetRecentCurations(1, 6)
+  const { data: personalizedData, isLoading: isLoadingPersonalized } = useGetCurations({
+    sort: 'similarity',
+    cursor: 0,
+    size: 10,
+  })
+  const { data: popularData, isLoading: isLoadingPopular } = useGetCurations({
+    sort: 'popularity',
+    cursor: 0,
+    size: 6,
+  })
+  const { data: recentData, isLoading: isLoadingRecent } = useGetCurations({
+    sort: 'latest',
+    cursor: 0,
+    size: 6,
+  })
 
   const handleCardClick = (curationId: number) => {
     navigate(`/curation/detail/${curationId}`)
   }
 
-  const similarCurations = personalizedData?.curations || []
-  const likeCurations = popularData?.curations || []
-  const recentCurations = recentData?.curations || []
+  const similarCurations = personalizedData?.content || []
+  const likeCurations = popularData?.content || []
+  const recentCurations = recentData?.content || []
 
   // 에디터 픽 데이터
   const editorPicks = [

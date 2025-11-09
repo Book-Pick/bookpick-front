@@ -45,7 +45,7 @@ export function BookSearchSection({
 
   const handleSearch = () => {
     if (!searchQuery.trim()) return
-    searchBooks(searchQuery)
+    searchBooks({ keyword: searchQuery, page: 1 })
   }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {

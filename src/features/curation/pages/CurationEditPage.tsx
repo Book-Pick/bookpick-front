@@ -269,12 +269,7 @@ export default function CurationEditPage() {
             >
               임시 저장
             </Button>
-            <Button
-              variant='secondary'
-              size='lg'
-              onClick={handlePublish}
-              className='w-full sm:w-auto'
-            >
+            <Button size='lg' onClick={handlePublish} className='w-full sm:w-auto'>
               추천사 등록하기
             </Button>
           </div>

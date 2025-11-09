@@ -175,7 +175,7 @@ export default function LandingPage() {
               likes={randomCuration.likes}
               comments={randomCuration.comments}
               views={randomCuration.views}
-              tags={randomCuration.tags}
+              tags={randomCuration.tags.join(', ')}
             />
           </div>
         </div>

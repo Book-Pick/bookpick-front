@@ -4,6 +4,7 @@
 
 import type { ApiResponse } from '@/shared/api/api.types'
 
+// 확인
 export type Book = {
   id?: string
   title: string
@@ -15,12 +16,12 @@ export type Book = {
 // BookSearchSection에서 사용하는 별칭
 export type BookSearchResult = Book
 
-// 독서 취향 타입
+// 독서 취향 타입 (확정)
 export interface ReadingPreference {
   preferenceId?: number
   mbti?: string | null
   favoriteBooks?: string[]
-  authors?: string[] // 추후 추가 예정 필드
+  authors?: string[] // TODO: 추후 추가 예정 필드
   moods?: string[]
   readingHabits?: string[]
   genres?: string[]
@@ -49,18 +50,6 @@ export interface Curation {
   updatedAt?: string | null
 }
 
-// API Request 타입들
-export type SetReadingPreferenceRequest = ReadingPreference
-
-export type UpdateReadingPreferenceRequest = Partial<ReadingPreference>
-
-export interface GetCurationsByFieldRequest {
-  field: string // ex: 'mbti', 'genre', 'keyword', etc.
-  value: string // ex: 'INFJ', '소설', '위로', etc.
-  page?: number
-  limit?: number
-}
-
 export type Thumbnail = {
   imageUrl: File | null
   imageColor: string | null
@@ -73,28 +62,41 @@ export interface RecommendTags {
   styles?: string[]
 }
 
-export interface CreateCurationRequest {
-  title: string
+// 확인완료
+export interface CurationItem {
+  // TODO: curationId vs id 통일 필요
+  curationId?: number
+  id?: number
+  title?: string
+  userId: number
+  nickName: string
   thumbnail: Thumbnail
-  book: Book
-  review: string
-  recommend: RecommendTags
+  // TODO: summary vs review 통일 필요
+  summary?: string
+  review?: string
+  book: {
+    title: string
+    author: string
+    isbn?: string
+  }
+  likeCount?: number
+  commentCount?: number
+  viewCount?: number
+  similarity?: number
+  matched?: string
+  popularityScore?: number
+  createdAt?: string
+  updatedAt?: string | null
+  recommend?: RecommendTags
 }
 
-export interface SaveCurationRequest extends CreateCurationRequest {
-  isDraft: boolean // true: 임시저장, false: 일반저장
-}
-
-export interface UpdateCurationRequest extends Partial<CreateCurationRequest> {
-  id: number
-}
-
-// 페이지네이션 포함 큐레이션 데이터
 export interface PaginatedCurations {
-  curations: Curation[]
-  total: number
-  page: number
-  limit: number
+  sortType: SortType
+  description: string
+  content: CurationItem[]
+  size: number
+  hasNext: boolean
+  nextCursor: number
 }
 
 export interface PageInfo {
@@ -109,14 +111,68 @@ export interface PaginatedBooks {
   pageInfo: PageInfo
 }
 
+// 확인완료
+export type SortType = 'similarity' | 'popularity' | 'latest'
+
+// API Request 타입들
+// 확인완료
+export interface GetBooksRequest {
+  keyword: string
+  page?: number
+}
+
+// 확인완료
+export type SetReadingPreferenceRequest = ReadingPreference
+
+export type UpdateReadingPreferenceRequest = Partial<ReadingPreference>
+
+// 확인완료
+export interface GetCurationsRequest {
+  sort: SortType
+  cursor: number
+  size: number
+}
+
+// 보류
+export interface GetCurationsByFieldRequest {
+  field: string // ex: 'mbti', 'genre', 'keyword', etc.
+  value: string // ex: 'INFJ', '소설', '위로', etc.
+  page?: number
+  limit?: number
+}
+
+// 확인
+export interface CreateCurationRequest {
+  title?: string
+  thumbnail: Thumbnail
+  book: Book
+  review: string
+  recommend: RecommendTags
+}
+
+export interface SaveCurationRequest extends CreateCurationRequest {
+  isDraft: boolean // true: 임시저장, false: 일반저장
+}
+
+export interface UpdateCurationRequest extends Partial<CreateCurationRequest> {
+  id: number
+}
+
 // API Response 타입들
+// 확인완료
 export type SetReadingPreferenceResponse = ApiResponse<ReadingPreference>
 
+// 확인완료
 export type GetReadingPreferenceResponse = ApiResponse<ReadingPreference | null>
 
+// 확인완료
 export type UpdateReadingPreferenceResponse = ApiResponse<ReadingPreference>
 
+// 확인완료
 export type GetCurationsResponse = ApiResponse<PaginatedCurations>
+
+// 확인완료
+export type GetCurationByIdResponse = ApiResponse<CurationItem>
 
 export type CreateCurationResponse = ApiResponse<Curation>
 

@@ -92,7 +92,7 @@ const ThumbnailPreview = ({
                   likes={0}
                   comments={0}
                   views={0}
-                  tags={['미리보기']}
+                  tags='미리보기'
                   thumbnailSrc={thumbnailUrl}
                 />
               </div>

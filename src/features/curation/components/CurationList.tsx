@@ -1,29 +1,35 @@
 import CurationCardSocial from '@/features/curation/components/CurationCardSocial'
-import type { Curation } from '@/features/curation/types/curation.types'
+import type { CurationItem } from '@/features/curation/types/curation.types'
 
 const CurationList = ({
   curations,
   onCardClick,
 }: {
-  curations: Curation[]
+  curations: CurationItem[]
   onCardClick: (id: number) => void
 }) => {
   return (
     <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6'>
       {curations.map((curation) => (
         <CurationCardSocial
-          key={curation.id}
+          key={curation.curationId || curation.id}
           similarity={curation.similarity}
-          title={curation.title}
-          description={curation.description}
-          curator={curation.curator}
-          likes={curation.likes}
-          comments={curation.comments}
-          views={curation.views}
-          tags={curation.tags}
-          thumbnailSrc={curation.thumbnailImage || undefined}
-          thumbnailColor={curation.thumbnailColor || undefined}
-          onClick={() => onCardClick(curation.id)}
+          title={curation.title || '제목 없음'}
+          description={curation.summary || curation.review || ''}
+          curator={curation.nickName}
+          likes={curation.likeCount || 0}
+          comments={curation.commentCount || 0}
+          views={curation.viewCount || 0}
+          tags={curation.matched || curation.recommend?.keywords?.join(', ') || ''}
+          thumbnailSrc={
+            typeof curation.thumbnail.imageUrl === 'string'
+              ? curation.thumbnail.imageUrl
+              : curation.thumbnail.imageUrl instanceof File
+                ? URL.createObjectURL(curation.thumbnail.imageUrl)
+                : undefined
+          }
+          thumbnailColor={curation.thumbnail.imageColor || undefined}
+          onClick={() => onCardClick(curation.curationId || curation.id || 0)}
         />
       ))}
     </div>

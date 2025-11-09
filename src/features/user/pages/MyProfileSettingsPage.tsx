@@ -131,7 +131,7 @@ export default function MyProfileSettingsPage() {
                 <Button variant='outline' onClick={handleSkip} className='flex-1'>
                   건너뛰기
                 </Button>
-                <Button variant='secondary' onClick={handleComplete} className='flex-1'>
+                <Button onClick={handleComplete} className='flex-1'>
                   시작하기
                 </Button>
               </div>

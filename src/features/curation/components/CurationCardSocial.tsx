@@ -25,7 +25,7 @@ interface CurationCardSocialProps {
   likes: number
   comments: number
   views: number
-  tags: string[]
+  tags: string
   thumbnailSrc?: string
   thumbnailColor?: string | null
   className?: string
@@ -57,6 +57,12 @@ const CurationCardSocial = ({
   onSelect,
   isLiked = false,
 }: CurationCardSocialProps) => {
+  // tags 문자열을 배열로 변환
+  const tagArray = tags
+    .split(',')
+    .map((tag) => tag.trim())
+    .filter((tag) => tag.length > 0)
+
   return (
     <Card
       className={`w-full bg-white border rounded-xl overflow-hidden max-w-sm mx-auto p-0 transition-all focus:outline-none focus-visible:outline-none ${
@@ -139,14 +145,14 @@ const CurationCardSocial = ({
 
         {/* 키워드 태그 */}
         <div className='flex flex-wrap gap-1'>
-          {tags.slice(0, 3).map((tag, index) => (
+          {tagArray.slice(0, 3).map((tag, index) => (
             <Badge key={index} size='sm' variant='outline'>
               #{tag}
             </Badge>
           ))}
-          {tags.length > 3 && (
+          {tagArray.length > 3 && (
             <Badge variant='outline' size='sm'>
-              +{tags.length - 3}
+              +{tagArray.length - 3}
             </Badge>
           )}
         </div>

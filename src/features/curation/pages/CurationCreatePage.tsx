@@ -118,7 +118,6 @@ export default function CurationCreatePage() {
         styles: recommendedStyles,
       },
     }
-    console.log('큐레이션 등록 요청:', request)
     createCurationMutate(request, {
       onSuccess: () => {
         toast.success('큐레이션이 등록되었습니다.')

@@ -56,7 +56,7 @@ export default function OrderCompletePage() {
               <Button variant='outline' size='lg' onClick={() => navigate('/')}>
                 홈으로 돌아가기
               </Button>
-              <Button variant='secondary' size='lg' onClick={() => navigate('/order/history')}>
+              <Button size='lg' onClick={() => navigate('/order/history')}>
                 주문 내역 확인하기
               </Button>
             </div>

@@ -27,7 +27,7 @@ export default function MyLikesPage() {
                 likes={curation.likes}
                 comments={curation.comments}
                 views={curation.views}
-                tags={curation.tags}
+                tags={curation.tags.join(', ')}
                 thumbnailSrc={curation.thumbnailImage || undefined}
                 thumbnailColor={curation.thumbnailColor}
                 onClick={() => {

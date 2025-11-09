@@ -64,15 +64,11 @@ export default function MyCurationPage() {
           <TabsList>
             <TabsTrigger value='published' className='gap-2'>
               공개됨
-              <Badge variant='secondary' size='sm'>
-                {publishedCurations.length}
-              </Badge>
+              <Badge size='sm'>{publishedCurations.length}</Badge>
             </TabsTrigger>
             <TabsTrigger value='draft' className='gap-2'>
               임시저장
-              <Badge variant='secondary' size='sm'>
-                {draftCurations.length}
-              </Badge>
+              <Badge size='sm'>{draftCurations.length}</Badge>
             </TabsTrigger>
           </TabsList>
 
@@ -104,7 +100,7 @@ export default function MyCurationPage() {
                   likes={curation.likes}
                   comments={curation.comments}
                   views={curation.views}
-                  tags={curation.tags}
+                  tags={curation.tags.join(', ')}
                   thumbnailSrc={curation.thumbnailImage || undefined}
                   thumbnailColor={curation.thumbnailColor}
                   editMode={true}
@@ -153,7 +149,7 @@ export default function MyCurationPage() {
                   likes={curation.likes}
                   comments={curation.comments}
                   views={curation.views}
-                  tags={curation.tags}
+                  tags={curation.tags.join(', ')}
                   thumbnailSrc={curation.thumbnailImage || undefined}
                   thumbnailColor={curation.thumbnailColor}
                   editMode={true}

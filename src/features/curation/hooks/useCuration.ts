@@ -4,6 +4,8 @@ import { curationApi } from '../api/curation.api'
 import type {
   SetReadingPreferenceRequest,
   UpdateReadingPreferenceRequest,
+  GetBooksRequest,
+  GetCurationsRequest,
   GetCurationsByFieldRequest,
   CreateCurationRequest,
   SaveCurationRequest,
@@ -54,26 +56,31 @@ export const useUpdateReadingPreference = () => {
 }
 
 /**
- * 4. 큐레이션 전체 조회
+ * 4. 큐레이션 단건 조회
  */
-export const useGetAllCurations = (page: number = 1, limit: number = 10) => {
+export const useGetCurationById = (curationId: number) => {
   return useQuery({
-    queryKey: ['curations', 'all', page, limit],
+    queryKey: ['curation', curationId],
     queryFn: async () => {
-      const response = await curationApi.getAllCurations(page, limit)
+      const response = await curationApi.getCurationById(curationId)
       return response.data
     },
+    enabled: !!curationId,
   })
 }
 
 /**
- * 5. 사용자 취향에 맞는 큐레이션 조회
+ * 5. 큐레이션 목록 조회 (정렬: similarity, popularity, latest)
  */
-export const useGetPersonalizedCurations = (page: number = 1, limit: number = 10) => {
+export const useGetCurations = ({
+  sort = 'similarity',
+  cursor = 0,
+  size = 10,
+}: GetCurationsRequest) => {
   return useQuery({
-    queryKey: ['curations', 'personalized', page, limit],
+    queryKey: ['curations', sort, cursor, size],
     queryFn: async () => {
-      const response = await curationApi.getPersonalizedCurations(page, limit)
+      const response = await curationApi.getCurations({ sort, cursor, size })
       return response.data
     },
   })
@@ -151,33 +158,7 @@ export const useUpdateCuration = () => {
 }
 
 /**
- * 10. 내가 쓴 큐레이션 목록 조회
- */
-export const useGetMyCurations = (page: number = 1, limit: number = 10) => {
-  return useQuery({
-    queryKey: ['curations', 'my', page, limit],
-    queryFn: async () => {
-      const response = await curationApi.getMyCurations(page, limit)
-      return response.data
-    },
-  })
-}
-
-/**
- * 11. 내가 쓴 임시저장 큐레이션 목록 조회
- */
-export const useGetMyDraftCurations = (page: number = 1, limit: number = 10) => {
-  return useQuery({
-    queryKey: ['curations', 'my', 'drafts', page, limit],
-    queryFn: async () => {
-      const response = await curationApi.getMyDraftCurations(page, limit)
-      return response.data
-    },
-  })
-}
-
-/**
- * 12. 큐레이션 삭제
+ * 10. 큐레이션 삭제
  */
 export const useDeleteCuration = () => {
   return useMutation({
@@ -195,38 +176,12 @@ export const useDeleteCuration = () => {
 }
 
 /**
- * 13. 인기순 큐레이션 조회 (likes 기준 정렬)
- */
-export const useGetPopularCurations = (page: number = 1, limit: number = 10) => {
-  return useQuery({
-    queryKey: ['curations', 'popular', page, limit],
-    queryFn: async () => {
-      const response = await curationApi.getPopularCurations(page, limit)
-      return response.data
-    },
-  })
-}
-
-/**
- * 14. 최신순 큐레이션 조회 (createdAt 기준 정렬)
- */
-export const useGetRecentCurations = (page: number = 1, limit: number = 10) => {
-  return useQuery({
-    queryKey: ['curations', 'recent', page, limit],
-    queryFn: async () => {
-      const response = await curationApi.getRecentCurations(page, limit)
-      return response.data
-    },
-  })
-}
-
-/**
- * 15. 책 검색
+ * 11. 책 검색
  */
 export const useSearchBooks = () => {
   return useMutation({
-    mutationFn: async (keyword: string) => {
-      const response = await curationApi.searchBooks(keyword)
+    mutationFn: async ({ keyword, page }: GetBooksRequest) => {
+      const response = await curationApi.searchBooks({ keyword, page })
       return response.data
     },
     onError: (error: Error) => {

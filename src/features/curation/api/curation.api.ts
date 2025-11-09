@@ -5,6 +5,8 @@ import type {
   UpdateReadingPreferenceRequest,
   UpdateReadingPreferenceResponse,
   GetCurationsResponse,
+  GetCurationByIdResponse,
+  GetCurationsRequest,
   GetCurationsByFieldRequest,
   CreateCurationRequest,
   CreateCurationResponse,
@@ -13,6 +15,7 @@ import type {
   UpdateCurationRequest,
   UpdateCurationResponse,
   DeleteCurationResponse,
+  GetBooksRequest,
   GetBooksResponse,
 } from '../types/curation.types'
 import type { AxiosErrorResponse } from '@/shared/api/api.types'
@@ -20,17 +23,14 @@ import { createAxiosClient } from '@/shared/api/axiosClient'
 
 // 목업 데이터 import
 import {
-  mockUpdateReadingPreferenceResponse,
-  mockGetCurationsResponse,
-  mockGetPersonalizedCurationsResponse,
   mockGetCurationsByFieldResponse,
   mockSaveCurationResponse,
   mockUpdateCurationResponse,
-  mockGetMyCurationsResponse,
-  mockGetMyDraftCurationsResponse,
   mockDeleteCurationResponse,
-  mockGetPopularCurationsResponse,
-  mockGetRecentCurationsResponse,
+  // mockGetCurationsResponse,
+  // mockGetPopularCurationsResponse,
+  // mockGetRecentCurationsResponse,
+  // mockGetCurationByIdResponse,
 } from './mockCurationApiData'
 
 const axios = createAxiosClient(import.meta.env.VITE_APP_BOOKPICK_API_URL)
@@ -38,7 +38,7 @@ const urlPrefix = '/api/v1'
 
 export const curationApi = {
   /**
-   * 1. 독서 취향 설정
+   * 1. 독서 취향 설정 - 확인
    */
   setReadingPreference: async (
     request: SetReadingPreferenceRequest,
@@ -58,12 +58,12 @@ export const curationApi = {
   },
 
   /**
-   * 2. 독서 취향 조회
+   * 2. 독서 취향 조회 - 확인
    */
   getReadingPreference: async (): Promise<GetReadingPreferenceResponse> => {
     try {
       const response = await axios.get(`${urlPrefix}/reading-preference`)
-      // authors 필드가 없으면 빈 배열로 추가 (추후 추가 예정 필드)
+      // TODO: authors 필드가 없으면 빈 배열로 추가 (추후 추가 예정 필드)
       const data = response.data.data
       if (data && !data.authors) {
         data.authors = []
@@ -82,18 +82,10 @@ export const curationApi = {
       }
       throw error
     }
-
-    // 목업 데이터 반환 (개발/테스트용)
-    // console.log('독서 취향 조회 요청')
-    // return new Promise((resolve) => {
-    //   setTimeout(() => {
-    //     resolve(mockGetReadingPreferenceResponse)
-    //   }, 500)
-    // })
   },
 
   /**
-   * 3. 독서 취향 수정
+   * 3. 독서 취향 수정 - 확인
    */
   updateReadingPreference: async (
     request: UpdateReadingPreferenceRequest,
@@ -111,70 +103,73 @@ export const curationApi = {
       }
       throw error
     }
+  },
+
+  /**
+   * 4. 큐레이션 단건 조회 - 확인
+   */
+  getCurationById: async (curationId: number): Promise<GetCurationByIdResponse> => {
+    try {
+      const response = await axios.get(`${urlPrefix}/curations/${curationId}`)
+      return response.data
+    } catch (error: unknown) {
+      const axiosError = error as AxiosErrorResponse
+      console.error('큐레이션 조회 에러:', axiosError)
+      throw error
+    }
 
     // 목업 데이터 반환
-    // console.log('독서 취향 수정 요청:', request)
+    // console.log('큐레이션 단건 조회 요청:', curationId)
     // return new Promise((resolve) => {
     //   setTimeout(() => {
-    //     resolve(mockUpdateReadingPreferenceResponse)
+    //     resolve(mockGetCurationByIdResponse)
     //   }, 500)
     // })
   },
 
   /**
-   * 4. 큐레이션 전체 조회
+   * 5. 큐레이션 목록 조회(취향 유사도순, 인기순, 최신순 정렬) - 확인
    */
-  getAllCurations: async (page: number = 1, limit: number = 10): Promise<GetCurationsResponse> => {
-    // try {
-    //   const response = await axios.get(`${urlPrefix}/curations`, {
-    //     params: { page, limit },
-    //   })
-    //   return response.data
-    // } catch (error: unknown) {
-    //   const axiosError = error as AxiosErrorResponse
-    //   throw error
-    // }
-
+  getCurations: async ({
+    sort,
+    cursor,
+    size,
+  }: GetCurationsRequest): Promise<GetCurationsResponse> => {
+    try {
+      const response = await axios.get(`${urlPrefix}/curations`, {
+        params: { sort, cursor, size },
+      })
+      return response.data
+    } catch (error: unknown) {
+      const axiosError = error as AxiosErrorResponse
+      if (axiosError.response?.status === 404) {
+        throw new Error('독서 취향을 먼저 설정해주세요.')
+      }
+      throw error
+    }
     // 목업 데이터 반환
-    console.log('큐레이션 전체 조회 요청:', { page, limit })
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(mockGetCurationsResponse)
-      }, 500)
-    })
+    // console.log('큐레이션 목록 조회 요청:', { sort, cursor, size })
+    // return new Promise((resolve) => {
+    //   setTimeout(() => {
+    //     // sort 파라미터에 따라 적절한 목업 데이터 반환
+    //     switch (sort) {
+    //       case 'popularity':
+    //         resolve(mockGetPopularCurationsResponse)
+    //         break
+    //       case 'latest':
+    //         resolve(mockGetRecentCurationsResponse)
+    //         break
+    //       case 'similarity':
+    //       default:
+    //         resolve(mockGetCurationsResponse)
+    //         break
+    //     }
+    //   }, 500)
+    // })
   },
 
   /**
-   * 5. 사용자 취향에 맞는 큐레이션 조회
-   */
-  getPersonalizedCurations: async (
-    page: number = 1,
-    limit: number = 10,
-  ): Promise<GetCurationsResponse> => {
-    // try {
-    //   const response = await axios.get(`${urlPrefix}/curations/personalized`, {
-    //     params: { page, limit },
-    //   })
-    //   return response.data
-    // } catch (error: unknown) {
-    //   const axiosError = error as AxiosErrorResponse
-    //   if (axiosError.response?.status === 404) {
-    //     throw new Error('독서 취향을 먼저 설정해주세요.')
-    //   }
-    //   throw error
-    // }
-
-    // 목업 데이터 반환
-    console.log('사용자 취향 맞춤 큐레이션 조회 요청:', { page, limit })
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(mockGetPersonalizedCurationsResponse)
-      }, 500)
-    })
-  },
-
-  /**
-   * 6. 특정 필드로 큐레이션 조회
+   * 6. 특정 필드로 큐레이션 조회(보류: 큐레이션 필터링 기능 추가 시 사용)
    */
   getCurationsByField: async (
     request: GetCurationsByFieldRequest,
@@ -220,13 +215,6 @@ export const curationApi = {
       }
       throw error
     }
-    // 목업 데이터 반환
-    // console.log('큐레이션 작성 요청:', request)
-    // return new Promise((resolve) => {
-    //   setTimeout(() => {
-    //     resolve(mockCreateCurationResponse)
-    //   }, 500)
-    // })
   },
 
   /**
@@ -290,56 +278,7 @@ export const curationApi = {
   },
 
   /**
-   * 10. 내가 쓴 큐레이션 목록 조회
-   */
-  getMyCurations: async (page: number = 1, limit: number = 10): Promise<GetCurationsResponse> => {
-    // try {
-    //   const response = await axios.get(`${urlPrefix}/curations/my`, {
-    //     params: { page, limit },
-    //   })
-    //   return response.data
-    // } catch (error: unknown) {
-    //   const axiosError = error as AxiosErrorResponse
-    //   throw error
-    // }
-
-    // 목업 데이터 반환
-    console.log('내가 쓴 큐레이션 목록 조회 요청:', { page, limit })
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(mockGetMyCurationsResponse)
-      }, 500)
-    })
-  },
-
-  /**
-   * 11. 내가 쓴 임시저장 큐레이션 목록 조회
-   */
-  getMyDraftCurations: async (
-    page: number = 1,
-    limit: number = 10,
-  ): Promise<GetCurationsResponse> => {
-    // try {
-    //   const response = await axios.get(`${urlPrefix}/curations/my/drafts`, {
-    //     params: { page, limit },
-    //   })
-    //   return response.data
-    // } catch (error: unknown) {
-    //   const axiosError = error as AxiosErrorResponse
-    //   throw error
-    // }
-
-    // 목업 데이터 반환
-    console.log('내가 쓴 임시저장 큐레이션 목록 조회 요청:', { page, limit })
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(mockGetMyDraftCurationsResponse)
-      }, 500)
-    })
-  },
-
-  /**
-   * 12. 큐레이션 삭제
+   * 10. 큐레이션 삭제
    */
   deleteCuration: async (curationId: number): Promise<DeleteCurationResponse> => {
     // try {
@@ -366,64 +305,13 @@ export const curationApi = {
   },
 
   /**
-   * 13. 인기순 큐레이션 조회 (likes 기준 정렬)
+   * 11. 책 검색
    */
-  getPopularCurations: async (
-    page: number = 1,
-    limit: number = 10,
-  ): Promise<GetCurationsResponse> => {
-    // try {
-    //   const response = await axios.get(`${urlPrefix}/curations/popular`, {
-    //     params: { page, limit },
-    //   })
-    //   return response.data
-    // } catch (error: unknown) {
-    //   const axiosError = error as AxiosErrorResponse
-    //   throw error
-    // }
-
-    // 목업 데이터 반환
-    console.log('인기순 큐레이션 조회 요청:', { page, limit })
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(mockGetPopularCurationsResponse)
-      }, 500)
-    })
-  },
-
-  /**
-   * 14. 최신순 큐레이션 조회 (createdAt 기준 정렬)
-   */
-  getRecentCurations: async (
-    page: number = 1,
-    limit: number = 10,
-  ): Promise<GetCurationsResponse> => {
-    // try {
-    //   const response = await axios.get(`${urlPrefix}/curations/recent`, {
-    //     params: { page, limit },
-    //   })
-    //   return response.data
-    // } catch (error: unknown) {
-    //   const axiosError = error as AxiosErrorResponse
-    //   throw error
-    // }
-
-    // 목업 데이터 반환
-    console.log('최신순 큐레이션 조회 요청:', { page, limit })
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(mockGetRecentCurationsResponse)
-      }, 500)
-    })
-  },
-
-  /**
-   * 15. 책 검색
-   */
-  searchBooks: async (keyword: string): Promise<GetBooksResponse> => {
+  searchBooks: async (request: GetBooksRequest): Promise<GetBooksResponse> => {
     try {
       const response = await axios.post(`${urlPrefix}/book/search`, {
-        keyword,
+        keyword: request.keyword,
+        page: request.page || 1,
       })
       return response.data
     } catch (error: unknown) {
@@ -431,13 +319,5 @@ export const curationApi = {
       console.error('책 검색 에러:', axiosError)
       throw error
     }
-
-    // 목업 데이터 반환
-    // console.log('책 검색 요청:', keyword)
-    // return new Promise((resolve) => {
-    //   setTimeout(() => {
-    //     resolve(mockGetBooksResponse)
-    //   }, 500)
-    // })
   },
 }

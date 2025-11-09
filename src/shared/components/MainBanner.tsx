@@ -50,7 +50,7 @@ const MainBanner = () => {
         <div className='flex flex-col gap-2 sm:flex-row'>
           {isFirstLogin ? (
             <>
-              <Button variant='secondary' size='lg' onClick={() => navigate('/onboarding')}>
+              <Button size='lg' onClick={() => navigate('/onboarding')}>
                 <span className='font-semibold text-sm sm:text-base'>독서취향 설정하기</span>
               </Button>
               <Button size='lg' onClick={() => navigate('/curation/create')} className='md:hidden'>

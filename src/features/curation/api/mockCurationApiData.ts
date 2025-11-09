@@ -5,10 +5,12 @@
 import type {
   ReadingPreference,
   Curation,
+  CurationItem,
   SetReadingPreferenceResponse,
   GetReadingPreferenceResponse,
   UpdateReadingPreferenceResponse,
   GetCurationsResponse,
+  GetCurationByIdResponse,
   CreateCurationResponse,
   SaveCurationResponse,
   UpdateCurationResponse,
@@ -450,34 +452,86 @@ export const mockUpdateReadingPreferenceResponse: UpdateReadingPreferenceRespons
   data: mockReadingPreference,
 }
 
+// 목업 큐레이션 아이템 생성 헬퍼 함수
+// 목업 데이터에서는 thumbnail.imageUrl을 string으로 사용하지만, 실제 타입은 File을 요구함
+const convertCurationToCurationItem = (curation: Curation): CurationItem => ({
+  curationId: curation.id,
+  id: curation.id,
+  title: curation.title,
+  userId: curation.userId || 0,
+  nickName: curation.curator,
+  thumbnail: {
+    imageUrl: (curation.thumbnailImage || null) as unknown as File | null,
+    imageColor: curation.thumbnailColor || null,
+  },
+  summary: curation.description,
+  review: curation.description,
+  book: {
+    title: '책 제목', // 임시 데이터
+    author: '저자명',
+    isbn: '',
+  },
+  likeCount: curation.likes,
+  commentCount: curation.comments,
+  viewCount: curation.views,
+  similarity: curation.similarity,
+  matched: curation.tags.join(', '), // tags를 쉼표로 구분된 문자열로 변환
+  createdAt: curation.createdAt,
+  updatedAt: curation.updatedAt,
+  recommend: {
+    moods: [],
+    genres: [],
+    keywords: curation.tags,
+  },
+})
+
 export const mockGetCurationsResponse: GetCurationsResponse = {
   status: 200,
   data: {
-    curations: mockCurations.filter((c) => c.status === 'published'),
-    total: 20,
-    page: 1,
-    limit: 10,
+    sortType: 'similarity',
+    description: '취향 유사도순 큐레이션',
+    content: mockCurations
+      .filter((c) => c.status === 'published')
+      .map(convertCurationToCurationItem),
+    size: 10,
+    hasNext: true,
+    nextCursor: 10,
   },
 }
 
 export const mockGetPersonalizedCurationsResponse: GetCurationsResponse = {
   status: 200,
   data: {
-    curations: mockCurations.filter((c) => c.status === 'published'),
-    total: 20,
-    page: 1,
-    limit: 10,
+    sortType: 'similarity',
+    description: '취향 유사도순 큐레이션',
+    content: mockCurations
+      .filter((c) => c.status === 'published')
+      .map(convertCurationToCurationItem),
+    size: 10,
+    hasNext: true,
+    nextCursor: 10,
   },
 }
 
 export const mockGetCurationsByFieldResponse: GetCurationsResponse = {
   status: 200,
   data: {
-    curations: mockCurations.filter((c) => c.status === 'published').slice(0, 1),
-    total: 1,
-    page: 1,
-    limit: 10,
+    sortType: 'similarity',
+    description: '필터링된 큐레이션',
+    content: mockCurations
+      .filter((c) => c.status === 'published')
+      .slice(0, 1)
+      .map(convertCurationToCurationItem),
+    size: 10,
+    hasNext: false,
+    nextCursor: 0,
   },
+}
+
+export const mockGetCurationByIdResponse: GetCurationByIdResponse = {
+  status: 200,
+  message: '큐레이션 조회 성공',
+  data: convertCurationToCurationItem(mockCurations[0]),
 }
 
 export const mockCreateCurationResponse: CreateCurationResponse = {
@@ -501,20 +555,28 @@ export const mockUpdateCurationResponse: UpdateCurationResponse = {
 export const mockGetMyCurationsResponse: GetCurationsResponse = {
   status: 200,
   data: {
-    curations: mockCurations.filter((c) => c.userId === 1 && c.status === 'published'),
-    total: 3,
-    page: 1,
-    limit: 10,
+    sortType: 'latest',
+    description: '내가 작성한 큐레이션',
+    content: mockCurations
+      .filter((c) => c.userId === 1 && c.status === 'published')
+      .map(convertCurationToCurationItem),
+    size: 10,
+    hasNext: false,
+    nextCursor: 0,
   },
 }
 
 export const mockGetMyDraftCurationsResponse: GetCurationsResponse = {
   status: 200,
   data: {
-    curations: mockCurations.filter((c) => c.userId === 1 && c.status === 'draft'),
-    total: 0,
-    page: 1,
-    limit: 10,
+    sortType: 'latest',
+    description: '임시저장된 큐레이션',
+    content: mockCurations
+      .filter((c) => c.userId === 1 && c.status === 'draft')
+      .map(convertCurationToCurationItem),
+    size: 10,
+    hasNext: false,
+    nextCursor: 0,
   },
 }
 
@@ -527,24 +589,30 @@ export const mockDeleteCurationResponse: DeleteCurationResponse = {
 export const mockGetPopularCurationsResponse: GetCurationsResponse = {
   status: 200,
   data: {
-    curations: mockCurations
+    sortType: 'popularity',
+    description: '인기순 큐레이션',
+    content: mockCurations
       .filter((c) => c.status === 'published')
-      .sort((a, b) => b.likes - a.likes),
-    total: 18,
-    page: 1,
-    limit: 10,
+      .sort((a, b) => b.likes - a.likes)
+      .map(convertCurationToCurationItem),
+    size: 10,
+    hasNext: true,
+    nextCursor: 10,
   },
 }
 
 export const mockGetRecentCurationsResponse: GetCurationsResponse = {
   status: 200,
   data: {
-    curations: mockCurations
+    sortType: 'latest',
+    description: '최신순 큐레이션',
+    content: mockCurations
       .filter((c) => c.status === 'published')
-      .sort((a, b) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime()),
-    total: 18,
-    page: 1,
-    limit: 10,
+      .sort((a, b) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime())
+      .map(convertCurationToCurationItem),
+    size: 10,
+    hasNext: true,
+    nextCursor: 10,
   },
 }
 
