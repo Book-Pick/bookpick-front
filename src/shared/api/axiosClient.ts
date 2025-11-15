@@ -40,6 +40,7 @@ export const createAxiosClient = (
       const { response } = error
       const status = response?.status
       const message = response?.data?.message
+      const exceptionType = response?.data?.exception
 
       const redirectToLogin = () => {
         localStorage.removeItem('bookpick-auth')
@@ -53,9 +54,16 @@ export const createAxiosClient = (
 
       if (message) {
         switch (status) {
-          // case 401:
-          //   toast.error(message)
-          //   break
+          case 401: {
+            const isAuthEndpoint =
+              error.config?.url?.includes('/login') || error.config?.url?.includes('/register')
+
+            if (!isAuthEndpoint) {
+              toast.error(message || '인증이 필요합니다.')
+              redirectToLogin()
+            }
+            break
+          }
           case 403:
             toast.error(message)
             redirectToLogin()
@@ -64,9 +72,14 @@ export const createAxiosClient = (
           //   toast.error(message)
           //   break
           case 500:
-            toast.error(message)
-          // window.location.href = '/error'
-          // break
+            if (exceptionType?.includes('JwtTokenExpiredException')) {
+              toast.error(message || '로그인 토큰이 만료되었습니다.')
+              redirectToLogin()
+            } else {
+              toast.error(message)
+              window.location.href = '/error'
+            }
+            break
           // case 409:
           //   toast.error(message)
           //   break
