@@ -65,7 +65,7 @@ export const createAxiosClient = (
           //   break
           case 500:
             toast.error(message)
-            window.location.href = '/error'
+          // window.location.href = '/error'
           // break
           // case 409:
           //   toast.error(message)
