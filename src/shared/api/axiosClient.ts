@@ -77,7 +77,7 @@ export const createAxiosClient = (
               redirectToLogin()
             } else {
               toast.error(message)
-              window.location.href = '/error'
+              // window.location.href = '/error'
             }
             break
           // case 409:
