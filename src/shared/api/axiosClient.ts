@@ -23,7 +23,7 @@ export const createAxiosClient = (
         try {
           const parsed = JSON.parse(authData)
           if (parsed.token?.accessToken) {
-            config.headers.Authorization = `${parsed.token.accessToken}`
+            config.headers.Authorization = `${parsed.token.accessToken}aa`
           }
         } catch (error) {
           console.error('Failed to parse auth data:', error)
@@ -42,9 +42,12 @@ export const createAxiosClient = (
       const message = response?.data?.message
       const exceptionType = response?.data?.exception
 
-      const redirectToLogin = () => {
+      const redirectToLogin = (message?: string) => {
         localStorage.removeItem('bookpick-auth')
-        window.location.href = '/login'
+        toast.error(message || '다시 로그인 하세요.')
+        setTimeout(() => {
+          window.location.href = '/login'
+        }, 1500)
       }
 
       if (!response) {
@@ -59,8 +62,7 @@ export const createAxiosClient = (
               error.config?.url?.includes('/login') || error.config?.url?.includes('/register')
 
             if (!isAuthEndpoint) {
-              toast.error(message || '인증이 필요합니다.')
-              redirectToLogin()
+              redirectToLogin(message || '인증이 필요합니다.')
             }
             break
           }
@@ -73,8 +75,9 @@ export const createAxiosClient = (
           //   break
           case 500:
             if (exceptionType?.includes('JwtTokenExpiredException')) {
-              toast.error(message || '로그인 토큰이 만료되었습니다.')
-              redirectToLogin()
+              redirectToLogin(message || '로그인 토큰이 만료되었습니다.')
+            } else if (exceptionType?.includes('InvalidTokenTypeException')) {
+              redirectToLogin(message || ' 유효하지않은 토큰 타입입니다.')
             } else {
               toast.error(message)
               // window.location.href = '/error'
