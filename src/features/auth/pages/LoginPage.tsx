@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { loginSchema, type LoginFormData } from '../model/validationSchema'
 import { useAuth } from '../hooks/useAuth'
-import { useGetProfile } from '@/features/user/hooks/useUser'
 
 export default function LoginPage() {
   const navigate = useNavigate()
@@ -15,7 +14,6 @@ export default function LoginPage() {
   } = useForm<LoginFormData>({ resolver: zodResolver(loginSchema), mode: 'onTouched' })
 
   const { useLogin } = useAuth()
-  const { data: profile } = useGetProfile()
   const { mutateAsync: loginMutateAsync, isPending } = useLogin()
 
   const onSubmit = async (data: LoginFormData) => {
@@ -23,7 +21,7 @@ export default function LoginPage() {
       const response = await loginMutateAsync(data)
       // 약간의 딜레이 후 navigate (상태 업데이트 보장)
       setTimeout(() => {
-        if (response?.isFirstLogin || !profile?.nickName) {
+        if (response?.isFirstLogin) {
           navigate('/onboarding')
         } else {
           navigate('/')
