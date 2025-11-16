@@ -109,9 +109,8 @@ export const useCreateCuration = () => {
       const response = await curationApi.createCuration(request)
       return response.data
     },
-    onSuccess: (data) => {
-      toast.success('큐레이션이 성공적으로 작성되었습니다.')
-      console.log('큐레이션 작성 완료:', data)
+    onSuccess: () => {
+      toast.success('큐레이션이 등록되었습니다.')
     },
     onError: (error: Error) => {
       toast.error(error.message || '큐레이션 작성에 실패했습니다.')

@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -17,6 +17,7 @@ import {
 import toast from 'react-hot-toast'
 import { useCreateProfile } from '../hooks/useUser'
 import { profileSettingsSchema, type ProfileSettingsFormData } from '../model/validationSchema'
+import { generateRandomNickname } from '../constants/nicknameGenerator'
 
 // 온보딩 - 프로필 설정 페이지
 export default function MyProfileSettingsPage() {
@@ -29,6 +30,7 @@ export default function MyProfileSettingsPage() {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<ProfileSettingsFormData>({
     resolver: zodResolver(profileSettingsSchema),
@@ -38,6 +40,13 @@ export default function MyProfileSettingsPage() {
       introduction: '',
     },
   })
+
+  // 컴포넌트 마운트 시 랜덤 닉네임 자동 생성
+  useEffect(() => {
+    const randomNickname = generateRandomNickname()
+    setValue('nickname', randomNickname)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const { mutateAsync: createProfileMutateAsync, isPending } = useCreateProfile()
 

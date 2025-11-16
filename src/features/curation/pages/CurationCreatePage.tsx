@@ -120,7 +120,6 @@ export default function CurationCreatePage() {
     }
     createCurationMutate(request, {
       onSuccess: () => {
-        toast.success('큐레이션이 등록되었습니다.')
         navigate('/mypage/curation')
       },
       onError: (error: Error) => {

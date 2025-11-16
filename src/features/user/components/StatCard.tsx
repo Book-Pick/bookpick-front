@@ -8,13 +8,15 @@ interface StatCardProps {
 export default function StatCard({ label, value, suffix, className = '' }: StatCardProps) {
   return (
     <div
-      className={`flex flex-col items-center justify-center gap-3 md:gap-8 border border-border rounded-xl p-4 md:p-10 ${className}`}
+      className={`flex flex-col items-center justify-center gap-1 bg-neutral-100 rounded-lg py-2.5 px-2 md:px-10 md:gap-8 md:border md:border-border md:rounded-xl md:p-10 md:bg-transparent ${className}`}
     >
-      <p className='text-xs md:text-sm font-medium text-center'>{label}</p>
+      <p className='text-[10px] md:text-base font-medium text-center text-foreground/80'>{label}</p>
       <div className='flex items-end gap-1'>
-        <span className='font-stat-value'>{value}</span>
+        <span className='text-md md:text-2xl font-semibold text-foreground md:font-stat-value'>
+          {value}
+        </span>
         {suffix && (
-          <span className='text-sm md:text-lg font-medium text-foreground leading-none pb-0.5'>
+          <span className='text-xs md:text-2xl font-medium text-foreground leading-none pb-0.5'>
             {suffix}
           </span>
         )}

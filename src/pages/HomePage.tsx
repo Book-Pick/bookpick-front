@@ -58,7 +58,7 @@ export default function HomePage() {
 
   const handleEditorPickClick = (_id: string) => {
     void _id // 임시로 사용하지 않음
-    toast('서비스 예정입니다.', {
+    toast('서비스 준비 중입니다.', {
       icon: '⏳',
     })
   }

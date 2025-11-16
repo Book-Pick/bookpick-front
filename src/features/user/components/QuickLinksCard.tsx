@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
 
 interface QuickLink {
   label: string
@@ -8,23 +9,32 @@ interface QuickLink {
 const quickLinks: QuickLink[] = [
   { label: '좋아요 한 추천사', path: '/mypage/likes' },
   { label: '내 추천사 관리', path: '/mypage/curation' },
-  { label: '주문 내역', path: '/order/history' },
+  // { label: '주문 내역', path: '/order/history' },
   { label: '읽은 책 관리', path: '/mypage/reading-history' },
 ]
 
 export default function QuickLinksCard() {
   const navigate = useNavigate()
 
+  const handleLinkClick = (path: string) => {
+    if (path === '/mypage/curation') {
+      navigate(path)
+    } else {
+      toast('서비스 준비 중입니다.', {
+        icon: '⏳',
+      })
+    }
+  }
+
   return (
-    <div className='flex flex-col gap-5 md:gap-7.5 border border-border rounded-xl p-5 md:p-7.5 md:h-full'>
-      <h3 className='text-lg md:text-xl font-semibold'>바로 가기</h3>
-      {/* 모바일: 가로 스크롤 칩, 데스크톱: 세로 리스트 */}
-      <div className='flex flex-row md:flex-col gap-2.5 md:gap-4 overflow-x-auto md:overflow-x-visible pb-2 md:pb-0 -mx-1 px-1 scrollbar-hide'>
+    <div className='flex flex-col gap-4 md:gap-7.5 md:border md:border-border md:rounded-xl md:p-7.5'>
+      <h3 className='text-base font-semibold md:text-xl'>바로 가기</h3>
+      <div className='flex flex-col gap-0 md:gap-4'>
         {quickLinks.map((link, index) => (
           <button
             key={index}
-            onClick={() => navigate(link.path)}
-            className='flex-shrink-0 md:flex-shrink py-3 px-5 md:py-2.5 md:px-2.5 text-sm md:text-base font-medium bg-card md:bg-transparent hover:bg-muted rounded-full md:rounded transition-colors border border-border md:border-0 whitespace-nowrap md:text-left'
+            onClick={() => handleLinkClick(link.path)}
+            className='py-2.5 px-2.5 text-base font-medium text-left hover:bg-muted transition-colors'
           >
             {link.label}
           </button>

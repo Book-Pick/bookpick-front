@@ -13,6 +13,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '@/features/auth/hooks/useAuth'
 import { useAuth as useAuthContext } from '@/app/providers'
 import { ShoppingCart, LogOut, User } from 'lucide-react'
+import toast from 'react-hot-toast'
 
 export function GnbLoggedIn() {
   const navigate = useNavigate()
@@ -35,7 +36,10 @@ export function GnbLoggedIn() {
   }
 
   const handleCartClick = () => {
-    navigate('/order/cart')
+    toast('서비스 준비 중입니다.', {
+      icon: '⏳',
+    })
+    // navigate('/order/cart')
   }
 
   const handleLogoutClick = () => {

@@ -88,14 +88,20 @@ export default function CurationDetailPage() {
     )
   }
 
-  const handlePurchase = (curationId: number, price: number) => {
-    console.log(`큐레이션 ${curationId} 구매 요청, 가격: ${price}원`)
-    navigate('/order/complete')
+  const handlePurchase = (_curationId: number, _price: number) => {
+    // console.log(`큐레이션 ${curationId} 구매 요청, 가격: ${price}원`)
+    toast('서비스 준비 중입니다.', {
+      icon: '⏳',
+    })
+    // navigate('/order/complete')
   }
 
-  const handleCart = (curationId: number, price: number) => {
-    console.log(`큐레이션 ${curationId} 장바구니 담기 요청, 가격: ${price}원`)
-    toast.success('큐레이션이 장바구니에 담겼습니다.')
+  const handleCart = (_curationId: number, _price: number) => {
+    // console.log(`큐레이션 ${curationId} 장바구니 담기 요청, 가격: ${price}원`)
+    // toast.success('큐레이션이 장바구니에 담겼습니다.')
+    toast('서비스 준비 중입니다.', {
+      icon: '⏳',
+    })
   }
 
   const handleSubscribeToggle = (curatorId: number, isSubscribed: boolean) => {
