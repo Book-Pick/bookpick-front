@@ -9,7 +9,7 @@ interface ContentsLayoutProps {
 export const ContentsLayout: React.FC<ContentsLayoutProps> = ({ children, className = '' }) => {
   return (
     <main
-      className={`max-w-[1000px] mx-auto pt-[57px] sm:pt-[73px] pb-34 px-4 lg:px-0 ${className}`}
+      className={`max-w-[1000px] mx-auto pt-[57px] sm:pt-[73px] pb-20 px-4 lg:px-0 ${className}`}
     >
       {children || <Outlet />}
     </main>

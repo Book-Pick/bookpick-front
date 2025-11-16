@@ -1,16 +1,17 @@
-import MainBanner from '@/shared/components/MainBanner'
 import { EditorPickSection } from '@/shared/components/EditorPickSection'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui'
 import { useNavigate } from 'react-router-dom'
 import { ContentsLayout } from '@/app/layout'
 import CurationList from '@/features/curation/components/CurationList'
 import { useGetCurations } from '@/features/curation/hooks/useCuration'
+import EmptyCurations from '@/features/curation/components/EmptyCurations'
+import EmptyCurationsCta from '@/features/curation/components/EmptyCurationsCta'
 import toast from 'react-hot-toast'
+import { useGetReadingPreference } from '@/features/curation/hooks/useCuration'
 
 export default function HomePage() {
   const navigate = useNavigate()
 
-  // API 호출
   const { data: personalizedData, isLoading: isLoadingPersonalized } = useGetCurations({
     sort: 'similarity',
     cursor: 0,
@@ -26,6 +27,7 @@ export default function HomePage() {
     cursor: 0,
     size: 6,
   })
+  const { data: readingPreference } = useGetReadingPreference()
 
   const handleCardClick = (curationId: number) => {
     navigate(`/curation/detail/${curationId}`)
@@ -63,13 +65,10 @@ export default function HomePage() {
 
   return (
     <div className='min-h-screen bg-background'>
-      <div className='hidden xs:block'>
-        <MainBanner />
-      </div>
       {/* 메인 컨텐츠 영역 */}
       <ContentsLayout>
         {/* 에디터 픽 섹션 */}
-        <section className='mb-[50px]'>
+        <section className='mb-[50px] mt-5'>
           <EditorPickSection
             title='에디터가 엄선한 #가을 #낭만 #여행'
             picks={editorPicks}
@@ -78,17 +77,14 @@ export default function HomePage() {
         </section>
 
         <section className='mt-5 xs:mt-0 mb-16'>
-          {/* <div className='flex justify-between items-center mb-8'>
-            <h2 className='font-title font-bold text-foreground'>내 취향에 맞는 큐레이션</h2>
-          </div> */}
           <div className='flex w-full flex-col gap-6'>
             <Tabs defaultValue='similar'>
               <TabsList>
-                <TabsTrigger value='similar' size='lg'>
-                  내 취향 유사도순
-                </TabsTrigger>
                 <TabsTrigger value='like' size='lg'>
                   인기순
+                </TabsTrigger>
+                <TabsTrigger value='similar' size='lg'>
+                  내 취향 유사도순
                 </TabsTrigger>
                 <TabsTrigger value='recent' size='lg'>
                   최신순
@@ -102,11 +98,7 @@ export default function HomePage() {
                 ) : similarCurations?.length > 0 ? (
                   <CurationList curations={similarCurations} onCardClick={handleCardClick} />
                 ) : (
-                  <div className='flex flex-col gap-6 mt-6'>
-                    <div className='flex flex-col gap-2'>
-                      <h3 className='font-title font-bold text-foreground'>큐레이션이 없습니다.</h3>
-                    </div>
-                  </div>
+                  <EmptyCurationsCta />
                 )}
               </TabsContent>
               <TabsContent value='like'>
@@ -116,12 +108,10 @@ export default function HomePage() {
                   </div>
                 ) : likeCurations?.length > 0 ? (
                   <CurationList curations={likeCurations} onCardClick={handleCardClick} />
+                ) : readingPreference?.preferenceId ? (
+                  <EmptyCurations />
                 ) : (
-                  <div className='flex flex-col gap-6 mt-6'>
-                    <div className='flex flex-col gap-2'>
-                      <h3 className='font-title font-bold text-foreground'>큐레이션이 없습니다.</h3>
-                    </div>
-                  </div>
+                  <EmptyCurationsCta />
                 )}
               </TabsContent>
               <TabsContent value='recent'>
@@ -132,11 +122,7 @@ export default function HomePage() {
                 ) : recentCurations?.length > 0 ? (
                   <CurationList curations={recentCurations} onCardClick={handleCardClick} />
                 ) : (
-                  <div className='flex flex-col gap-6 mt-6'>
-                    <div className='flex flex-col gap-2'>
-                      <h3 className='font-title font-bold text-foreground'>큐레이션이 없습니다.</h3>
-                    </div>
-                  </div>
+                  <EmptyCurations />
                 )}
               </TabsContent>
             </Tabs>
