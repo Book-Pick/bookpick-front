@@ -105,8 +105,8 @@ export const routerConfig: RouteObject[] = [
           {
             path: 'onboarding',
             children: [
-              { index: true, element: <ReadingPreferencePage /> },
-              { path: 'profile', element: <MyProfileSettingsPage /> },
+              { index: true, element: <MyProfileSettingsPage /> },
+              { path: 'reading-preference', element: <ReadingPreferencePage /> },
             ],
           },
         ],

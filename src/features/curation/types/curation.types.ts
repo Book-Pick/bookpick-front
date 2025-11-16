@@ -13,6 +13,17 @@ export type Book = {
   isbn?: string
 }
 
+export type BookRequest = {
+  title: string
+  authors: string[]
+  image?: string
+  isbn?: string
+}
+
+export type AuthorRequest = {
+  name: string
+}
+
 // BookSearchSection에서 사용하는 별칭
 export type BookSearchResult = Book
 
@@ -20,13 +31,13 @@ export type BookSearchResult = Book
 export interface ReadingPreference {
   preferenceId?: number
   mbti?: string | null
-  favoriteBooks?: string[]
-  authors?: string[] // TODO: 추후 추가 예정 필드
+  favoriteBooks?: BookRequest[]
+  favoriteAuthors?: AuthorRequest[]
   moods?: string[]
   readingHabits?: string[]
   genres?: string[]
   keywords?: string[]
-  trends?: string[]
+  readingStyles?: string[]
 }
 
 // 큐레이션 타입

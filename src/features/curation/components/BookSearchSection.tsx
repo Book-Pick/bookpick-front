@@ -1,6 +1,16 @@
 import { useState } from 'react'
-import { Search, BookOpen } from 'lucide-react'
-import { Input, Button, Card, CardContent } from '@/shared/ui'
+import { Search, BookOpen, ChevronLeft, ChevronRight } from 'lucide-react'
+import {
+  Input,
+  Button,
+  Card,
+  CardContent,
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+} from '@/shared/ui'
+import { usePagination } from '@/shared/hooks'
 import { useSearchBooks } from '../hooks/useCuration'
 import type { BookSearchResult } from '../types/curation.types'
 
@@ -40,11 +50,21 @@ export function BookSearchSection({
 
   const { mutate: searchBooks, data, isPending, reset } = useSearchBooks()
 
+  const pagination = usePagination({
+    totalPages: data?.pageInfo?.totalPages || 1,
+    onPageChange: (page) => {
+      searchBooks({ keyword: searchQuery, page })
+    },
+    maxVisiblePages: 5,
+    initialPage: 1,
+  })
+
   const isSingleMode = maxSelections === 1 && onBookSelect !== undefined
   const isMaxReached = currentCount >= maxSelections
 
   const handleSearch = () => {
     if (!searchQuery.trim()) return
+    pagination.setCurrentPage(1)
     searchBooks({ keyword: searchQuery, page: 1 })
   }
 
@@ -135,7 +155,7 @@ export function BookSearchSection({
                     setSearchQuery(e.target.value)
                     if (data) reset() // 입력 시 이전 검색 결과 초기화
                   }}
-                  onKeyPress={handleKeyPress}
+                  onKeyDown={handleKeyPress}
                   className='flex-1'
                 />
                 <Button onClick={handleSearch} disabled={!searchQuery.trim() || isPending}>
@@ -145,42 +165,100 @@ export function BookSearchSection({
               </div>
 
               {data && !isPending && (
-                <div className='space-y-2'>
+                <div ref={pagination.scrollRef} className='space-y-4'>
                   {data.books.length > 0 ? (
                     <>
-                      <p className='text-sm text-muted-foreground'>검색 결과</p>
-                      {data.books.map((book, index) => (
-                        <Card
-                          key={`${book.title}-${book.author}-${index}`}
-                          className='cursor-pointer hover:bg-gray-50 transition-colors'
-                          onClick={() => handleBookSelect(book)}
-                        >
-                          <CardContent className='p-3'>
-                            <div className='flex items-center gap-3'>
-                              {book.image ? (
-                                <img
-                                  src={book.image}
-                                  alt={book.title}
-                                  className='w-12 h-16 object-cover rounded'
-                                  onError={(e) => {
-                                    e.currentTarget.style.display = 'none'
-                                    e.currentTarget.nextElementSibling?.classList.remove('hidden')
-                                  }}
-                                />
-                              ) : null}
-                              <div
-                                className={`w-12 h-16 bg-gray-200 rounded flex items-center justify-center ${book.image ? 'hidden' : ''}`}
+                      <div className='space-y-2'>
+                        <p className='text-sm text-muted-foreground'>
+                          검색 결과 (총 {data.pageInfo.totalElements}건)
+                        </p>
+                        {data.books.map((book, index) => (
+                          <Card
+                            key={`${book.title}-${book.author}-${index}`}
+                            className='cursor-pointer hover:bg-gray-50 transition-colors'
+                            onClick={() => handleBookSelect(book)}
+                          >
+                            <CardContent className='p-3'>
+                              <div className='flex items-center gap-3'>
+                                {book.image ? (
+                                  <img
+                                    src={book.image}
+                                    alt={book.title}
+                                    className='w-12 h-16 object-cover rounded'
+                                    onError={(e) => {
+                                      e.currentTarget.style.display = 'none'
+                                      e.currentTarget.nextElementSibling?.classList.remove('hidden')
+                                    }}
+                                  />
+                                ) : null}
+                                <div
+                                  className={`w-12 h-16 bg-gray-200 rounded flex items-center justify-center ${book.image ? 'hidden' : ''}`}
+                                >
+                                  <BookOpen size={16} className='text-gray-400' />
+                                </div>
+                                <div className='flex-1'>
+                                  <h5 className='font-medium'>{book.title}</h5>
+                                  <p className='text-sm text-muted-foreground'>{book.author}</p>
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        ))}
+                      </div>
+
+                      {/* 페이지네이션 */}
+                      {data.pageInfo && data.pageInfo.totalPages > 1 && (
+                        <Pagination>
+                          <PaginationContent>
+                            {/* 이전 버튼 */}
+                            <PaginationItem>
+                              <PaginationLink
+                                onClick={() =>
+                                  pagination.handlePageChange(pagination.currentPage - 1)
+                                }
+                                aria-disabled={!pagination.hasPrevious}
+                                className={
+                                  !pagination.hasPrevious
+                                    ? 'pointer-events-none opacity-50'
+                                    : 'cursor-pointer'
+                                }
                               >
-                                <BookOpen size={16} className='text-gray-400' />
-                              </div>
-                              <div className='flex-1'>
-                                <h5 className='font-medium'>{book.title}</h5>
-                                <p className='text-sm text-muted-foreground'>{book.author}</p>
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
+                                <ChevronLeft className='h-4 w-4' />
+                              </PaginationLink>
+                            </PaginationItem>
+
+                            {/* 페이지 번호들 */}
+                            {pagination.getPageNumbers().map((pageNum) => (
+                              <PaginationItem key={pageNum}>
+                                <PaginationLink
+                                  onClick={() => pagination.handlePageChange(pageNum)}
+                                  isActive={pageNum === pagination.currentPage}
+                                  className='cursor-pointer'
+                                >
+                                  {pageNum}
+                                </PaginationLink>
+                              </PaginationItem>
+                            ))}
+
+                            {/* 다음 버튼 */}
+                            <PaginationItem>
+                              <PaginationLink
+                                onClick={() =>
+                                  pagination.handlePageChange(pagination.currentPage + 1)
+                                }
+                                aria-disabled={!pagination.hasNext}
+                                className={
+                                  !pagination.hasNext
+                                    ? 'pointer-events-none opacity-50'
+                                    : 'cursor-pointer'
+                                }
+                              >
+                                <ChevronRight className='h-4 w-4' />
+                              </PaginationLink>
+                            </PaginationItem>
+                          </PaginationContent>
+                        </Pagination>
+                      )}
                     </>
                   ) : (
                     <div className='text-center py-6'>

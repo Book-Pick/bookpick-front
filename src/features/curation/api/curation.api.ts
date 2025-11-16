@@ -52,8 +52,9 @@ export const curationApi = {
         throw new Error('잘못된 요청입니다.')
       } else if (axiosError.response?.status === 409) {
         throw new Error('이미 독서 취향이 설정되어 있습니다.')
+      } else {
+        throw new Error('독서 취향 설정에 실패했습니다.')
       }
-      throw error
     }
   },
 

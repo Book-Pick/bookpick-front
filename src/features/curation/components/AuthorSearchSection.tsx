@@ -72,11 +72,7 @@ export function AuthorSearchSection({
               }}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
-                  if (searchResults.length > 0) {
-                    handleSearch()
-                  } else {
-                    handleDirectAdd()
-                  }
+                  handleSearch()
                 }
               }}
               className='flex-1'

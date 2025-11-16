@@ -1,5 +1,7 @@
 import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Button,
   Input,
@@ -13,16 +15,33 @@ import {
   CardTitle,
 } from '@/shared/ui'
 import toast from 'react-hot-toast'
+import { useCreateProfile } from '../hooks/useUser'
+import { profileSettingsSchema, type ProfileSettingsFormData } from '../model/validationSchema'
 
 // 온보딩 - 프로필 설정 페이지
 export default function MyProfileSettingsPage() {
   const navigate = useNavigate()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  // 상태 관리
-  const [nickname, setNickname] = useState('')
-  const [introduction, setIntroduction] = useState('')
   const [profileImage, setProfileImage] = useState<string>('')
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<ProfileSettingsFormData>({
+    resolver: zodResolver(profileSettingsSchema),
+    mode: 'onTouched',
+    defaultValues: {
+      nickname: '',
+      introduction: '',
+    },
+  })
+
+  const { mutateAsync: createProfileMutateAsync, isPending } = useCreateProfile()
+
+  const introduction = watch('introduction')
 
   const handleImageClick = () => {
     fileInputRef.current?.click()
@@ -40,14 +59,20 @@ export default function MyProfileSettingsPage() {
     }
   }
 
-  const handleComplete = () => {
-    toast.success('프로필 설정이 완료되었습니다.')
-    console.log('프로필 설정 완료:', { nickname, introduction, profileImage })
-    navigate('/')
-  }
-
-  const handleSkip = () => {
-    navigate('/')
+  const onSubmit = async (data: ProfileSettingsFormData) => {
+    try {
+      const response = await createProfileMutateAsync({
+        nickName: data.nickname,
+        introduction: data.introduction,
+        profileImage: profileImage,
+      })
+      if (response?.userId) {
+        navigate(`/onboarding/reading-preference`)
+      }
+    } catch (error) {
+      console.error(error)
+      toast.error('프로필 설정에 실패했습니다.')
+    }
   }
 
   return (
@@ -94,47 +119,58 @@ export default function MyProfileSettingsPage() {
 
             {/* 입력 필드들 - 모바일에서는 하단, 데스크톱에서는 우측 60% */}
             <div className='md:col-span-3 space-y-5 md:space-y-6'>
-              {/* 닉네임 */}
-              <div className='space-y-2'>
-                <label htmlFor='nickname' className='text-sm font-medium'>
-                  닉네임
-                </label>
-                <Input
-                  id='nickname'
-                  placeholder='닉네임을 입력하세요'
-                  value={nickname}
-                  onChange={(e) => setNickname(e.target.value)}
-                  maxLength={20}
-                />
-              </div>
-
-              {/* 한 줄 소개 */}
-              <div className='space-y-2'>
-                <label htmlFor='introduction' className='text-sm font-medium'>
-                  한 줄 소개
-                </label>
-                <Textarea
-                  id='introduction'
-                  placeholder='당신을 소개하는 한 줄을 작성해주세요 (최대 100자)'
-                  value={introduction}
-                  onChange={(e) => setIntroduction(e.target.value)}
-                  maxLength={100}
-                  className='min-h-[80px] resize-none'
-                />
-                <div className='text-right text-xs text-muted-foreground'>
-                  {introduction.length}/100
+              <form onSubmit={handleSubmit(onSubmit)} className='space-y-5 md:space-y-6'>
+                {/* 닉네임 */}
+                <div className='space-y-2'>
+                  <label htmlFor='nickname' className='text-sm font-medium'>
+                    닉네임 <span className='text-destructive'>*</span>
+                  </label>
+                  <Input
+                    id='nickname'
+                    placeholder='닉네임을 입력하세요'
+                    {...register('nickname')}
+                    className={errors.nickname ? 'border-destructive' : ''}
+                    maxLength={20}
+                  />
+                  {errors.nickname && (
+                    <p className='text-sm text-destructive'>{errors.nickname.message}</p>
+                  )}
                 </div>
-              </div>
 
-              {/* 하단 버튼 */}
-              <div className='flex w-full gap-2 pt-2 md:pt-4'>
-                <Button variant='outline' onClick={handleSkip} className='flex-1'>
-                  건너뛰기
-                </Button>
-                <Button onClick={handleComplete} className='flex-1'>
-                  시작하기
-                </Button>
-              </div>
+                {/* 한 줄 소개 */}
+                <div className='space-y-2'>
+                  <label htmlFor='introduction' className='text-sm font-medium'>
+                    한 줄 소개
+                  </label>
+                  <Textarea
+                    id='introduction'
+                    placeholder='당신을 소개하는 한 줄을 작성해주세요 (최대 100자)'
+                    {...register('introduction')}
+                    className={`min-h-[80px] resize-none ${errors.introduction ? 'border-destructive' : ''}`}
+                    maxLength={100}
+                  />
+                  <div className='flex justify-between items-center'>
+                    {errors.introduction && (
+                      <p className='text-sm text-destructive'>{errors.introduction.message}</p>
+                    )}
+                    <div
+                      className={`text-xs text-muted-foreground ${errors.introduction ? '' : 'ml-auto'}`}
+                    >
+                      {introduction?.length || 0}/100
+                    </div>
+                  </div>
+                </div>
+
+                {/* 하단 버튼 */}
+                <div className='flex w-full pt-2 md:pt-4'>
+                  {/* <Button variant='outline' onClick={handleSkip} className='flex-1'>
+                    건너뛰기
+                  </Button> */}
+                  <Button type='submit' className='flex-1' disabled={isPending}>
+                    {isPending ? '저장 중...' : '독서 취향 설정 하러가기'}
+                  </Button>
+                </div>
+              </form>
             </div>
           </div>
         </CardContent>

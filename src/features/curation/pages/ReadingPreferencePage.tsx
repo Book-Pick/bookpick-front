@@ -1,38 +1,50 @@
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { Button } from '@/shared/ui'
 import ReadingPreferenceForm from '../components/ReadingPreferenceForm'
 import { useReadingPreferenceForm } from '../hooks/useReadingPreferenceForm'
-import { useSetReadingPreference } from '../hooks/useCuration'
-import { useAuth } from '@/app/providers'
+import { useSetReadingPreference, useGetReadingPreference } from '../hooks/useCuration'
+import { useGetProfile } from '@/features/user/hooks/useUser'
 
 export default function ReadingPreferencePage() {
   const navigate = useNavigate()
-  const { isFirstLogin } = useAuth()
+  const { data: profile } = useGetProfile()
   const { mutate: setReadingPreferenceMutate, isPending } = useSetReadingPreference()
+  const { data: readingPreference } = useGetReadingPreference()
+
+  console.log('readingPreference', readingPreference)
 
   const { formData, handlers } = useReadingPreferenceForm()
+
+  useEffect(() => {
+    if (profile?.userId && !profile?.nickName) {
+      toast.error('프로필 설정 단계를 먼저 완료해주세요.')
+      navigate('/onboarding')
+    }
+  }, [profile?.userId, profile?.nickName, navigate])
 
   const handleSubmit = () => {
     setReadingPreferenceMutate(
       {
         mbti: formData.mbti || null,
-        favoriteBooks: formData.selectedLifeBooks.map((book) => book.title),
-        // authors: formData.selectedAuthors,
+        favoriteBooks: formData.selectedLifeBooks.map((book) => ({
+          title: book.title,
+          authors: [book.author],
+          image: book.image,
+          isbn: book.isbn,
+        })),
+        favoriteAuthors: formData.selectedAuthors.map((author) => ({ name: author })),
         moods: formData.readingMoods,
         readingHabits: formData.readingHabits,
         genres: formData.genres,
         keywords: formData.keywords,
-        trends: formData.readingStyles,
+        readingStyles: formData.readingStyles,
       },
       {
         onSuccess: () => {
           toast.success('독서 취향이 성공적으로 설정되었습니다.')
-          if (isFirstLogin) {
-            navigate('/onboarding/profile')
-          } else {
-            navigate('/')
-          }
+          navigate('/')
         },
       },
     )

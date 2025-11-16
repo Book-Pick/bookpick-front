@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { ContentsLayout } from '@/app/layout'
 import CurationList from '@/features/curation/components/CurationList'
 import { useGetCurations } from '@/features/curation/hooks/useCuration'
+import toast from 'react-hot-toast'
 
 export default function HomePage() {
   const navigate = useNavigate()
@@ -53,9 +54,11 @@ export default function HomePage() {
     },
   ]
 
-  const handleEditorPickClick = (id: string) => {
-    console.log('Editor pick clicked:', id)
-    // TODO: 에디터 픽 상세 페이지로 이동
+  const handleEditorPickClick = (_id: string) => {
+    void _id // 임시로 사용하지 않음
+    toast('서비스 예정입니다.', {
+      icon: '⏳',
+    })
   }
 
   return (
