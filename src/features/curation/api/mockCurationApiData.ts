@@ -21,13 +21,17 @@ import type {
 export const mockReadingPreference: ReadingPreference = {
   preferenceId: 1,
   mbti: 'INFJ',
-  favoriteBooks: ['데미안', '어린왕자', '1984'],
-  authors: ['무라카미 하루키', '김영하'],
+  favoriteBooks: [
+    { title: '데미안', authors: ['무라카미 하루키'], isbn: '9788936434292' },
+    { title: '어린왕자', authors: ['생텍쥐페리'], isbn: '9788936434292' },
+    { title: '1984', authors: ['오델'], isbn: '9788936434292' },
+  ],
+  favoriteAuthors: [{ name: '무라카미 하루키' }, { name: '김영하' }],
   moods: ['퇴근 후', '카페', '침대에서'],
   readingHabits: ['한 번에 완독하는 편', '밑줄 긋거나 형광펜으로 표시하는 편'],
   genres: ['소설', '에세이', '심리학'],
   keywords: ['위로', '성장', '공감'],
-  trends: ['몰입형', '감성적', '깊이 있는 사색'],
+  readingStyles: ['몰입형', '감성적', '깊이 있는 사색'],
 }
 
 // 목업 큐레이션 데이터

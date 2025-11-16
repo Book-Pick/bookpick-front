@@ -33,18 +33,18 @@ export default function MyProfileEditPage() {
       mbti: readingPreference?.mbti || '',
       // 임시 처리
       selectedLifeBooks:
-        readingPreference?.favoriteBooks?.map((title) => ({
-          id: title,
-          title: title,
-          author: '알 수 없음',
-          isbn: '',
+        readingPreference?.favoriteBooks?.map((book) => ({
+          id: book.isbn || '',
+          title: book.title,
+          author: book.authors.join(', '),
+          isbn: book.isbn || '',
         })) || [],
-      selectedAuthors: readingPreference?.authors || [],
+      selectedAuthors: readingPreference?.favoriteAuthors?.map((author) => author.name) || [],
       readingMoods: readingPreference?.moods || [],
       readingHabits: readingPreference?.readingHabits || [],
       genres: readingPreference?.genres || [],
       keywords: readingPreference?.keywords || [],
-      readingStyles: readingPreference?.trends || [],
+      readingStyles: readingPreference?.readingStyles || [],
     }),
     [readingPreference],
   )
@@ -59,13 +59,17 @@ export default function MyProfileEditPage() {
     updateReadingPreferenceMutate(
       {
         mbti: formData.mbti || null,
-        favoriteBooks: formData.selectedLifeBooks.map((book) => book.title),
-        // authors: formData.selectedAuthors,
+        favoriteBooks: formData.selectedLifeBooks.map((book) => ({
+          title: book.title,
+          authors: [book.author],
+          isbn: book.isbn,
+        })),
+        favoriteAuthors: formData.selectedAuthors.map((author) => ({ name: author })),
         moods: formData.readingMoods,
         readingHabits: formData.readingHabits,
         genres: formData.genres,
         keywords: formData.keywords,
-        trends: formData.readingStyles,
+        readingStyles: formData.readingStyles,
       },
       {
         onSuccess: () => {
