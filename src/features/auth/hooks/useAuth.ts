@@ -92,7 +92,9 @@ export const useAuth = () => {
       },
       onSuccess: () => {
         toast.success('로그아웃 되었습니다.')
-        location.href = '/'
+        setTimeout(() => {
+          location.href = '/'
+        }, 1500)
       },
       onError: (error: Error) => {
         toast.error(error.message || '로그아웃에 실패했습니다.')

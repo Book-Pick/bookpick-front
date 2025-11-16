@@ -37,7 +37,7 @@ export const authApi = {
     }
   },
   logout: async (): Promise<void> => {
-    const response = await axios.post(`${urlPrefix}/logout`)
-    console.log('로그아웃', response)
+    // const response = await axios.post(`${urlPrefix}/logout`)
+    // return response.data
   },
 }
