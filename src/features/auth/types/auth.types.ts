@@ -12,7 +12,7 @@ export interface User {
 export interface Token {
   accessToken: string
   grantType?: string
-  refreshToken?: string
+  refreshToken?: string | null
 }
 
 // Request Type
@@ -29,6 +29,7 @@ export interface RegisterRequest {
 // Result Type
 export interface LoginResult extends User {
   accessToken: string
+  refreshToken?: string | null
   isFirstLogin: boolean
 }
 

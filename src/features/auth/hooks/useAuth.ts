@@ -30,6 +30,7 @@ export const useAuth = () => {
             },
             token: {
               accessToken: data.accessToken,
+              refreshToken: data.refreshToken,
             },
           }
 
