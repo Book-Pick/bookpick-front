@@ -7,11 +7,20 @@ import { Badge } from '@/shared/ui/badge'
 import CurationCardSocial from '@/features/curation/components/CurationCardSocial'
 import { mockCurations } from '@/features/curation/api/mockCurationApiData'
 import { useConfirm } from '@/app/providers'
+import { useGetCurations } from '@/features/curation/hooks/useCuration'
 
 export default function MyCurationPage() {
   const navigate = useNavigate()
   const { confirm } = useConfirm()
   const [selectedIds, setSelectedIds] = useState<Set<number | string>>(new Set())
+
+  const { data: curations } = useGetCurations({
+    sort: 'my',
+    cursor: 0,
+    size: 10,
+  })
+
+  console.log('내 큐레이션 조회', curations)
 
   // TODO: 실제 API 연동 시 사용자의 큐레이션만 필터링
   // 현재는 mockCurations에서 status별로 필터링

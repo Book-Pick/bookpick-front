@@ -80,7 +80,7 @@ export const useGetCurationById = (curationId: number) => {
 }
 
 /**
- * 5. 큐레이션 목록 조회 (정렬: similarity, popularity, latest)
+ * 5. 큐레이션 목록 조회 (정렬: similarity, popularity, latest, liked, my)
  */
 export const useGetCurations = ({
   sort = 'similarity',

@@ -89,6 +89,7 @@ export interface CurationItem {
   similarity?: number
   matched?: string
   popularityScore?: number
+  isDrafted?: boolean
   createdAt?: string
   updatedAt?: string | null
   recommend?: RecommendTags
@@ -116,7 +117,7 @@ export interface PaginatedBooks {
 }
 
 // 확인완료
-export type SortType = 'similarity' | 'popularity' | 'latest'
+export type SortType = 'similarity' | 'popularity' | 'latest' | 'liked' | 'my'
 
 // API Request 타입들
 // 확인완료
