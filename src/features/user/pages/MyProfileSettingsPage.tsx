@@ -18,8 +18,9 @@ import toast from 'react-hot-toast'
 import { useCreateProfile } from '../hooks/useUser'
 import { profileSettingsSchema, type ProfileSettingsFormData } from '../model/validationSchema'
 import { generateRandomNickname } from '../constants/nicknameGenerator'
+import { useImageUpload } from '@/shared/hooks'
+import { validateImageFile, fileToDataURL } from '@/shared/utils/imageValidation'
 
-// 온보딩 - 프로필 설정 페이지
 export default function MyProfileSettingsPage() {
   const navigate = useNavigate()
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -41,14 +42,15 @@ export default function MyProfileSettingsPage() {
     },
   })
 
-  // 컴포넌트 마운트 시 랜덤 닉네임 자동 생성
   useEffect(() => {
     const randomNickname = generateRandomNickname()
     setValue('nickname', randomNickname)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [setValue])
 
   const { mutateAsync: createProfileMutateAsync, isPending } = useCreateProfile()
+
+  // 이미지 업로드 훅
+  const { mutate: uploadImageMutate, isPending: isImageUploading } = useImageUpload()
 
   const introduction = watch('introduction')
 
@@ -56,16 +58,42 @@ export default function MyProfileSettingsPage() {
     fileInputRef.current?.click()
   }
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onload = (e) => {
-        const result = e.target?.result as string
-        setProfileImage(result)
-      }
-      reader.readAsDataURL(file)
+    if (!file) return
+
+    // 1. 이미지 파일 검증
+    const validation = validateImageFile(file, { maxSizeMB: 5 })
+    if (!validation.isValid) {
+      toast.error(validation.error || '유효하지 않은 파일입니다.')
+      return
     }
+
+    // 2. 로컬 미리보기 (즉시 표시)
+    try {
+      const dataUrl = await fileToDataURL(file)
+      setProfileImage(dataUrl)
+    } catch (error) {
+      console.error(error)
+      toast.error('이미지를 불러오는데 실패했습니다.')
+      return
+    }
+
+    // 3. S3에 업로드 (백그라운드)
+    uploadImageMutate(
+      { file, type: 'profile' },
+      {
+        onSuccess: (imageUrl) => {
+          setProfileImage(imageUrl)
+          toast.success('이미지가 업로드되었습니다.')
+        },
+        onError: (error) => {
+          console.error(error)
+          toast.error(error.message || '이미지 업로드에 실패했습니다.')
+          setProfileImage('') // 실패 시 초기화
+        },
+      },
+    )
   }
 
   const onSubmit = async (data: ProfileSettingsFormData) => {
@@ -101,12 +129,11 @@ export default function MyProfileSettingsPage() {
         </CardHeader>
         <CardContent className='p-4 md:p-8 pt-0'>
           <div className='grid grid-cols-1 md:grid-cols-5 gap-6 md:gap-8 items-start'>
-            {/* 프로필 이미지 설정 - 모바일에서는 상단, 데스크톱에서는 좌측 40% */}
+            {/* 프로필 이미지 설정  */}
             <div className='md:col-span-2 space-y-4'>
-              {/* 프로필 이미지 */}
               <div className='flex flex-col items-center space-y-3 md:space-y-4'>
                 <div
-                  className='cursor-pointer hover:opacity-80 transition-opacity'
+                  className='relative cursor-pointer hover:opacity-80 transition-opacity'
                   onClick={handleImageClick}
                 >
                   <Avatar className='w-20 h-20 md:w-24 md:h-24'>
@@ -116,6 +143,12 @@ export default function MyProfileSettingsPage() {
                       <AvatarFallback className='text-2xl md:text-3xl bg-muted'>👤</AvatarFallback>
                     )}
                   </Avatar>
+                  {/* 업로드 중 표시 */}
+                  {isImageUploading && (
+                    <div className='absolute inset-0 flex items-center justify-center bg-black/50 rounded-full'>
+                      <span className='text-white text-xs'>업로드 중...</span>
+                    </div>
+                  )}
                 </div>
                 <div className='text-center'>
                   <p className='font-medium text-base md:text-lg'>프로필 이미지</p>
@@ -170,13 +203,13 @@ export default function MyProfileSettingsPage() {
                   </div>
                 </div>
 
-                {/* 하단 버튼 */}
                 <div className='flex w-full pt-2 md:pt-4'>
-                  {/* <Button variant='outline' onClick={handleSkip} className='flex-1'>
-                    건너뛰기
-                  </Button> */}
-                  <Button type='submit' className='flex-1' disabled={isPending}>
-                    {isPending ? '저장 중...' : '독서 취향 설정 하러가기'}
+                  <Button type='submit' className='flex-1' disabled={isPending || isImageUploading}>
+                    {isPending
+                      ? '저장 중...'
+                      : isImageUploading
+                        ? '이미지 업로드 중...'
+                        : '독서 취향 설정 하러가기'}
                   </Button>
                 </div>
               </form>
@@ -185,7 +218,7 @@ export default function MyProfileSettingsPage() {
         </CardContent>
       </Card>
 
-      {/* 숨겨진 파일 입력 */}
+      {/* 이미지 업로드 */}
       <input
         ref={fileInputRef}
         type='file'

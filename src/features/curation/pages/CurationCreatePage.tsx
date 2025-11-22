@@ -32,8 +32,11 @@ export default function CurationCreatePage() {
 
   // 상태 관리
   const [title, setTitle] = useState('')
-  const [selectedColor, setSelectedColor] = useState(COLOR_PALETTE[0].value as string)
+  const [selectedColor, setSelectedColor] = useState<string | null>(
+    COLOR_PALETTE[0].value as string,
+  )
   const [thumbnail, setThumbnail] = useState<File | null>(null)
+  const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null)
   const [selectedBook, setSelectedBook] = useState<BookItem | null>(null)
   const [content, setContent] = useState('')
   const [isDraftSheetOpen, setIsDraftSheetOpen] = useState(false)
@@ -72,14 +75,19 @@ export default function CurationCreatePage() {
   const handleColorSelect = (color: string) => {
     setSelectedColor(color)
     setThumbnail(null)
+    setThumbnailUrl(null)
   }
 
   const handleThumbnailSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null
     setThumbnail(file)
     if (file) {
-      setSelectedColor(COLOR_PALETTE[0].value)
+      setSelectedColor(null)
     }
+  }
+
+  const handleThumbnailUpload = (url: string) => {
+    setThumbnailUrl(url)
   }
 
   const handleSaveDraft = () => {
@@ -228,7 +236,9 @@ export default function CurationCreatePage() {
                   <TabsContent value='image' className='space-y-4 mt-4'>
                     <ThumbnailPreview
                       thumbnail={thumbnail}
+                      thumbnailUrl={thumbnailUrl}
                       onThumbnailSelect={handleThumbnailSelect}
+                      onThumbnailUpload={handleThumbnailUpload}
                       title={title}
                       content={content}
                     />

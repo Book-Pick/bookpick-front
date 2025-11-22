@@ -42,7 +42,7 @@ const EmptyCurationsCta = () => {
               </p>
             </div>
             <Button
-              onClick={() => navigate('/reading-preference')}
+              onClick={() => navigate('/mypage/profile')}
               variant='default'
               size='xl'
               className='w-full max-w-[300px] xs:max-w-[800px] text-lg xs:text-xl'

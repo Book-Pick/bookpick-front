@@ -1,5 +1,8 @@
 import { useRef } from 'react'
 import { Input, Textarea, Avatar, AvatarImage, AvatarFallback } from '@/shared/ui'
+import toast from 'react-hot-toast'
+import { useImageUpload } from '@/shared/hooks'
+import { validateImageFile, fileToDataURL } from '@/shared/utils/imageValidation'
 
 interface ProfileRegisterFormProps {
   nickname: string
@@ -20,20 +23,49 @@ export default function ProfileRegisterForm({
 }: ProfileRegisterFormProps) {
   const fileInputRef = useRef<HTMLInputElement>(null)
 
+  // 이미지 업로드 훅
+  const { mutate: uploadImageMutate, isPending: isImageUploading } = useImageUpload()
+
   const handleImageClick = () => {
     fileInputRef.current?.click()
   }
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onload = (e) => {
-        const result = e.target?.result as string
-        onProfileImageChange(result)
-      }
-      reader.readAsDataURL(file)
+    if (!file) return
+
+    // 1. 이미지 파일 검증
+    const validation = validateImageFile(file, { maxSizeMB: 5 })
+    if (!validation.isValid) {
+      toast.error(validation.error || '유효하지 않은 파일입니다.')
+      return
     }
+
+    // 2. 로컬 미리보기 (즉시 표시)
+    try {
+      const dataUrl = await fileToDataURL(file)
+      onProfileImageChange(dataUrl)
+    } catch (error) {
+      console.error(error)
+      toast.error('이미지를 불러오는데 실패했습니다.')
+      return
+    }
+
+    // 3. S3에 업로드 (백그라운드)
+    uploadImageMutate(
+      { file, type: 'profile' },
+      {
+        onSuccess: (imageUrl) => {
+          onProfileImageChange(imageUrl)
+          toast.success('이미지가 업로드되었습니다.')
+        },
+        onError: (error) => {
+          console.error(error)
+          toast.error(error.message || '이미지 업로드에 실패했습니다.')
+          onProfileImageChange('') // 실패 시 초기화
+        },
+      },
+    )
   }
 
   return (
@@ -45,7 +77,7 @@ export default function ProfileRegisterForm({
           {/* 프로필 이미지 */}
           <div className='flex flex-col items-center space-y-3 md:space-y-4 mt-4'>
             <div
-              className='cursor-pointer hover:opacity-80 transition-opacity'
+              className='relative cursor-pointer hover:opacity-80 transition-opacity'
               onClick={handleImageClick}
             >
               <Avatar className='w-20 h-20 md:w-24 md:h-24'>
@@ -55,6 +87,12 @@ export default function ProfileRegisterForm({
                   <AvatarFallback className='text-2xl md:text-3xl bg-muted'>👤</AvatarFallback>
                 )}
               </Avatar>
+              {/* 업로드 중 표시 */}
+              {isImageUploading && (
+                <div className='absolute inset-0 flex items-center justify-center bg-black/50 rounded-full'>
+                  <span className='text-white text-xs'>업로드 중...</span>
+                </div>
+              )}
             </div>
             <div className='text-center'>
               <p className='font-medium text-base md:text-lg'>프로필 이미지</p>

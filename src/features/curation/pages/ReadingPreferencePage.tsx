@@ -13,7 +13,7 @@ export default function ReadingPreferencePage() {
   const { mutate: setReadingPreferenceMutate, isPending } = useSetReadingPreference()
   const { data: readingPreference } = useGetReadingPreference()
 
-  console.log('readingPreference', readingPreference)
+  // console.log('readingPreference', readingPreference)
 
   const { formData, handlers } = useReadingPreferenceForm()
 

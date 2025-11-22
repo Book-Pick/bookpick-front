@@ -29,6 +29,8 @@ export default function HomePage() {
   })
   const { data: readingPreference } = useGetReadingPreference()
 
+  console.log('readingPreference', readingPreference)
+
   const handleCardClick = (curationId: number) => {
     navigate(`/curation/detail/${curationId}`)
   }
@@ -78,7 +80,7 @@ export default function HomePage() {
 
         <section className='mt-5 xs:mt-0 mb-16'>
           <div className='flex w-full flex-col gap-6'>
-            <Tabs defaultValue='similar'>
+            <Tabs defaultValue='like'>
               <TabsList>
                 <TabsTrigger value='like' size='lg'>
                   인기순
@@ -90,17 +92,6 @@ export default function HomePage() {
                   최신순
                 </TabsTrigger>
               </TabsList>
-              <TabsContent value='similar'>
-                {isLoadingPersonalized ? (
-                  <div className='flex justify-center items-center mt-6 py-20'>
-                    <p className='text-muted-foreground'>로딩 중...</p>
-                  </div>
-                ) : similarCurations?.length > 0 ? (
-                  <CurationList curations={similarCurations} onCardClick={handleCardClick} />
-                ) : (
-                  <EmptyCurationsCta />
-                )}
-              </TabsContent>
               <TabsContent value='like'>
                 {isLoadingPopular ? (
                   <div className='flex justify-center items-center mt-6 py-20'>
@@ -108,8 +99,17 @@ export default function HomePage() {
                   </div>
                 ) : likeCurations?.length > 0 ? (
                   <CurationList curations={likeCurations} onCardClick={handleCardClick} />
-                ) : readingPreference?.preferenceId ? (
+                ) : (
                   <EmptyCurations />
+                )}
+              </TabsContent>
+              <TabsContent value='similar'>
+                {isLoadingPersonalized ? (
+                  <div className='flex justify-center items-center mt-6 py-20'>
+                    <p className='text-muted-foreground'>로딩 중...</p>
+                  </div>
+                ) : similarCurations?.length > 0 ? (
+                  <CurationList curations={similarCurations} onCardClick={handleCardClick} />
                 ) : (
                   <EmptyCurationsCta />
                 )}
