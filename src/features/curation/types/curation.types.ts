@@ -13,13 +13,6 @@ export type Book = {
   isbn?: string
 }
 
-export type BookRequest = {
-  title: string
-  authors: string[]
-  image?: string
-  isbn?: string
-}
-
 export type AuthorRequest = {
   name: string
 }
@@ -31,7 +24,7 @@ export type BookSearchResult = Book
 export interface ReadingPreference {
   preferenceId?: number
   mbti?: string | null
-  favoriteBooks?: BookRequest[]
+  favoriteBooks?: Book[]
   favoriteAuthors?: AuthorRequest[]
   moods?: string[]
   readingHabits?: string[]

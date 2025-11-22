@@ -64,12 +64,6 @@ export const curationApi = {
   getReadingPreference: async (): Promise<GetReadingPreferenceResponse> => {
     try {
       const response = await axios.get(`${urlPrefix}/reading-preference`)
-      // TODO: authors 필드가 없으면 빈 배열로 추가 (추후 추가 예정 필드)
-      const data = response.data.data
-      if (data && !data.authors) {
-        data.authors = []
-      }
-
       return response.data
     } catch (error: unknown) {
       const axiosError = error as AxiosErrorResponse

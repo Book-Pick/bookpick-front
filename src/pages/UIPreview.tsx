@@ -37,15 +37,16 @@ import CurationCardBasic from '@/features/curation/components/CurationCardBasic'
 import CurationCardSocial from '@/features/curation/components/CurationCardSocial'
 import CuratorProfileCard from '@/features/curation/components/CuratorProfileCard'
 import CurationPurchaseCard from '@/features/curation/components/CurationPurchaseCard'
-import { BookSearchSection, type BookItem } from '@/features/curation/components/BookSearchSection'
+import { BookSearchSection } from '@/features/curation/components/BookSearchSection'
 import { ThumbnailSelector } from '@/features/curation/components/ThumbnailSelector'
 import Thumbnail from '@/shared/components/Thumbnail'
 import { mockCuratorData } from '@/data/mockCuratorData'
 import { mockCurationData } from '@/data/mockCurationData'
 import { useState } from 'react'
+import type { Book } from '@/features/curation/types/curation.types'
 
 export default function UIPreview() {
-  const [selectedBook, setSelectedBook] = useState<BookItem | null>(null)
+  const [selectedBook, setSelectedBook] = useState<Book | null>(null)
   const [thumbnail, setThumbnail] = useState<File | null>(null)
   const [isSheetOpen, setIsSheetOpen] = useState(false)
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
@@ -73,7 +74,7 @@ export default function UIPreview() {
     alert(`${selectedCurations.length}개의 큐레이션이 선택되었습니다.`)
   }
 
-  const handleBookSelect = (book: BookItem | null) => {
+  const handleBookSelect = (book: Book | null) => {
     setSelectedBook(book)
   }
 

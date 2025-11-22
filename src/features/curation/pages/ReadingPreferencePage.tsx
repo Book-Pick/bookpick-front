@@ -1,21 +1,32 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { Button } from '@/shared/ui'
 import ReadingPreferenceForm from '../components/ReadingPreferenceForm'
 import { useReadingPreferenceForm } from '../hooks/useReadingPreferenceForm'
-import { useSetReadingPreference, useGetReadingPreference } from '../hooks/useCuration'
+import { useUpdateReadingPreference, useGetReadingPreference } from '../hooks/useCuration'
 import { useGetProfile } from '@/features/user/hooks/useUser'
 
 export default function ReadingPreferencePage() {
   const navigate = useNavigate()
   const { data: profile } = useGetProfile()
-  const { mutate: setReadingPreferenceMutate, isPending } = useSetReadingPreference()
+  const { mutate: updateReadingPreferenceMutate, isPending } = useUpdateReadingPreference()
   const { data: readingPreference } = useGetReadingPreference()
 
-  // console.log('readingPreference', readingPreference)
+  const existingReadingPreference = useMemo(() => {
+    return {
+      mbti: readingPreference?.mbti || '',
+      selectedLifeBooks: readingPreference?.favoriteBooks || [],
+      selectedAuthors: readingPreference?.favoriteAuthors?.map((author) => author.name) || [],
+      readingMoods: readingPreference?.moods || [],
+      readingHabits: readingPreference?.readingHabits || [],
+      genres: readingPreference?.genres || [],
+      keywords: readingPreference?.keywords || [],
+      readingStyles: readingPreference?.readingStyles || [],
+    }
+  }, [readingPreference])
 
-  const { formData, handlers } = useReadingPreferenceForm()
+  const { formData, handlers } = useReadingPreferenceForm(existingReadingPreference)
 
   useEffect(() => {
     if (profile?.userId && !profile?.nickName) {
@@ -25,15 +36,13 @@ export default function ReadingPreferencePage() {
   }, [profile?.userId, profile?.nickName, navigate])
 
   const handleSubmit = () => {
-    setReadingPreferenceMutate(
+    if (!readingPreference?.preferenceId) return
+
+    updateReadingPreferenceMutate(
       {
+        preferenceId: readingPreference?.preferenceId,
         mbti: formData.mbti || null,
-        favoriteBooks: formData.selectedLifeBooks.map((book) => ({
-          title: book.title,
-          authors: [book.author],
-          image: book.image,
-          isbn: book.isbn,
-        })),
+        favoriteBooks: formData.selectedLifeBooks,
         favoriteAuthors: formData.selectedAuthors.map((author) => ({ name: author })),
         moods: formData.readingMoods,
         readingHabits: formData.readingHabits,

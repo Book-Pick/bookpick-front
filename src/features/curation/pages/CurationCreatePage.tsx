@@ -16,7 +16,7 @@ import {
   TabsTrigger,
   TabsContent,
 } from '@/shared/ui'
-import { BookSearchSection, type BookItem } from '../components/BookSearchSection'
+import { BookSearchSection } from '../components/BookSearchSection'
 import { ReviewSection } from '../components/ReviewSection'
 import { DraftListSheet } from '../components/DraftListSheet'
 import ThumbnailPreview from '../components/ThumbnailPreview'
@@ -37,7 +37,7 @@ export default function CurationCreatePage() {
   )
   const [thumbnail, setThumbnail] = useState<File | null>(null)
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null)
-  const [selectedBook, setSelectedBook] = useState<BookItem | null>(null)
+  const [selectedBook, setSelectedBook] = useState<Book | null>(null)
   const [content, setContent] = useState('')
   const [isDraftSheetOpen, setIsDraftSheetOpen] = useState(false)
 

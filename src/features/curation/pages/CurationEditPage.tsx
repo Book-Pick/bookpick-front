@@ -12,12 +12,13 @@ import {
 } from '@/shared/ui'
 import { CurationTitleSection } from '../components/CurationTitleSection'
 // import { ThumbnailSelector } from '../components/ThumbnailSelector'
-import { BookSearchSection, type BookItem } from '../components/BookSearchSection'
+import { BookSearchSection } from '../components/BookSearchSection'
 import { ReviewSection } from '../components/ReviewSection'
 import { KeywordSection } from '../components/KeywordSection'
 import { COLOR_PALETTE } from '../constants/curationCreateData'
 import { READING_MOODS, GENRES, KEYWORDS, READING_STYLES } from '../constants/preferences'
 import toast from 'react-hot-toast'
+import type { Book } from '../types/curation.types'
 
 export default function CurationEditPage() {
   const navigate = useNavigate()
@@ -26,7 +27,7 @@ export default function CurationEditPage() {
   const [title, setTitle] = useState('')
   const [selectedColor, setSelectedColor] = useState(COLOR_PALETTE[0].value as string)
   const [thumbnail, setThumbnail] = useState<File | null>(null)
-  const [selectedBook, setSelectedBook] = useState<BookItem | null>(null)
+  const [selectedBook, setSelectedBook] = useState<Book | null>(null)
   const [content, setContent] = useState('')
   const [keywords, setKeywords] = useState<string[]>([])
 

@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { curationApi } from '../api/curation.api'
 import type {
@@ -16,10 +16,15 @@ import type {
  * 1. 독서 취향 설정
  */
 export const useSetReadingPreference = () => {
+  const queryClient = useQueryClient()
+
   return useMutation({
     mutationFn: async (request: SetReadingPreferenceRequest) => {
       const response = await curationApi.setReadingPreference(request)
       return response.data
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['readingPreference'] })
     },
     onError: (error: Error) => {
       toast.error(error.message || '독서 취향 설정에 실패했습니다.')
@@ -44,10 +49,15 @@ export const useGetReadingPreference = () => {
  * 3. 독서 취향 수정
  */
 export const useUpdateReadingPreference = () => {
+  const queryClient = useQueryClient()
+
   return useMutation({
     mutationFn: async (request: UpdateReadingPreferenceRequest) => {
       const response = await curationApi.updateReadingPreference(request)
       return response.data
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['readingPreference'] })
     },
     onError: (error: Error) => {
       toast.error(error.message || '독서 취향 수정에 실패했습니다.')
@@ -104,12 +114,15 @@ export const useGetCurationsByField = (request: GetCurationsByFieldRequest) => {
  * 7. 큐레이션 작성
  */
 export const useCreateCuration = () => {
+  const queryClient = useQueryClient()
+
   return useMutation({
     mutationFn: async (request: CreateCurationRequest) => {
       const response = await curationApi.createCuration(request)
       return response.data
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['curations'] })
       toast.success('큐레이션이 등록되었습니다.')
     },
     onError: (error: Error) => {
@@ -122,12 +135,15 @@ export const useCreateCuration = () => {
  * 8. 큐레이션 저장 (임시저장/일반저장)
  */
 export const useSaveCuration = () => {
+  const queryClient = useQueryClient()
+
   return useMutation({
     mutationFn: async (request: SaveCurationRequest) => {
       const response = await curationApi.saveCuration(request)
       return response
     },
     onSuccess: (response) => {
+      queryClient.invalidateQueries({ queryKey: ['curations'] })
       toast.success(response.message || '큐레이션이 저장되었습니다.')
       console.log('큐레이션 저장 완료:', response.data)
     },
@@ -141,12 +157,16 @@ export const useSaveCuration = () => {
  * 9. 큐레이션 수정
  */
 export const useUpdateCuration = () => {
+  const queryClient = useQueryClient()
+
   return useMutation({
     mutationFn: async (request: UpdateCurationRequest) => {
       const response = await curationApi.updateCuration(request)
       return response.data
     },
     onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['curations'] })
+      queryClient.invalidateQueries({ queryKey: ['curation', data.id] })
       toast.success('큐레이션이 성공적으로 수정되었습니다.')
       console.log('큐레이션 수정 완료:', data)
     },
@@ -160,12 +180,15 @@ export const useUpdateCuration = () => {
  * 10. 큐레이션 삭제
  */
 export const useDeleteCuration = () => {
+  const queryClient = useQueryClient()
+
   return useMutation({
     mutationFn: async (curationId: number) => {
       const response = await curationApi.deleteCuration(curationId)
       return response
     },
     onSuccess: (response) => {
+      queryClient.invalidateQueries({ queryKey: ['curations'] })
       toast.success(response.message || '큐레이션이 삭제되었습니다.')
     },
     onError: (error: Error) => {

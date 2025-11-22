@@ -1,9 +1,9 @@
 import { useReducer, useEffect } from 'react'
-import type { BookItem } from '../components/BookSearchSection'
+import type { Book } from '../types/curation.types'
 
 export interface ReadingPreferenceFormData {
   mbti: string
-  selectedLifeBooks: BookItem[]
+  selectedLifeBooks: Book[]
   selectedAuthors: string[]
   readingMoods: string[]
   readingHabits: string[]
@@ -19,8 +19,8 @@ export interface ReadingPreferenceFormHandlers {
   toggleGenre: (genre: string) => void
   toggleKeyword: (keyword: string) => void
   toggleReadingStyle: (style: string) => void
-  handleLifeBookSelect: (book: BookItem | null) => void
-  removeLifeBook: (book: BookItem) => void
+  handleLifeBookSelect: (book: Book | null) => void
+  removeLifeBook: (book: Book) => void
   handleAuthorSelect: (author: string) => void
   removeAuthor: (author: string) => void
 }
@@ -33,8 +33,8 @@ type Action =
   | { type: 'TOGGLE_GENRE'; payload: string }
   | { type: 'TOGGLE_KEYWORD'; payload: string }
   | { type: 'TOGGLE_READING_STYLE'; payload: string }
-  | { type: 'ADD_LIFE_BOOK'; payload: BookItem }
-  | { type: 'REMOVE_LIFE_BOOK'; payload: BookItem }
+  | { type: 'ADD_LIFE_BOOK'; payload: Book }
+  | { type: 'REMOVE_LIFE_BOOK'; payload: Book }
   | { type: 'ADD_AUTHOR'; payload: string }
   | { type: 'REMOVE_AUTHOR'; payload: string }
 
@@ -163,13 +163,13 @@ export function useReadingPreferenceForm(initialData?: Partial<ReadingPreference
     dispatch({ type: 'TOGGLE_READING_STYLE', payload: style })
   }
 
-  const handleLifeBookSelect = (book: BookItem | null) => {
+  const handleLifeBookSelect = (book: Book | null) => {
     if (book) {
       dispatch({ type: 'ADD_LIFE_BOOK', payload: book })
     }
   }
 
-  const removeLifeBook = (book: BookItem) => {
+  const removeLifeBook = (book: Book) => {
     dispatch({ type: 'REMOVE_LIFE_BOOK', payload: book })
   }
 

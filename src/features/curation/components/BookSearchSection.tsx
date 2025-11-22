@@ -12,22 +12,14 @@ import {
 } from '@/shared/ui'
 import { usePagination } from '@/shared/hooks'
 import { useSearchBooks } from '../hooks/useCuration'
-import type { BookSearchResult } from '../types/curation.types'
-
-export interface BookItem {
-  id?: string
-  title: string
-  author: string
-  image?: string
-  isbn: string
-}
+import type { BookSearchResult, Book } from '../types/curation.types'
 
 interface BookSearchSectionProps {
   // 단일 선택 모드
-  selectedBook?: BookItem | null
-  onBookSelect?: (book: BookItem | null) => void
+  selectedBook?: Book | null
+  onBookSelect?: (book: Book | null) => void
   // 복수 선택 모드
-  onBookAdd?: (book: BookItem) => void
+  onBookAdd?: (book: Book) => void
   maxSelections?: number
   currentCount?: number
   // UI 옵션
@@ -75,7 +67,7 @@ export function BookSearchSection({
   }
 
   const handleBookSelect = (book: BookSearchResult) => {
-    const bookItem: BookItem = {
+    const bookItem: Book = {
       id: book.isbn || `${book.title}|${book.author}`,
       title: book.title,
       author: book.author,

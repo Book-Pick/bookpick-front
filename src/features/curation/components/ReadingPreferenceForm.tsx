@@ -7,7 +7,6 @@ import {
   KEYWORDS,
   READING_HABITS,
   READING_STYLES,
-  FAVORITE_AUTHORS,
 } from '../constants/preferences'
 import { BookSearchSection } from './BookSearchSection'
 import { AuthorSearchSection } from './AuthorSearchSection'
@@ -131,8 +130,7 @@ export default function ReadingPreferenceForm({ formData, handlers }: ReadingPre
               )}
               <AuthorSearchSection
                 onAuthorSelect={handlers.handleAuthorSelect}
-                searchData={FAVORITE_AUTHORS}
-                placeholder='좋아하는 작가명을 검색하거나 직접 입력하세요'
+                placeholder='좋아하는 작가명을 입력하세요'
                 maxSelections={3}
                 currentCount={formData.selectedAuthors.length}
               />

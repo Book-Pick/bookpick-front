@@ -22,9 +22,9 @@ export const mockReadingPreference: ReadingPreference = {
   preferenceId: 1,
   mbti: 'INFJ',
   favoriteBooks: [
-    { title: '데미안', authors: ['무라카미 하루키'], isbn: '9788936434292' },
-    { title: '어린왕자', authors: ['생텍쥐페리'], isbn: '9788936434292' },
-    { title: '1984', authors: ['오델'], isbn: '9788936434292' },
+    { title: '데미안', author: '무라카미 하루키', isbn: '9788936434292' },
+    { title: '어린왕자', author: '생텍쥐페리', isbn: '9788936434292' },
+    { title: '1984', author: '오델', isbn: '9788936434292' },
   ],
   favoriteAuthors: [{ name: '무라카미 하루키' }, { name: '김영하' }],
   moods: ['퇴근 후', '카페', '침대에서'],

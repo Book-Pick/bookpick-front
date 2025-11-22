@@ -1,5 +1,7 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/shared/ui'
 import toast from 'react-hot-toast'
 import ReadingPreferenceForm from '@/features/curation/components/ReadingPreferenceForm'
@@ -9,34 +11,50 @@ import {
   useUpdateReadingPreference,
 } from '@/features/curation/hooks/useCuration'
 import ProfileRegisterForm from '@/features/user/components/ProfileRegisterForm'
-import { useAuth } from '@/app/providers/AuthContext'
+import { useGetProfile, useUpdateProfile } from '@/features/user/hooks/useUser'
+import { profileSettingsSchema, type ProfileSettingsFormData } from '../model/validationSchema'
 
 export default function MyProfileEditPage() {
   const navigate = useNavigate()
-  const { user } = useAuth()
 
-  // 프로필 상태
-  const [nickname, setNickname] = useState('')
-  const [introduction, setIntroduction] = useState('')
   const [profileImage, setProfileImage] = useState<string>('')
 
-  // 프로필/독서 취향 정보 유무에 따라 api 호출 방식 결정(생성/수정)
-  const isEmptyProfile = useMemo(() => {
-    return user?.nickname === null || user?.profileImageUrl === null
-  }, [user?.nickname, user?.profileImageUrl])
+  // react-hook-form 설정
+  const { watch, setValue, reset } = useForm<ProfileSettingsFormData>({
+    resolver: zodResolver(profileSettingsSchema),
+    mode: 'onTouched',
+    defaultValues: {
+      nickname: '',
+      introduction: '',
+    },
+  })
 
+  const { data: profile } = useGetProfile()
+  const { mutate: updateProfileMutate, isPending: isUpdateProfilePending } = useUpdateProfile()
   const { data: readingPreference } = useGetReadingPreference()
-  const { mutate: updateReadingPreferenceMutate, isPending } = useUpdateReadingPreference()
+  const { mutate: updateReadingPreferenceMutate, isPending: isUpdateReadingPreferencePending } =
+    useUpdateReadingPreference()
+
+  // 프로필 데이터가 로드되면 폼에 세팅
+  useEffect(() => {
+    if (profile) {
+      reset({
+        nickname: profile.nickName || '',
+        introduction: profile.introduction || '',
+      })
+      setProfileImage(profile.profileImage || '')
+    }
+  }, [profile, reset])
 
   const initialFormData = useMemo(
     () => ({
       mbti: readingPreference?.mbti || '',
-      // 임시 처리
       selectedLifeBooks:
         readingPreference?.favoriteBooks?.map((book) => ({
-          id: book.isbn || '',
+          id: book.id || book.isbn,
           title: book.title,
-          author: book.authors.join(', '),
+          author: book.author,
+          image: book.image,
           isbn: book.isbn || '',
         })) || [],
       selectedAuthors: readingPreference?.favoriteAuthors?.map((author) => author.name) || [],
@@ -52,16 +70,21 @@ export default function MyProfileEditPage() {
   const { formData, handlers } = useReadingPreferenceForm(initialFormData)
 
   const handleSave = () => {
-    // Todo: 1. 프로필 저장
-    console.log('isEmptyProfile이 true면 생성 아니면 업데이트', isEmptyProfile)
+    updateProfileMutate({
+      nickName: watch('nickname'),
+      introduction: watch('introduction'),
+      profileImage: profileImage,
+    })
 
-    // 2. 독서 취향 설정
+    // 2. 독서 취향 업데이트
     updateReadingPreferenceMutate(
       {
         mbti: formData.mbti || null,
         favoriteBooks: formData.selectedLifeBooks.map((book) => ({
+          id: book.id,
           title: book.title,
-          authors: [book.author],
+          author: book.author,
+          image: book.image,
           isbn: book.isbn,
         })),
         favoriteAuthors: formData.selectedAuthors.map((author) => ({ name: author })),
@@ -73,7 +96,8 @@ export default function MyProfileEditPage() {
       },
       {
         onSuccess: () => {
-          toast.success('독서 취향이 성공적으로 설정되었습니다.')
+          toast.success('프로필 및 독서 취향이 성공적으로 저장되었습니다.')
+          navigate('/mypage/dashboard')
         },
       },
     )
@@ -83,6 +107,9 @@ export default function MyProfileEditPage() {
     navigate('/mypage/dashboard')
   }
 
+  const nickname = watch('nickname')
+  const introduction = watch('introduction')
+
   return (
     <div className='flex flex-col gap-[60px] my-10 max-w-[800px] mx-auto'>
       {/* 프로필 설정 섹션 */}
@@ -90,8 +117,8 @@ export default function MyProfileEditPage() {
         nickname={nickname}
         introduction={introduction}
         profileImage={profileImage}
-        onNicknameChange={setNickname}
-        onIntroductionChange={setIntroduction}
+        onNicknameChange={(value) => setValue('nickname', value)}
+        onIntroductionChange={(value) => setValue('introduction', value)}
         onProfileImageChange={setProfileImage}
       />
 
@@ -106,8 +133,13 @@ export default function MyProfileEditPage() {
         <Button variant='outline' size='lg' onClick={handleCancel} className='flex-1 sm:flex-none'>
           취소하기
         </Button>
-        <Button size='lg' onClick={handleSave} className='flex-1 sm:flex-none' disabled={isPending}>
-          {isPending ? '저장 중...' : '저장하기'}
+        <Button
+          size='lg'
+          onClick={handleSave}
+          className='flex-1 sm:flex-none'
+          disabled={isUpdateProfilePending || isUpdateReadingPreferencePending}
+        >
+          {isUpdateProfilePending || isUpdateReadingPreferencePending ? '저장 중...' : '저장하기'}
         </Button>
       </div>
     </div>
