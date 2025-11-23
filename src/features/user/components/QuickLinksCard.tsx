@@ -17,7 +17,7 @@ export default function QuickLinksCard() {
   const navigate = useNavigate()
 
   const handleLinkClick = (path: string) => {
-    if (path === '/mypage/curation') {
+    if (path === '/mypage/curation' || path === '/mypage/likes') {
       navigate(path)
     } else {
       toast('서비스 준비 중입니다.', {
@@ -28,7 +28,7 @@ export default function QuickLinksCard() {
 
   return (
     <div className='flex flex-col gap-4 md:gap-7.5 md:border md:border-border md:rounded-xl md:p-7.5'>
-      <h3 className='text-base font-semibold md:text-xl'>바로 가기</h3>
+      <h3 className='text-lg font-semibold md:text-xl px-2.5'>바로 가기</h3>
       <div className='flex flex-col gap-0 md:gap-4'>
         {quickLinks.map((link, index) => (
           <button

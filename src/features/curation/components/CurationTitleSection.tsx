@@ -58,14 +58,14 @@ export function CurationTitleSection({
         backgroundPosition: 'center',
       }
     }
-    return {}
+    return {
+      backgroundColor: selectedColor,
+    }
   }
 
   return (
     <div
-      className={`px-6 h-70 py-10 rounded-0 transition-all ${
-        !thumbnail ? selectedColorOption.class : ''
-      }`}
+      className="px-6 h-70 py-10 rounded-0 transition-all"
       style={getBackgroundStyle()}
     >
       <div className='max-w-[1440px] mx-auto px-4 sm:px-10 lg:px-20 h-full flex flex-col'>

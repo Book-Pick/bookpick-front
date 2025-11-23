@@ -16,7 +16,7 @@ import { ViewerIcon } from '@/assets/icons/ViewerIcon'
 
 interface CurationCardSocialProps {
   id?: number | string
-  similarity?: number
+  similarity?: number | null
   title: string
   description: string
   curator: string
@@ -26,7 +26,7 @@ interface CurationCardSocialProps {
   comments: number
   views: number
   tags: string
-  thumbnailSrc?: string
+  thumbnailSrc?: string | null
   thumbnailColor?: string | null
   className?: string
   onClick?: () => void
@@ -63,10 +63,14 @@ const CurationCardSocial = ({
     .map((tag) => tag.trim())
     .filter((tag) => tag.length > 0)
 
+  console.log('curatorImage:', curatorImage)
+
   return (
     <Card
       className={`w-full bg-white border rounded-xl overflow-hidden max-w-sm mx-auto p-0 transition-all focus:outline-none focus-visible:outline-none ${
-        editMode && isSelected ? 'border-primary shadow-md' : 'border-gray-200 shadow-sm'
+        editMode && isSelected
+          ? 'border-gray-200 shadow-[0_4px_16px_rgba(0,0,0,0.3)]'
+          : 'border-gray-200 shadow-sm'
       } ${editMode ? 'cursor-pointer' : ''} ${className || ''}`}
       onClick={onClick}
     >

@@ -7,7 +7,6 @@ import { useGetCurations } from '@/features/curation/hooks/useCuration'
 import EmptyCurations from '@/features/curation/components/EmptyCurations'
 import EmptyCurationsCta from '@/features/curation/components/EmptyCurationsCta'
 import toast from 'react-hot-toast'
-import { useGetReadingPreference } from '@/features/curation/hooks/useCuration'
 
 export default function HomePage() {
   const navigate = useNavigate()
@@ -27,9 +26,6 @@ export default function HomePage() {
     cursor: 0,
     size: 6,
   })
-  const { data: readingPreference } = useGetReadingPreference()
-
-  console.log('readingPreference', readingPreference)
 
   const handleCardClick = (curationId: number) => {
     navigate(`/curation/detail/${curationId}`)

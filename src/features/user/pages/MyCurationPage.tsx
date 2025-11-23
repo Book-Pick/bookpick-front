@@ -1,31 +1,36 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Trash2 } from 'lucide-react'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/shared/ui/tabs'
 import { Button } from '@/shared/ui/button'
 import { Badge } from '@/shared/ui/badge'
 import CurationCardSocial from '@/features/curation/components/CurationCardSocial'
-import { mockCurations } from '@/features/curation/api/mockCurationApiData'
 import { useConfirm } from '@/app/providers'
-import { useGetCurations } from '@/features/curation/hooks/useCuration'
+import { useGetCurations, useDeleteCuration } from '@/features/curation/hooks/useCuration'
+import toast from 'react-hot-toast'
 
 export default function MyCurationPage() {
   const navigate = useNavigate()
   const { confirm } = useConfirm()
   const [selectedIds, setSelectedIds] = useState<Set<number | string>>(new Set())
+  const deleteCuration = useDeleteCuration()
 
-  const { data: curations } = useGetCurations({
+  const { data: myCurations } = useGetCurations({
     sort: 'my',
     cursor: 0,
     size: 10,
   })
 
-  console.log('내 큐레이션 조회', curations)
+  const curations = useMemo(() => myCurations?.content ?? [], [myCurations])
 
-  // TODO: 실제 API 연동 시 사용자의 큐레이션만 필터링
-  // 현재는 mockCurations에서 status별로 필터링
-  const publishedCurations = mockCurations.filter((c) => c.status === 'published')
-  const draftCurations = mockCurations.filter((c) => c.status === 'draft')
+  const publishedCurations = useMemo(
+    () => curations.filter((c) => c.isDrafted === false) ?? [],
+    [curations],
+  )
+  const draftCurations = useMemo(
+    () => curations.filter((c) => c.isDrafted === true) ?? [],
+    [curations],
+  )
 
   const handleSelect = (id: number | string) => {
     setSelectedIds((prev) => {
@@ -49,10 +54,27 @@ export default function MyCurationPage() {
     })
 
     if (confirmed) {
-      // TODO: 실제 API 연동 시 삭제 API 호출
-      console.log('Delete curations:', Array.from(selectedIds))
+      const ids = Array.from(selectedIds)
+      let successCount = 0
+      let failCount = 0
+
+      for (const id of ids) {
+        try {
+          await deleteCuration.mutateAsync(Number(id))
+          successCount++
+        } catch (error) {
+          console.error(`큐레이션 ${id} 삭제 실패:`, error)
+          failCount++
+        }
+      }
+
+      if (failCount === 0) {
+        toast.success(`${successCount}개의 추천사가 삭제되었습니다.`)
+      } else {
+        toast.error(`${successCount}개 삭제 성공, ${failCount}개 실패했습니다.`)
+      }
+
       setSelectedIds(new Set())
-      // 삭제 후 목록 새로고침
     }
   }
 
@@ -79,19 +101,18 @@ export default function MyCurationPage() {
               임시저장
               <Badge size='sm'>{draftCurations.length}</Badge>
             </TabsTrigger>
+            {/* 삭제 버튼 - 1개 이상 선택시에만 표시 */}
+            {selectedIds.size > 0 && (
+              <Button
+                variant='text'
+                size='default'
+                onClick={handleDelete}
+                className='flex items-center gap-2 ml-auto'
+              >
+                <Trash2 size={18} />
+              </Button>
+            )}
           </TabsList>
-
-          {/* 삭제 버튼 - 1개 이상 선택시에만 표시 */}
-          {selectedIds.size > 0 && (
-            <Button
-              variant='text'
-              size='default'
-              onClick={handleDelete}
-              className='flex items-center gap-2'
-            >
-              <Trash2 size={18} />
-            </Button>
-          )}
         </div>
 
         {/* 공개됨 탭 */}
@@ -100,22 +121,23 @@ export default function MyCurationPage() {
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
               {publishedCurations.map((curation) => (
                 <CurationCardSocial
-                  key={curation.id}
-                  id={curation.id}
-                  similarity={curation.similarity}
-                  title={curation.title}
-                  description={curation.description}
-                  curator={curation.curator}
-                  likes={curation.likes}
-                  comments={curation.comments}
-                  views={curation.views}
-                  tags={curation.tags.join(', ')}
-                  thumbnailSrc={curation.thumbnailImage || undefined}
-                  thumbnailColor={curation.thumbnailColor}
+                  key={curation.curationId}
+                  id={curation.curationId}
+                  title={curation?.title ?? ''}
+                  description={curation?.review ?? ''}
+                  curator={curation?.nickName ?? ''}
+                  likes={curation?.likeCount ?? 0}
+                  comments={curation?.commentCount ?? 0}
+                  views={curation?.viewCount ?? 0}
+                  tags={curation?.matched ?? ''}
+                  thumbnailSrc={curation?.thumbnail.imageUrl || null}
+                  thumbnailColor={curation?.thumbnail.imageColor || undefined}
+                  curatorImage={curation.profileImageUrl || undefined}
+                  curatorBio={curation.introduction || ''}
                   editMode={true}
-                  isSelected={selectedIds.has(curation.id)}
+                  isSelected={selectedIds.has(curation.curationId)}
                   onSelect={handleSelect}
-                  onClick={() => handleCardClick(curation.id)}
+                  onClick={() => handleCardClick(curation.curationId)}
                 />
               ))}
             </div>
@@ -149,22 +171,23 @@ export default function MyCurationPage() {
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
               {draftCurations.map((curation) => (
                 <CurationCardSocial
-                  key={curation.id}
-                  id={curation.id}
-                  similarity={curation.similarity}
+                  key={curation.curationId}
+                  id={curation.curationId}
                   title={curation.title}
-                  description={curation.description}
-                  curator={curation.curator}
-                  likes={curation.likes}
-                  comments={curation.comments}
-                  views={curation.views}
-                  tags={curation.tags.join(', ')}
-                  thumbnailSrc={curation.thumbnailImage || undefined}
-                  thumbnailColor={curation.thumbnailColor}
+                  description={curation.review ?? ''}
+                  curator={curation.nickName ?? ''}
+                  likes={curation.likeCount ?? 0}
+                  comments={curation.commentCount ?? 0}
+                  views={curation.viewCount ?? 0}
+                  tags={curation.matched ?? ''}
+                  thumbnailSrc={curation.thumbnail.imageUrl || null}
+                  thumbnailColor={curation.thumbnail.imageColor || undefined}
+                  curatorImage={curation.profileImageUrl || undefined}
+                  curatorBio={curation.introduction || ''}
                   editMode={true}
-                  isSelected={selectedIds.has(curation.id)}
+                  isSelected={selectedIds.has(curation.curationId)}
                   onSelect={handleSelect}
-                  onClick={() => handleCardClick(curation.id)}
+                  onClick={() => handleCardClick(curation.curationId)}
                 />
               ))}
             </div>

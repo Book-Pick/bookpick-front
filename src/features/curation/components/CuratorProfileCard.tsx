@@ -13,7 +13,7 @@ interface CuratorProfileCardProps {
   name: string
   profileImage?: string
   favoriteGenres: string[]
-  introduction: string
+  introduction?: string
   isSubscribed: boolean
   className?: string
   onSubscribeToggle?: (curatorId: number, isSubscribed: boolean) => void
@@ -55,8 +55,10 @@ const CuratorProfileCard = ({
           <div className='flex-1 text-center md:text-left'>
             <CardTitle className='font-curation-title text-lg md:text-xl'>{name}</CardTitle>
             <CardDescription className='mt-2 text-sm'>
-              <p className='text-neutral-900'>선호 장르: {favoriteGenres.join(', ')}</p>
-              <p className='text-neutral-600'>소개문구: {introduction}</p>
+              {favoriteGenres.length > 0 && (
+                <p className='text-neutral-900'>선호 장르: {favoriteGenres.join(', ')}</p>
+              )}
+              {introduction && <p className='text-neutral-600'>{introduction}</p>}
             </CardDescription>
           </div>
         </div>

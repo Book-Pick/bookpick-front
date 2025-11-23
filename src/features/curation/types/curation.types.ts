@@ -55,7 +55,7 @@ export interface Curation {
 }
 
 export type Thumbnail = {
-  imageUrl: File | null
+  imageUrl: string | null
   imageColor: string | null
 }
 
@@ -68,31 +68,32 @@ export interface RecommendTags {
 
 // 확인완료
 export interface CurationItem {
-  // TODO: curationId vs id 통일 필요
-  curationId?: number
+  curationId: number
   id?: number
-  title?: string
+  title: string
   userId: number
   nickName: string
   thumbnail: Thumbnail
-  // TODO: summary vs review 통일 필요
   summary?: string
-  review?: string
+  review: string
   book: {
     title: string
     author: string
+    image?: string
     isbn?: string
   }
-  likeCount?: number
+  likeCount?: number | null
   commentCount?: number
   viewCount?: number
-  similarity?: number
+  similarity?: number | null
   matched?: string
   popularityScore?: number
   isDrafted?: boolean
   createdAt?: string
   updatedAt?: string | null
   recommend?: RecommendTags
+  profileImageUrl?: string | null
+  introduction?: string | null
 }
 
 export interface PaginatedCurations {

@@ -160,9 +160,10 @@ export default function CurationDetailPage() {
           curatorId={curation.userId}
           name={curation.nickName}
           favoriteGenres={[]}
-          introduction=''
+          introduction={curation.introduction || undefined}
           isSubscribed={false}
           onSubscribeToggle={handleSubscribeToggle}
+          profileImage={curation.profileImageUrl || undefined}
         />
         <h3 className='font-curation-title my-12'>{curation.title || '제목 없음'}</h3>
         <p className='font-curation-text leading-normal mb-12'>

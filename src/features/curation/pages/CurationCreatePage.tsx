@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { FileText } from 'lucide-react'
+// import { FileText } from 'lucide-react'
 import {
   Button,
   Card,
@@ -23,17 +23,17 @@ import ThumbnailPreview from '../components/ThumbnailPreview'
 import { COLOR_PALETTE, type DraftCuration } from '../constants/curationCreateData'
 import { READING_MOODS, GENRES, KEYWORDS, READING_STYLES } from '../constants/preferences'
 import toast from 'react-hot-toast'
-import type { CreateCurationRequest } from '../types/curation.types'
-import { useCreateCuration } from '../hooks/useCuration'
+import type { CreateCurationRequest, Book } from '../types/curation.types'
+import { useCreateCuration, useCreateCurationDraft } from '../hooks/useCuration'
 
 export default function CurationCreatePage() {
   const navigate = useNavigate()
   const { mutate: createCurationMutate, isPending } = useCreateCuration()
+  const { mutate: createCurationDraftMutate, isPending: isDraftPending } = useCreateCurationDraft()
 
-  // 상태 관리
   const [title, setTitle] = useState('')
   const [selectedColor, setSelectedColor] = useState<string | null>(
-    COLOR_PALETTE[0].value as string,
+    COLOR_PALETTE[3].value as string,
   )
   const [thumbnail, setThumbnail] = useState<File | null>(null)
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null)
@@ -41,11 +41,15 @@ export default function CurationCreatePage() {
   const [content, setContent] = useState('')
   const [isDraftSheetOpen, setIsDraftSheetOpen] = useState(false)
 
-  // 추천 대상 상태 관리
   const [recommendedMoods, setRecommendedMoods] = useState<string[]>([])
   const [recommendedGenres, setRecommendedGenres] = useState<string[]>([])
   const [recommendedKeywords, setRecommendedKeywords] = useState<string[]>([])
   const [recommendedStyles, setRecommendedStyles] = useState<string[]>([])
+
+  const isEmptyContent = useMemo(
+    () => !title && !selectedBook && !content,
+    [title, selectedBook, content],
+  )
 
   // 토글 함수들
   const toggleRecommendedMood = (mood: string) => {
@@ -90,32 +94,17 @@ export default function CurationCreatePage() {
     setThumbnailUrl(url)
   }
 
-  const handleSaveDraft = () => {
-    // 임시 저장 로직
-    console.log('임시 저장:', {
-      title,
-      selectedColor,
-      thumbnail,
-      selectedBook,
-      content,
-      recommendedMoods,
-      recommendedGenres,
-      recommendedKeywords,
-      recommendedStyles,
-    })
-    toast.success('임시 저장되었습니다.')
-  }
-
-  const handlePublish = () => {
-    const request: CreateCurationRequest = {
+  const getCreateCurationRequest = (): CreateCurationRequest => {
+    return {
       title,
       thumbnail: {
-        imageUrl: thumbnail,
+        imageUrl: thumbnailUrl,
         imageColor: selectedColor,
       },
       book: {
         title: selectedBook?.title || '',
         author: selectedBook?.author || '',
+        image: selectedBook?.image || '',
         isbn: selectedBook?.isbn,
       },
       review: content,
@@ -126,12 +115,41 @@ export default function CurationCreatePage() {
         styles: recommendedStyles,
       },
     }
-    createCurationMutate(request, {
+  }
+
+  const handleSaveDraft = () => {
+    const request = getCreateCurationRequest()
+
+    createCurationDraftMutate(request, {
       onSuccess: () => {
         navigate('/mypage/curation')
       },
-      onError: (error: Error) => {
-        toast.error(error.message || '큐레이션 등록에 실패했습니다.')
+    })
+  }
+
+  const handlePublish = () => {
+    if (!title) {
+      toast.error('제목을 입력해주세요.')
+      return
+    }
+    if (!selectedBook) {
+      toast.error('책을 선택해주세요.')
+      return
+    }
+    if (!content) {
+      toast.error('감상을 입력해주세요.')
+      return
+    }
+    if (!thumbnailUrl && !selectedColor) {
+      toast.error('썸네일을 선택해주세요.')
+      return
+    }
+
+    const request = getCreateCurationRequest()
+
+    createCurationMutate(request, {
+      onSuccess: () => {
+        navigate('/mypage/curation')
       },
     })
   }
@@ -139,7 +157,7 @@ export default function CurationCreatePage() {
   const handleLoadDraft = (draft: DraftCuration) => {
     setTitle(draft.title)
     setContent(draft.content)
-    // 다른 필드들은 draft 데이터에 따라 설정
+    // Todo: 다른 필드들은 draft 데이터에 따라 설정
   }
 
   return (
@@ -149,14 +167,14 @@ export default function CurationCreatePage() {
           {/* 헤더 */}
           <div className='flex flex-col-reverse md:flex-row items-start md:items-center justify-between gap-8 sm:gap-4'>
             <h1 className='text-2xl font-bold px-5'>나만의 추천사 작성하기</h1>
-            <Button
+            {/* <Button
               variant='outline'
               onClick={() => setIsDraftSheetOpen(true)}
               className='self-end md:self-auto'
             >
               <FileText size={16} className='mr-2' />
               임시 저장된 글 가져오기
-            </Button>
+            </Button> */}
           </div>
 
           {/* 1. 추천사 제목 입력 */}
@@ -169,7 +187,6 @@ export default function CurationCreatePage() {
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   maxLength={100}
-                  className='text-lg'
                 />
                 <div className='text-sm text-muted-foreground text-right'>{title.length}/100</div>
               </div>
@@ -257,7 +274,11 @@ export default function CurationCreatePage() {
                   이 추천사가 어떤 독서가에게 도움이 될지 선택해주세요. (선택사항)
                 </p>
 
-                <Accordion type='multiple' className='w-full'>
+                <Accordion
+                  type='multiple'
+                  className='w-full'
+                  defaultValue={['mood', 'genre', 'keyword', 'style']}
+                >
                   {/* 질문 1: 책을 읽을 때 추천하는 분위기는? */}
                   <AccordionItem value='mood'>
                     <AccordionTrigger className='text-base font-medium'>
@@ -357,16 +378,17 @@ export default function CurationCreatePage() {
               size='lg'
               onClick={handleSaveDraft}
               className='flex-1 sm:flex-none'
+              disabled={isDraftPending || isPending || isEmptyContent}
             >
-              임시 저장
+              {isDraftPending ? '임시 저장 중...' : '임시 저장'}
             </Button>
             <Button
               size='lg'
               onClick={handlePublish}
               className='flex-1 sm:flex-none'
-              disabled={isPending}
+              disabled={isDraftPending || isPending || isEmptyContent}
             >
-              {isPending ? '저장 중...' : '등록하기'}
+              {isPending ? '등록 중...' : '등록하기'}
             </Button>
           </div>
         </div>

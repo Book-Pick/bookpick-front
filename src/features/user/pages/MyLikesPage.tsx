@@ -1,39 +1,50 @@
 import CurationCardSocial from '@/features/curation/components/CurationCardSocial'
-import { mockCurations } from '@/features/curation/api/mockCurationApiData'
-
-// 현재는 mockCurations에서 일부만 사용
-const mockLikedCurations = mockCurations.slice(0, 6)
+import { useGetCurations } from '@/features/curation/hooks/useCuration'
+import { useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export default function MyLikesPage() {
+  const navigate = useNavigate()
+
+  const { data: likedCurations } = useGetCurations({
+    sort: 'liked',
+    cursor: 0,
+    size: 1000,
+  })
+
+  const curations = useMemo(() => likedCurations?.content ?? [], [likedCurations])
+
+  const handleCardClick = (id: number) => {
+    navigate(`/curation/detail/${id}`)
+  }
+
   return (
     <div className='flex flex-col gap-8 md:gap-[60px] my-6 md:my-10 xl:my-15'>
-      {/* 페이지 제목 */}
       <div className='flex flex-col gap-3'>
         <h2 className='font-title'>좋아요한 추천사</h2>
       </div>
 
       {/* 좋아요한 큐레이션 목록 */}
       <div className='flex flex-col gap-4'>
-        {mockLikedCurations.length > 0 ? (
+        {curations.length > 0 ? (
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-            {mockLikedCurations.map((curation) => (
+            {curations.map((curation) => (
               <CurationCardSocial
-                key={curation.id}
-                id={curation.id}
+                key={curation.curationId}
+                id={curation.curationId}
                 similarity={curation.similarity}
                 title={curation.title}
-                description={curation.description}
-                curator={curation.curator}
-                likes={curation.likes}
-                comments={curation.comments}
-                views={curation.views}
-                tags={curation.tags.join(', ')}
-                thumbnailSrc={curation.thumbnailImage || undefined}
-                thumbnailColor={curation.thumbnailColor}
-                onClick={() => {
-                  // TODO: 큐레이션 상세 페이지로 이동
-                  console.log(`Navigate to curation detail: ${curation.id}`)
-                }}
+                description={curation?.review ?? ''}
+                curator={curation.nickName}
+                likes={curation.likeCount ?? 0}
+                comments={curation.commentCount ?? 0}
+                views={curation.viewCount ?? 0}
+                tags={curation.matched ?? ''}
+                thumbnailSrc={curation.thumbnail.imageUrl || null}
+                thumbnailColor={curation.thumbnail.imageColor || undefined}
+                curatorImage={curation.profileImageUrl || undefined}
+                curatorBio={curation.introduction || ''}
+                onClick={() => handleCardClick(curation.curationId)}
               />
             ))}
           </div>

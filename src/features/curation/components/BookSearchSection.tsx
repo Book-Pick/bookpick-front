@@ -151,7 +151,7 @@ export function BookSearchSection({
                   className='flex-1'
                 />
                 <Button onClick={handleSearch} disabled={!searchQuery.trim() || isPending}>
-                  <Search size={16} className='mr-2' />
+                  <Search size={16} className='mr-1' />
                   {isPending ? '검색 중...' : '검색'}
                 </Button>
               </div>

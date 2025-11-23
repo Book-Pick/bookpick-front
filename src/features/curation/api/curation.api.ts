@@ -26,11 +26,6 @@ import {
   mockGetCurationsByFieldResponse,
   mockSaveCurationResponse,
   mockUpdateCurationResponse,
-  mockDeleteCurationResponse,
-  // mockGetCurationsResponse,
-  // mockGetPopularCurationsResponse,
-  // mockGetRecentCurationsResponse,
-  // mockGetCurationByIdResponse,
 } from './mockCurationApiData'
 
 const axios = createAxiosClient(import.meta.env.VITE_APP_BOOKPICK_API_URL)
@@ -112,14 +107,6 @@ export const curationApi = {
       console.error('큐레이션 조회 에러:', axiosError)
       throw error
     }
-
-    // 목업 데이터 반환
-    // console.log('큐레이션 단건 조회 요청:', curationId)
-    // return new Promise((resolve) => {
-    //   setTimeout(() => {
-    //     resolve(mockGetCurationByIdResponse)
-    //   }, 500)
-    // })
   },
 
   /**
@@ -142,25 +129,6 @@ export const curationApi = {
       }
       throw error
     }
-    // 목업 데이터 반환
-    // console.log('큐레이션 목록 조회 요청:', { sort, cursor, size })
-    // return new Promise((resolve) => {
-    //   setTimeout(() => {
-    //     // sort 파라미터에 따라 적절한 목업 데이터 반환
-    //     switch (sort) {
-    //       case 'popularity':
-    //         resolve(mockGetPopularCurationsResponse)
-    //         break
-    //       case 'latest':
-    //         resolve(mockGetRecentCurationsResponse)
-    //         break
-    //       case 'similarity':
-    //       default:
-    //         resolve(mockGetCurationsResponse)
-    //         break
-    //     }
-    //   }, 500)
-    // })
   },
 
   /**
@@ -202,6 +170,19 @@ export const curationApi = {
   createCuration: async (request: CreateCurationRequest): Promise<CreateCurationResponse> => {
     try {
       const response = await axios.post(`${urlPrefix}/curations`, request)
+      return response.data
+    } catch (error: unknown) {
+      const axiosError = error as AxiosErrorResponse
+      if (axiosError.response?.status === 400) {
+        throw new Error('잘못된 요청입니다.')
+      }
+      throw error
+    }
+  },
+
+  createCurationDraft: async (request: CreateCurationRequest): Promise<CreateCurationResponse> => {
+    try {
+      const response = await axios.post(`${urlPrefix}/curation/draft`, request)
       return response.data
     } catch (error: unknown) {
       const axiosError = error as AxiosErrorResponse
@@ -276,27 +257,19 @@ export const curationApi = {
    * 10. 큐레이션 삭제
    */
   deleteCuration: async (curationId: number): Promise<DeleteCurationResponse> => {
-    // try {
-    //   const response = await axios.delete(`${urlPrefix}/curations/${curationId}`)
-    //   return response.data
-    // } catch (error: unknown) {
-    //   const axiosError = error as AxiosErrorResponse
-    //   if (axiosError.response?.status === 403) {
-    //     throw new Error('삭제 권한이 없습니다.')
-    //   }
-    //   if (axiosError.response?.status === 404) {
-    //     throw new Error('큐레이션을 찾을 수 없습니다.')
-    //   }
-    //   throw error
-    // }
-
-    // 목업 데이터 반환
-    console.log('큐레이션 삭제 요청:', curationId)
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(mockDeleteCurationResponse)
-      }, 500)
-    })
+    try {
+      const response = await axios.delete(`${urlPrefix}/curations/${curationId}`)
+      return response.data
+    } catch (error: unknown) {
+      const axiosError = error as AxiosErrorResponse
+      if (axiosError.response?.status === 403) {
+        throw new Error('삭제 권한이 없습니다.')
+      }
+      if (axiosError.response?.status === 404) {
+        throw new Error('큐레이션을 찾을 수 없습니다.')
+      }
+      throw error
+    }
   },
 
   /**

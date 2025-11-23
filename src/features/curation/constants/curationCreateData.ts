@@ -48,64 +48,64 @@ export const SEARCH_BOOKS = [
 // 색상 팔레트 옵션
 export const COLOR_PALETTE = [
   // Red
-  { name: 'Red 100', value: '#FEE2E2', class: 'bg-red-100' },
-  { name: 'Red 200', value: '#FECACA', class: 'bg-red-200' },
-  { name: 'Red 300', value: '#FCA5A5', class: 'bg-red-300' },
-  { name: 'Red 400', value: '#F87171', class: 'bg-red-400' },
+  { name: 'Red 100', value: '#FEE2E2' },
+  { name: 'Red 200', value: '#FECACA' },
+  { name: 'Red 300', value: '#FCA5A5' },
+  { name: 'Red 400', value: '#E85660' },
 
   // Orange
-  { name: 'Orange 100', value: '#FFEDD5', class: 'bg-orange-100' },
-  { name: 'Orange 200', value: '#FED7AA', class: 'bg-orange-200' },
-  { name: 'Orange 300', value: '#FDBA74', class: 'bg-orange-300' },
-  { name: 'Orange 400', value: '#FB923C', class: 'bg-orange-400' },
+  { name: 'Orange 100', value: '#FFEDD5' },
+  { name: 'Orange 200', value: '#FED7AA' },
+  { name: 'Orange 300', value: '#FDBA74' },
+  { name: 'Orange 400', value: '#F67152' },
 
   // Yellow
-  { name: 'Yellow 100', value: '#FEF3C7', class: 'bg-yellow-100' },
-  { name: 'Yellow 200', value: '#FDE68A', class: 'bg-yellow-200' },
-  { name: 'Yellow 300', value: '#FCD34D', class: 'bg-yellow-300' },
-  { name: 'Yellow 400', value: '#FACC15', class: 'bg-yellow-400' },
+  { name: 'Yellow 100', value: '#FEF3C7' },
+  { name: 'Yellow 200', value: '#FDE68A' },
+  { name: 'Yellow 300', value: '#FCD34D' },
+  { name: 'Yellow 400', value: '#F9CC4C' },
 
   // Lime
-  { name: 'Lime 100', value: '#ECFCCB', class: 'bg-lime-100' },
-  { name: 'Lime 200', value: '#D9F99D', class: 'bg-lime-200' },
-  { name: 'Lime 300', value: '#BEF264', class: 'bg-lime-300' },
-  { name: 'Lime 400', value: '#A3E635', class: 'bg-lime-400' },
+  { name: 'Lime 100', value: '#ECFCCB' },
+  { name: 'Lime 200', value: '#D9F99D' },
+  { name: 'Lime 300', value: '#BEF264' },
+  { name: 'Lime 400', value: '#9ED464' },
 
   // Emerald
-  { name: 'Emerald 100', value: '#D1FAE5', class: 'bg-emerald-100' },
-  { name: 'Emerald 200', value: '#A7F3D0', class: 'bg-emerald-200' },
-  { name: 'Emerald 300', value: '#6EE7B7', class: 'bg-emerald-300' },
-  { name: 'Emerald 400', value: '#34D399', class: 'bg-emerald-400' },
+  { name: 'Emerald 100', value: '#D1FAE5' },
+  { name: 'Emerald 200', value: '#A7F3D0' },
+  { name: 'Emerald 300', value: '#6EE7B7' },
+  { name: 'Emerald 400', value: '#45CCAB' },
 
   // Cyan
-  { name: 'Cyan 100', value: '#CFFAFE', class: 'bg-cyan-100' },
-  { name: 'Cyan 200', value: '#A5F3FC', class: 'bg-cyan-200' },
-  { name: 'Cyan 300', value: '#67E8F9', class: 'bg-cyan-300' },
-  { name: 'Cyan 400', value: '#22D3EE', class: 'bg-cyan-400' },
+  { name: 'Cyan 100', value: '#CFFAFE' },
+  { name: 'Cyan 200', value: '#A5F3FC' },
+  { name: 'Cyan 300', value: '#67E8F9' },
+  { name: 'Cyan 400', value: '#48C4E0' },
 
   // Blue
-  { name: 'Blue 100', value: '#DBEAFE', class: 'bg-blue-100' },
-  { name: 'Blue 200', value: '#BFDBFE', class: 'bg-blue-200' },
-  { name: 'Blue 300', value: '#93C5FD', class: 'bg-blue-300' },
-  { name: 'Blue 400', value: '#60A5FA', class: 'bg-blue-400' },
+  { name: 'Blue 100', value: '#DBEAFE' },
+  { name: 'Blue 200', value: '#BFDBFE' },
+  { name: 'Blue 300', value: '#93C5FD' },
+  { name: 'Blue 400', value: '#5B9AE7' },
 
   // Violet
-  { name: 'Violet 100', value: '#EDE9FE', class: 'bg-violet-100' },
-  { name: 'Violet 200', value: '#DDD6FE', class: 'bg-violet-200' },
-  { name: 'Violet 300', value: '#C4B5FD', class: 'bg-violet-300' },
-  { name: 'Violet 400', value: '#A78BFA', class: 'bg-violet-400' },
+  { name: 'Violet 100', value: '#EDE9FE' },
+  { name: 'Violet 200', value: '#DDD6FE' },
+  { name: 'Violet 300', value: '#C4B5FD' },
+  { name: 'Violet 400', value: '#A891E9' },
 
   // Pink
-  { name: 'Pink 100', value: '#FCE7F3', class: 'bg-pink-100' },
-  { name: 'Pink 200', value: '#FBCFE8', class: 'bg-pink-200' },
-  { name: 'Pink 300', value: '#F9A8D4', class: 'bg-pink-300' },
-  { name: 'Pink 400', value: '#F472B6', class: 'bg-pink-400' },
+  { name: 'Pink 100', value: '#FCE7F3' },
+  { name: 'Pink 200', value: '#FBCFE8' },
+  { name: 'Pink 300', value: '#F9A8D4' },
+  { name: 'Pink 400', value: '#EA65AC' },
 
   // Gray
-  { name: 'Gray 100', value: '#F3F4F6', class: 'bg-gray-100' },
-  { name: 'Gray 200', value: '#E5E7EB', class: 'bg-gray-200' },
-  { name: 'Gray 300', value: '#D1D5DB', class: 'bg-gray-300' },
-  { name: 'Gray 400', value: '#9CA3AF', class: 'bg-gray-400' },
+  { name: 'Gray 100', value: '#F3F4F6' },
+  { name: 'Gray 200', value: '#E5E7EB' },
+  { name: 'Gray 300', value: '#D1D5DB' },
+  { name: 'Gray 400', value: '#636D76' },
 ] as const
 
 // 타입 정의

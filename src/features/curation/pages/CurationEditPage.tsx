@@ -1,5 +1,6 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useState, useEffect, useMemo } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+// import { FileText } from 'lucide-react'
 import {
   Button,
   Card,
@@ -9,33 +10,89 @@ import {
   AccordionItem,
   AccordionTrigger,
   AccordionContent,
+  Input,
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
 } from '@/shared/ui'
-import { CurationTitleSection } from '../components/CurationTitleSection'
-// import { ThumbnailSelector } from '../components/ThumbnailSelector'
 import { BookSearchSection } from '../components/BookSearchSection'
 import { ReviewSection } from '../components/ReviewSection'
-import { KeywordSection } from '../components/KeywordSection'
-import { COLOR_PALETTE } from '../constants/curationCreateData'
+import { DraftListSheet } from '../components/DraftListSheet'
+import ThumbnailPreview from '../components/ThumbnailPreview'
+import { COLOR_PALETTE, type DraftCuration } from '../constants/curationCreateData'
 import { READING_MOODS, GENRES, KEYWORDS, READING_STYLES } from '../constants/preferences'
 import toast from 'react-hot-toast'
-import type { Book } from '../types/curation.types'
+import type { CreateCurationRequest, Book } from '../types/curation.types'
+import { useCreateCuration, useCreateCurationDraft, useGetCurationById } from '../hooks/useCuration'
 
-export default function CurationEditPage() {
+export default function CurationCreatePage() {
   const navigate = useNavigate()
+  const { id } = useParams<{ id: string }>()
+  const curationId = id ? Number(id) : 0
 
-  // 상태 관리
+  const { data: curationData, isLoading, isError } = useGetCurationById(curationId)
+  const { mutate: createCurationMutate, isPending } = useCreateCuration()
+  const { mutate: createCurationDraftMutate, isPending: isDraftPending } = useCreateCurationDraft()
+
   const [title, setTitle] = useState('')
-  const [selectedColor, setSelectedColor] = useState(COLOR_PALETTE[0].value as string)
+  const [selectedColor, setSelectedColor] = useState<string | null>(
+    COLOR_PALETTE[3].value as string,
+  )
   const [thumbnail, setThumbnail] = useState<File | null>(null)
+  const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null)
   const [selectedBook, setSelectedBook] = useState<Book | null>(null)
   const [content, setContent] = useState('')
-  const [keywords, setKeywords] = useState<string[]>([])
+  const [isDraftSheetOpen, setIsDraftSheetOpen] = useState(false)
 
-  // 추천 대상 상태 관리
   const [recommendedMoods, setRecommendedMoods] = useState<string[]>([])
   const [recommendedGenres, setRecommendedGenres] = useState<string[]>([])
   const [recommendedKeywords, setRecommendedKeywords] = useState<string[]>([])
   const [recommendedStyles, setRecommendedStyles] = useState<string[]>([])
+
+  const isEmptyContent = useMemo(
+    () => !title && !selectedBook && !content,
+    [title, selectedBook, content],
+  )
+
+  // 큐레이션 데이터로 폼 초기화
+  useEffect(() => {
+    if (curationData) {
+      setTitle(curationData.title || '')
+      setContent(curationData.review || '')
+
+      // 책 정보 설정
+      if (curationData.book?.isbn) {
+        setSelectedBook({
+          title: curationData.book.title,
+          author: curationData.book.author,
+          image: curationData.book.image || '',
+          isbn: curationData.book.isbn,
+        })
+      } else {
+        setSelectedBook(null)
+      }
+
+      // 썸네일 정보 설정
+      if (curationData.thumbnail) {
+        if (curationData.thumbnail.imageUrl) {
+          setThumbnailUrl(curationData.thumbnail.imageUrl)
+          setSelectedColor(null)
+        } else if (curationData.thumbnail.imageColor) {
+          setSelectedColor(curationData.thumbnail.imageColor)
+          setThumbnailUrl(null)
+        }
+      }
+
+      // 추천 태그 설정
+      if (curationData.recommend) {
+        setRecommendedMoods(curationData.recommend.moods || [])
+        setRecommendedGenres(curationData.recommend.genres || [])
+        setRecommendedKeywords(curationData.recommend.keywords || [])
+        setRecommendedStyles(curationData.recommend.styles || [])
+      }
+    }
+  }, [curationData])
 
   // 토글 함수들
   const toggleRecommendedMood = (mood: string) => {
@@ -62,75 +119,149 @@ export default function CurationEditPage() {
     )
   }
 
-  const handleCancel = () => {
-    navigate('/mypage/curation')
+  const handleColorSelect = (color: string) => {
+    setSelectedColor(color)
+    setThumbnail(null)
+    setThumbnailUrl(null)
+  }
+
+  const handleThumbnailSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null
+    setThumbnail(file)
+    if (file) {
+      setSelectedColor(null)
+    }
+  }
+
+  const handleThumbnailUpload = (url: string) => {
+    setThumbnailUrl(url)
+  }
+
+  const getCreateCurationRequest = (): CreateCurationRequest => {
+    return {
+      title,
+      thumbnail: {
+        imageUrl: thumbnailUrl,
+        imageColor: selectedColor,
+      },
+      book: {
+        title: selectedBook?.title || '',
+        author: selectedBook?.author || '',
+        image: selectedBook?.image || '',
+        isbn: selectedBook?.isbn,
+      },
+      review: content,
+      recommend: {
+        moods: recommendedMoods,
+        genres: recommendedGenres,
+        keywords: recommendedKeywords,
+        styles: recommendedStyles,
+      },
+    }
   }
 
   const handleSaveDraft = () => {
-    // 임시 저장 로직
-    console.log('임시 저장:', {
-      title,
-      selectedColor,
-      thumbnail,
-      selectedBook,
-      content,
-      keywords,
-      recommendedMoods,
-      recommendedGenres,
-      recommendedKeywords,
-      recommendedStyles,
+    const request = getCreateCurationRequest()
+
+    createCurationDraftMutate(request, {
+      onSuccess: () => {
+        navigate('/mypage/curation')
+      },
     })
-    toast.success('임시 저장되었습니다.')
   }
 
   const handlePublish = () => {
-    // 큐레이션 등록 로직
-    console.log('큐레이션 등록:', {
-      title,
-      selectedColor,
-      thumbnail,
-      selectedBook,
-      content,
-      keywords,
-      recommendedMoods,
-      recommendedGenres,
-      recommendedKeywords,
-      recommendedStyles,
+    if (!title) {
+      toast.error('제목을 입력해주세요.')
+      return
+    }
+    if (!selectedBook) {
+      toast.error('책을 선택해주세요.')
+      return
+    }
+    if (!content) {
+      toast.error('감상을 입력해주세요.')
+      return
+    }
+    if (!thumbnailUrl && !selectedColor) {
+      toast.error('썸네일을 선택해주세요.')
+      return
+    }
+
+    const request = getCreateCurationRequest()
+
+    createCurationMutate(request, {
+      onSuccess: () => {
+        navigate('/mypage/curation')
+      },
     })
-    toast.success('큐레이션이 등록되었습니다.')
-    navigate('/mypage/curation')
+  }
+
+  const handleLoadDraft = (draft: DraftCuration) => {
+    setTitle(draft.title)
+    setContent(draft.content)
+    // Todo: 다른 필드들은 draft 데이터에 따라 설정
+  }
+
+  // 로딩 상태
+  if (isLoading) {
+    return (
+      <div className='flex items-center justify-center min-h-screen'>
+        <div className='text-center'>
+          <div className='text-lg font-medium'>큐레이션 데이터를 불러오는 중...</div>
+        </div>
+      </div>
+    )
+  }
+
+  // 에러 상태
+  if (isError || !curationData) {
+    return (
+      <div className='flex items-center justify-center min-h-screen'>
+        <div className='text-center space-y-4'>
+          <div className='text-lg font-medium text-destructive'>
+            큐레이션 데이터를 불러오는데 실패했습니다.
+          </div>
+          <Button onClick={() => navigate('/mypage/curation')}>목록으로 돌아가기</Button>
+        </div>
+      </div>
+    )
   }
 
   return (
     <>
-      {/* 제목 섹션 */}
-      <div className='w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]'>
-        <Card className='border-0 p-0'>
-          <CardContent className='p-0'>
-            <CurationTitleSection
-              title={title}
-              onTitleChange={setTitle}
-              selectedColor={selectedColor}
-              onColorChange={setSelectedColor}
-              thumbnail={thumbnail}
-              onThumbnailChange={setThumbnail}
-            />
-          </CardContent>
-        </Card>
-      </div>
       <div className='pt-8 sm:pt-16 pb-8'>
         <div className='space-y-4'>
           {/* 헤더 */}
-          <h1 className='text-2xl font-bold'>나만의 추천사 작성하기</h1>
+          <div className='flex flex-col-reverse md:flex-row items-start md:items-center justify-between gap-8 sm:gap-4'>
+            <h1 className='text-2xl font-bold px-5'>나만의 추천사 작성하기</h1>
+            {/* <Button
+              variant='outline'
+              onClick={() => setIsDraftSheetOpen(true)}
+              className='self-end md:self-auto'
+            >
+              <FileText size={16} className='mr-2' />
+              임시 저장된 글 가져오기
+            </Button> */}
+          </div>
 
-          {/* 썸네일 선택 */}
-          {/* <Card className='rounded-none bg-transparent border-0 border-b'>
+          {/* 1. 추천사 제목 입력 */}
+          <Card className='rounded-none bg-transparent border-0 border-b'>
             <CardContent className='p-6'>
-              <ThumbnailSelector thumbnail={thumbnail} onThumbnailChange={setThumbnail} />
+              <div className='space-y-4'>
+                <h3 className='text-lg font-semibold'>1. 추천사 제목을 적어주세요!</h3>
+                <Input
+                  placeholder='제목을 입력해 주세요'
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  maxLength={100}
+                />
+                <div className='text-sm text-muted-foreground text-right'>{title.length}/100</div>
+              </div>
             </CardContent>
-          </Card> */}
+          </Card>
 
-          {/* 책 검색 */}
+          {/* 2. 책 검색 */}
           <Card className='rounded-none bg-transparent border-0 border-b'>
             <CardContent className='p-6'>
               <BookSearchSection
@@ -141,30 +272,81 @@ export default function CurationEditPage() {
             </CardContent>
           </Card>
 
-          {/* 감상 작성 */}
+          {/* 3. 감상 작성 */}
           <Card className='rounded-none bg-transparent border-0 border-b'>
             <CardContent className='p-6'>
               <ReviewSection content={content} onContentChange={setContent} />
             </CardContent>
           </Card>
 
-          {/* 키워드 추가 */}
+          {/* 4. 썸네일 선택 */}
           <Card className='rounded-none bg-transparent border-0 border-b'>
             <CardContent className='p-6'>
-              <KeywordSection keywords={keywords} onKeywordsChange={setKeywords} />
+              <div className='space-y-4'>
+                <h3 className='text-lg font-semibold'>4. 썸네일을 선택해 주세요!</h3>
+                <p className='text-sm text-muted-foreground'>
+                  단색 또는 썸네일 이미지 중 하나를 선택할 수 있습니다.
+                </p>
+
+                <Tabs defaultValue='color' variant='button'>
+                  <TabsList>
+                    <TabsTrigger value='color'>단색</TabsTrigger>
+                    <TabsTrigger value='image'>이미지 업로드</TabsTrigger>
+                  </TabsList>
+
+                  {/* 배경 색상 탭 */}
+                  <TabsContent value='color' className='space-y-4 mt-4'>
+                    <div className='w-fit border p-4 rounded-xl space-y-3'>
+                      <div className='flex flex-wrap gap-2'>
+                        {COLOR_PALETTE.filter((color) => color.name.includes('400')).map(
+                          (color) => (
+                            <button
+                              key={color.value}
+                              onClick={() => handleColorSelect(color.value)}
+                              className={`w-12 h-12 rounded-lg border-2 transition-all hover:scale-105 ${
+                                selectedColor === color.value && !thumbnail
+                                  ? 'ring-2 ring-primary ring-offset-2'
+                                  : 'border-gray-200 hover:border-gray-300'
+                              }`}
+                              style={{ backgroundColor: color.value }}
+                              title={color.name}
+                            />
+                          ),
+                        )}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  {/* 썸네일 이미지 탭 */}
+                  <TabsContent value='image' className='space-y-4 mt-4'>
+                    <ThumbnailPreview
+                      thumbnail={thumbnail}
+                      thumbnailUrl={thumbnailUrl}
+                      onThumbnailSelect={handleThumbnailSelect}
+                      onThumbnailUpload={handleThumbnailUpload}
+                      title={title}
+                      content={content}
+                    />
+                  </TabsContent>
+                </Tabs>
+              </div>
             </CardContent>
           </Card>
 
-          {/* 이런 독서가에게 추천합니다 */}
+          {/* 5. 이런 독서가에게 추천합니다 */}
           <Card className='rounded-none bg-transparent border-0'>
             <CardContent className='p-6'>
               <div className='space-y-4'>
-                <h3 className='text-lg font-semibold'>이런 독서가에게 추천합니다</h3>
+                <h3 className='text-lg font-semibold'>이런 독서가에게 추천합니다.</h3>
                 <p className='text-sm text-muted-foreground'>
                   이 추천사가 어떤 독서가에게 도움이 될지 선택해주세요. (선택사항)
                 </p>
 
-                <Accordion type='multiple' className='w-full'>
+                <Accordion
+                  type='multiple'
+                  className='w-full'
+                  defaultValue={['mood', 'genre', 'keyword', 'style']}
+                >
                   {/* 질문 1: 책을 읽을 때 추천하는 분위기는? */}
                   <AccordionItem value='mood'>
                     <AccordionTrigger className='text-base font-medium'>
@@ -258,23 +440,33 @@ export default function CurationEditPage() {
           </Card>
 
           {/* 하단 버튼 */}
-          <div className='flex flex-col sm:flex-row justify-center gap-4 pt-8'>
-            <Button variant='outline' size='lg' onClick={handleCancel} className='w-full sm:w-auto'>
-              취소
-            </Button>
+          <div className='flex justify-center gap-4 pt-8'>
             <Button
               variant='outline'
               size='lg'
               onClick={handleSaveDraft}
-              className='w-full sm:w-auto'
+              className='flex-1 sm:flex-none'
+              disabled={isDraftPending || isPending || isEmptyContent}
             >
-              임시 저장
+              {isDraftPending ? '임시 저장 중...' : '임시 저장'}
             </Button>
-            <Button size='lg' onClick={handlePublish} className='w-full sm:w-auto'>
-              추천사 등록하기
+            <Button
+              size='lg'
+              onClick={handlePublish}
+              className='flex-1 sm:flex-none'
+              disabled={isDraftPending || isPending || isEmptyContent}
+            >
+              {isPending ? '등록 중...' : '등록하기'}
             </Button>
           </div>
         </div>
+
+        {/* 임시 저장 목록 Sheet */}
+        <DraftListSheet
+          isOpen={isDraftSheetOpen}
+          onClose={() => setIsDraftSheetOpen(false)}
+          onSelectDraft={handleLoadDraft}
+        />
       </div>
     </>
   )

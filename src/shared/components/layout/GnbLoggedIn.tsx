@@ -63,7 +63,7 @@ export function GnbLoggedIn() {
       {/* 데스크톱: 프로필 아이콘만 */}
       <Avatar
         size='sm'
-        className='ring-1 ring-white/30 hidden sm:flex cursor-pointer'
+        className='ring-1 ring-primary/10 hidden sm:flex cursor-pointer'
         onClick={handleMyPageClick}
       >
         <AvatarImage src={profileImageUrl} alt='profile' className='object-cover' />
@@ -76,7 +76,7 @@ export function GnbLoggedIn() {
       <DropdownMenu>
         <DropdownMenuTrigger asChild className='flex sm:hidden'>
           <button className='outline-none'>
-            <Avatar size='sm' className='ring-1 ring-white/30 cursor-pointer'>
+            <Avatar size='sm' className='ring-1 ring-primary/10 cursor-pointer'>
               <AvatarImage src={profileImageUrl} alt='profile' className='object-cover' />
               <AvatarFallback>
                 <span>북픽</span>

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { Image as ImageIcon, Eye } from 'lucide-react'
 import { Button } from '@/shared/ui'
 import CurationCardSocial from './CurationCardSocial'
@@ -31,6 +31,7 @@ const ThumbnailPreview = ({
 }: ThumbnailPreviewProps) => {
   const [showFullPreview, setShowFullPreview] = useState(false)
   const [localPreview, setLocalPreview] = useState<string | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const { mutate: uploadImageMutate, isPending: isImageUploading } = useImageUpload()
 
@@ -74,6 +75,15 @@ const ThumbnailPreview = ({
         onError: (error) => {
           console.error(error)
           toast.error(error.message || '썸네일 업로드에 실패했습니다.')
+          // 업로드 실패 시 로컬 미리보기 및 파일 초기화
+          setLocalPreview(null)
+          if (fileInputRef.current) {
+            fileInputRef.current.value = ''
+            // 부모 컴포넌트에 파일 제거 알림
+            onThumbnailSelect({
+              target: fileInputRef.current,
+            } as React.ChangeEvent<HTMLInputElement>)
+          }
         },
       },
     )
@@ -84,6 +94,7 @@ const ThumbnailPreview = ({
       {/* 이미지 업로드 영역 */}
       <div className='relative'>
         <input
+          ref={fileInputRef}
           type='file'
           accept='image/*'
           onChange={handleFileChange}

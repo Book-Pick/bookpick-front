@@ -26,7 +26,7 @@ function Input({ className, type, errorMessage, label, id, size = 'md', ...props
           'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
           errorMessage && 'border-destructive',
           size === 'sm' && 'h-7 px-2 py-0.5 text-sm file:h-5 file:text-xs',
-          size === 'md' && 'h-9 px-3 py-1 text-base md:text-sm file:h-7 file:text-sm',
+          size === 'md' && 'h-9 px-3 py-1 text-xs md:text-sm file:h-7 file:text-sm',
           size === 'lg' && 'h-11 px-4 py-2 text-lg md:text-base file:h-9 file:text-base',
           size === 'xl' && 'h-16 px-6 py-4 text-2xl md:text-xl file:h-12 file:text-xl',
           className,

@@ -126,7 +126,24 @@ export const useCreateCuration = () => {
       toast.success('큐레이션이 등록되었습니다.')
     },
     onError: (error: Error) => {
-      toast.error(error.message || '큐레이션 작성에 실패했습니다.')
+      toast.error(error.message || '큐레이션 저장에 실패했습니다.')
+    },
+  })
+}
+
+export const useCreateCurationDraft = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (request: CreateCurationRequest) => {
+      const response = await curationApi.createCurationDraft(request)
+      return response.data
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['curations'] })
+      toast.success('큐레이션이 임시저장되었습니다.')
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || '큐레이션 임시저장에 실패했습니다.')
     },
   })
 }
