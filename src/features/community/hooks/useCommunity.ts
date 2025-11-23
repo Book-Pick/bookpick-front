@@ -69,10 +69,10 @@ export const useCreateComment = (curationId: number) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['comments', curationId] })
-      toast.success('Comment has been posted.')
+      toast.success('댓글을 등록했습니다.')
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Failed to post comment.')
+      toast.error(error.message || '댓글 등록에 실패했습니다.')
     },
   })
 }
@@ -91,10 +91,10 @@ export const useUpdateComment = (curationId: number, commentId: number) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['comments', curationId] })
       queryClient.invalidateQueries({ queryKey: ['comment', curationId, commentId] })
-      toast.success('Comment has been updated.')
+      toast.success('댓글을 수정했습니다.')
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Failed to update comment.')
+      toast.error(error.message || '댓글 수정에 실패했습니다.')
     },
   })
 }
@@ -112,10 +112,10 @@ export const useDeleteComment = (curationId: number) => {
     },
     onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: ['comments', curationId] })
-      toast.success(response.message || 'Comment has been deleted.')
+      toast.success(response.message || '댓글을 삭제했습니다.')
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Failed to delete comment.')
+      toast.error(error.message || '댓글 삭제에 실패했습니다.')
     },
   })
 }
