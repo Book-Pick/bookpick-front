@@ -162,7 +162,6 @@ export const useSaveCuration = () => {
     onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: ['curations'] })
       toast.success(response.message || '큐레이션이 저장되었습니다.')
-      console.log('큐레이션 저장 완료:', response.data)
     },
     onError: (error: Error) => {
       toast.error(error.message || '큐레이션 저장에 실패했습니다.')
@@ -185,7 +184,6 @@ export const useUpdateCuration = () => {
       queryClient.invalidateQueries({ queryKey: ['curations'] })
       queryClient.invalidateQueries({ queryKey: ['curation', data.id] })
       toast.success('큐레이션이 성공적으로 수정되었습니다.')
-      console.log('큐레이션 수정 완료:', data)
     },
     onError: (error: Error) => {
       toast.error(error.message || '큐레이션 수정에 실패했습니다.')

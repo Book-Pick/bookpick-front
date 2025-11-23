@@ -63,8 +63,6 @@ const CurationCardSocial = ({
     .map((tag) => tag.trim())
     .filter((tag) => tag.length > 0)
 
-  console.log('curatorImage:', curatorImage)
-
   return (
     <Card
       className={`w-full bg-white border rounded-xl overflow-hidden max-w-sm mx-auto p-0 transition-all focus:outline-none focus-visible:outline-none ${

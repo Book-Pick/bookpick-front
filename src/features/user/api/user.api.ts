@@ -21,7 +21,7 @@ export const userApi = {
       return response.data
     } catch (error: unknown) {
       const axiosError = error as AxiosErrorResponse
-      console.log('getProfile error', axiosError.response)
+      console.error('getProfile error', axiosError.response)
       throw error
     }
   },

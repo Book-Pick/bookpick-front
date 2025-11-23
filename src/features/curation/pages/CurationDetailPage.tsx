@@ -16,8 +16,6 @@ export default function CurationDetailPage() {
 
   const { data: curation, isLoading, error } = useGetCurationById(curationId)
 
-  console.log('curation', curation)
-
   const [isLiked, setIsLiked] = useState(false)
 
   const handlePurchase = (_curationId: number, _price: number) => {

@@ -39,7 +39,6 @@ const mockFeedbacks = [
 export default function MyDashboardPage() {
   const { data: profile } = useGetProfile()
 
-  console.log('profile', profile)
   return (
     <div className='flex flex-col gap-5 my-5 md:gap-[60px] md:my-10 xl:my-15'>
       {/* 페이지 제목 - 데스크톱만 표시 */}
