@@ -2,14 +2,9 @@ import ProfileCard from '../components/ProfileCard'
 import QuickLinksCard from '../components/QuickLinksCard'
 import StatsGrid from '../components/StatsGrid'
 import RecentFeedbackCard from '../components/RecentFeedbackCard'
+import { useGetProfile } from '../hooks/useUser'
 
 // TODO: 실제 API 연동 시 데이터 교체
-const mockUserData = {
-  name: '감성큐레이터',
-  favoriteGenres: ['에세이', '심리'],
-  introduction: '"책과 함께하는 모든 순간을 사랑합니다."',
-  avatarUrl: '',
-}
 
 const mockStats = {
   totalCurations: 34,
@@ -42,6 +37,9 @@ const mockFeedbacks = [
 ]
 
 export default function MyDashboardPage() {
+  const { data: profile } = useGetProfile()
+
+  console.log('profile', profile)
   return (
     <div className='flex flex-col gap-5 my-5 md:gap-[60px] md:my-10 xl:my-15'>
       {/* 페이지 제목 - 데스크톱만 표시 */}
@@ -51,10 +49,9 @@ export default function MyDashboardPage() {
       <div className='flex flex-col gap-5 md:grid md:grid-cols-[minmax(0,3fr)_minmax(0,7fr)] md:grid-rows-[auto_auto] md:gap-6'>
         {/* Row 1, Col 1: 프로필 카드 */}
         <ProfileCard
-          name={mockUserData.name}
-          favoriteGenres={mockUserData.favoriteGenres}
-          introduction={mockUserData.introduction}
-          avatarUrl={mockUserData.avatarUrl}
+          name={profile?.nickName || ''}
+          introduction={profile?.introduction || ''}
+          avatarUrl={profile?.profileImage || ''}
         />
 
         {/* Row 1, Col 2: 통계 카드 */}

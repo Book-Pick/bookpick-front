@@ -48,6 +48,8 @@
   --sidebar-ring: oklch(0.708 0 0);
   --image: oklch(0.8985 0.0168 259.42);
   --image-foreground: oklch(0.205 0 0);
+  --toast: oklch(0.9592 0.0035 219.53);
+  --toast-foreground: oklch(0.145 0 0);
 }
 
 .dark {
@@ -173,6 +175,8 @@ body {
   --color-input: var(--input);
   --color-image: var(--image);
   --color-image-foreground: var(--image-foreground);
+  --color-toast: var(--toast);
+  --color-toast-foreground: var(--toast-foreground);
 }
 
 @layer base {

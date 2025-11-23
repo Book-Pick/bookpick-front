@@ -3,6 +3,7 @@ import { Input, Textarea, Avatar, AvatarImage, AvatarFallback } from '@/shared/u
 import toast from 'react-hot-toast'
 import { useImageUpload } from '@/shared/hooks'
 import { validateImageFile, fileToDataURL } from '@/shared/utils/imageValidation'
+import { CircleUser } from 'lucide-react'
 
 interface ProfileRegisterFormProps {
   nickname: string
@@ -84,7 +85,9 @@ export default function ProfileRegisterForm({
                 {profileImage ? (
                   <AvatarImage src={profileImage} alt='프로필 이미지' />
                 ) : (
-                  <AvatarFallback className='text-2xl md:text-3xl bg-muted'>👤</AvatarFallback>
+                  <AvatarFallback className='bg-secondary'>
+                    <CircleUser size={36} className='text-primary' />
+                  </AvatarFallback>
                 )}
               </Avatar>
               {/* 업로드 중 표시 */}

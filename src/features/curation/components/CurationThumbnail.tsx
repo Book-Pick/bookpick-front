@@ -31,7 +31,7 @@ const CurationThumbnail = ({
         style={{ backgroundColor: thumbnailColor }}
         className={`w-full h-full flex items-center justify-center p-4 ${className || ''}`}
       >
-        <h3 className='font-bold text-center line-clamp-3 text-gray-800'>{title}</h3>
+        <h3 className='font-bold text-center text-white line-clamp-3'>{title}</h3>
       </div>
     )
   }

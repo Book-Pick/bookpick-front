@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 interface ProfileCardProps {
   avatarUrl?: string
   name: string
-  favoriteGenres: string[]
+  favoriteGenres?: string[]
   introduction: string
 }
 
@@ -31,11 +31,16 @@ export default function ProfileCard({
           <p className='text-xs font-medium text-muted-foreground md:text-sm md:hidden'>
             {introduction}
           </p>
-          <p className='text-xs font-medium text-muted-foreground hidden md:block'>
-            선호 장르: {favoriteGenres.join(', ')}
-            <br />
-            {introduction}
-          </p>
+          {favoriteGenres && (
+            <p className='text-xs font-medium text-muted-foreground hidden md:block'>
+              선호 장르: {favoriteGenres.join(', ')}
+            </p>
+          )}
+          {introduction && (
+            <p className='text-xs font-medium text-muted-foreground hidden md:block'>
+              {introduction}
+            </p>
+          )}
         </div>
       </div>
       <Button className='w-full' size='lg' onClick={() => navigate('/mypage/profile')}>

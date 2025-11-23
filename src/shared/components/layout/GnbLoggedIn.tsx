@@ -12,7 +12,7 @@ import {
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '@/features/auth/hooks/useAuth'
 import { useAuth as useAuthContext } from '@/app/providers'
-import { ShoppingCart, LogOut, User } from 'lucide-react'
+import { ShoppingCart, LogOut, User, CircleUser } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 export function GnbLoggedIn() {
@@ -68,7 +68,7 @@ export function GnbLoggedIn() {
       >
         <AvatarImage src={profileImageUrl} alt='profile' className='object-cover' />
         <AvatarFallback>
-          <span>북픽</span>
+          <CircleUser size={20} className='text-primary' />
         </AvatarFallback>
       </Avatar>
 
@@ -78,8 +78,8 @@ export function GnbLoggedIn() {
           <button className='outline-none'>
             <Avatar size='sm' className='ring-1 ring-primary/10 cursor-pointer'>
               <AvatarImage src={profileImageUrl} alt='profile' className='object-cover' />
-              <AvatarFallback>
-                <span>북픽</span>
+              <AvatarFallback className='bg-secondary'>
+                <CircleUser size={20} className='text-primary' />
               </AvatarFallback>
             </Avatar>
           </button>

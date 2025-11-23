@@ -1,8 +1,7 @@
 import CuratorProfileCard from '../components/CuratorProfileCard'
 import CurationPurchaseCard from '../components/CurationPurchaseCard'
-import CommentSection from '../components/CommentSection'
+import CommentSection from '@/features/community/components/CommentSection'
 // import BookStoreMap from '../components/BookStoreMap'
-import { mockCommentData, type CommentData } from '@/data/mockCommentData'
 import toast from 'react-hot-toast'
 import { Badge } from '@/shared/ui'
 import { useState } from 'react'
@@ -19,74 +18,7 @@ export default function CurationDetailPage() {
 
   console.log('curation', curation)
 
-  const [comments, setComments] = useState<CommentData[]>(mockCommentData)
   const [isLiked, setIsLiked] = useState(false)
-
-  const handleAddComment = (content: string) => {
-    const newComment: CommentData = {
-      id: Date.now(),
-      author: '현재 사용자',
-      authorId: 999,
-      content,
-      date: new Date()
-        .toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' })
-        .replace(/\./g, '.')
-        .replace(/\s/g, ''),
-      likes: 0,
-      isLiked: false,
-      replies: [],
-    }
-    setComments([newComment, ...comments])
-  }
-
-  const handleReply = (parentId: number, content: string) => {
-    const newReply: CommentData = {
-      id: Date.now(),
-      author: '현재 사용자',
-      authorId: 999,
-      content,
-      date: new Date()
-        .toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' })
-        .replace(/\./g, '.')
-        .replace(/\s/g, ''),
-      likes: 0,
-      isLiked: false,
-      replies: [],
-    }
-
-    setComments((prevComments) =>
-      prevComments.map((comment) =>
-        comment.id === parentId ? { ...comment, replies: [...comment.replies, newReply] } : comment,
-      ),
-    )
-  }
-
-  const handleLike = (commentId: number) => {
-    setComments((prevComments) =>
-      prevComments.map((comment) => {
-        if (comment.id === commentId) {
-          return {
-            ...comment,
-            isLiked: !comment.isLiked,
-            likes: comment.isLiked ? comment.likes - 1 : comment.likes + 1,
-          }
-        }
-        // 답글에서도 좋아요 처리
-        return {
-          ...comment,
-          replies: comment.replies.map((reply) =>
-            reply.id === commentId
-              ? {
-                  ...reply,
-                  isLiked: !reply.isLiked,
-                  likes: reply.isLiked ? reply.likes - 1 : reply.likes + 1,
-                }
-              : reply,
-          ),
-        }
-      }),
-    )
-  }
 
   const handlePurchase = (_curationId: number, _price: number) => {
     // console.log(`큐레이션 ${curationId} 구매 요청, 가격: ${price}원`)
@@ -193,13 +125,7 @@ export default function CurationDetailPage() {
       {/* <BookStoreMap /> */}
 
       {/* 댓글 및 피드백 */}
-      <CommentSection
-        comments={comments}
-        onAddComment={handleAddComment}
-        onReply={handleReply}
-        onLike={handleLike}
-        className='bg-transparent'
-      />
+      <CommentSection curationId={curationId} className='bg-transparent' />
 
       {/* 큐레이션 구매 정보 */}
       <CurationPurchaseCard
