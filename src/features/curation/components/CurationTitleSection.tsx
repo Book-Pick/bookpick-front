@@ -23,9 +23,6 @@ export function CurationTitleSection({
   const [isBackgroundPickerOpen, setIsBackgroundPickerOpen] = useState(false)
   const [selectedMode, setSelectedMode] = useState<'color' | 'thumbnail'>('color')
 
-  const selectedColorOption =
-    COLOR_PALETTE.find((color) => color.value === selectedColor) || COLOR_PALETTE[0]
-
   // 상호 배타적 선택 로직
   const handleColorSelect = (color: string) => {
     onColorChange(color)
@@ -64,10 +61,7 @@ export function CurationTitleSection({
   }
 
   return (
-    <div
-      className="px-6 h-70 py-10 rounded-0 transition-all"
-      style={getBackgroundStyle()}
-    >
+    <div className='px-6 h-70 py-10 rounded-0 transition-all' style={getBackgroundStyle()}>
       <div className='max-w-[1440px] mx-auto px-4 sm:px-10 lg:px-20 h-full flex flex-col'>
         {/* 배경 선택 버튼 */}
         <div className='flex justify-end'>

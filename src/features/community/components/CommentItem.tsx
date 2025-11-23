@@ -41,7 +41,9 @@ const CommentItem = ({ comment, onReply, isReply = false }: CommentItemProps) =>
         <div className='flex-1'>
           <div className='flex items-center gap-2 mb-1'>
             <span className='font-medium text-sm'>{comment.nickname}</span>
-            <span className='text-xs text-neutral-500'>{formatRelativeTime(comment.createdAt)}</span>
+            <span className='text-xs text-neutral-500'>
+              {formatRelativeTime(comment.createdAt)}
+            </span>
           </div>
           <p className='text-sm text-neutral-700 mb-2 leading-relaxed'>{comment.content}</p>
           <div className='flex items-center gap-4'>

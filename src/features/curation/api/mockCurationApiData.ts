@@ -465,7 +465,7 @@ const convertCurationToCurationItem = (curation: Curation): CurationItem => ({
   userId: curation.userId || 0,
   nickName: curation.curator,
   thumbnail: {
-    imageUrl: (curation.thumbnailImage || null) as unknown as File | null,
+    imageUrl: curation.thumbnailImage || null,
     imageColor: curation.thumbnailColor || null,
   },
   summary: curation.description,
