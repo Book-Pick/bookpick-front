@@ -8,7 +8,7 @@ export function EditorPickCard({ title, imageUrl, onClick }: EditorPickCardProps
   return (
     <div
       onClick={onClick}
-      className='relative w-full h-[172px] rounded-2xl overflow-hidden cursor-pointer hover:opacity-90 transition-opacity'
+      className='relative w-full h-[140px] rounded-2xl overflow-hidden cursor-pointer hover:opacity-90 transition-opacity'
       style={{
         backgroundImage: `url(${imageUrl})`,
         backgroundSize: 'cover',
