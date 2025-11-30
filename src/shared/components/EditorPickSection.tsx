@@ -21,7 +21,7 @@ export function EditorPickSection({ title, picks, onCardClick }: EditorPickSecti
       {/* 카드 리스트 */}
       <div className='flex flex-row gap-[30px] overflow-x-auto pb-2 sm:overflow-x-visible scrollbar-hide'>
         {picks.map((pick) => (
-          <div key={pick.id} className='flex-shrink-0 w-[280px] sm:flex-1 sm:w-auto sm:flex-shrink'>
+          <div key={pick.id} className='flex-shrink-0 w-[240px] sm:flex-1 sm:w-auto sm:flex-shrink'>
             <EditorPickCard
               title={pick.title}
               imageUrl={pick.imageUrl}

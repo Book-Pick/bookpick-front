@@ -234,7 +234,7 @@ export default function CurationCreatePage() {
         <div className='space-y-4'>
           {/* 헤더 */}
           <div className='flex flex-col-reverse md:flex-row items-start md:items-center justify-between gap-8 sm:gap-4'>
-            <h1 className='text-2xl font-bold px-5'>나만의 추천사 작성하기</h1>
+            <h1 className='text-2xl font-bold px-4'>나만의 추천사 작성하기</h1>
             {/* <Button
               variant='outline'
               onClick={() => setIsDraftSheetOpen(true)}
@@ -246,8 +246,8 @@ export default function CurationCreatePage() {
           </div>
 
           {/* 1. 추천사 제목 입력 */}
-          <Card className='rounded-none bg-transparent border-0 border-b'>
-            <CardContent className='p-6'>
+          <Card className='rounded-none bg-transparent border-0 border-b py-0'>
+            <CardContent className='p-4'>
               <div className='space-y-4'>
                 <h3 className='text-lg font-semibold'>1. 추천사 제목을 적어주세요!</h3>
                 <Input
@@ -262,8 +262,8 @@ export default function CurationCreatePage() {
           </Card>
 
           {/* 2. 책 검색 */}
-          <Card className='rounded-none bg-transparent border-0 border-b'>
-            <CardContent className='p-6'>
+          <Card className='rounded-none bg-transparent border-0 border-b py-0'>
+            <CardContent className='p-4'>
               <BookSearchSection
                 selectedBook={selectedBook}
                 onBookSelect={setSelectedBook}
@@ -273,15 +273,15 @@ export default function CurationCreatePage() {
           </Card>
 
           {/* 3. 감상 작성 */}
-          <Card className='rounded-none bg-transparent border-0 border-b'>
-            <CardContent className='p-6'>
+          <Card className='rounded-none bg-transparent border-0 border-b py-0'>
+            <CardContent className='p-4'>
               <ReviewSection content={content} onContentChange={setContent} />
             </CardContent>
           </Card>
 
           {/* 4. 썸네일 선택 */}
-          <Card className='rounded-none bg-transparent border-0 border-b'>
-            <CardContent className='p-6'>
+          <Card className='rounded-none bg-transparent border-0 border-b py-0'>
+            <CardContent className='p-4'>
               <div className='space-y-4'>
                 <h3 className='text-lg font-semibold'>4. 썸네일을 선택해 주세요!</h3>
                 <p className='text-sm text-muted-foreground'>
@@ -297,13 +297,13 @@ export default function CurationCreatePage() {
                   {/* 배경 색상 탭 */}
                   <TabsContent value='color' className='space-y-4 mt-4'>
                     <div className='w-fit border p-4 rounded-xl space-y-3'>
-                      <div className='flex flex-wrap gap-2'>
+                      <div className='grid grid-cols-5 md:grid-cols-10 gap-1.5'>
                         {COLOR_PALETTE.filter((color) => color.name.includes('400')).map(
                           (color) => (
                             <button
                               key={color.value}
                               onClick={() => handleColorSelect(color.value)}
-                              className={`w-12 h-12 rounded-lg border-2 transition-all hover:scale-105 ${
+                              className={`w-10 h-10 rounded-lg border-2 transition-all hover:scale-105 ${
                                 selectedColor === color.value && !thumbnail
                                   ? 'ring-2 ring-primary ring-offset-2'
                                   : 'border-gray-200 hover:border-gray-300'
@@ -334,7 +334,7 @@ export default function CurationCreatePage() {
           </Card>
 
           {/* 5. 이런 독서가에게 추천합니다 */}
-          <Card className='rounded-none bg-transparent border-0'>
+          <Card className='rounded-none bg-transparent border-0 py-0'>
             <CardContent className='p-6'>
               <div className='space-y-4'>
                 <h3 className='text-lg font-semibold'>이런 독서가에게 추천합니다.</h3>
