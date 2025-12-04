@@ -96,7 +96,7 @@ export default function CurationDetailPage() {
           profileImage={curation.profileImageUrl || undefined}
         />
         <h3 className='font-curation-title my-12'>{curation.title || '제목 없음'}</h3>
-        <p className='font-curation-text leading-normal mb-12'>
+        <p className='font-curation-text leading-normal mb-12 whitespace-pre-line'>
           {curation.review || curation.summary || '내용이 없습니다.'}
         </p>
         <div className='flex justify-between items-center'>

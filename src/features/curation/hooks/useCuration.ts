@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient, useInfiniteQuery } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { curationApi } from '../api/curation.api'
 import type {
@@ -92,6 +92,33 @@ export const useGetCurations = ({
     queryFn: async () => {
       const response = await curationApi.getCurations({ sort, cursor, size })
       return response.data
+    },
+  })
+}
+
+/**
+ * 5-1. 큐레이션 목록 무한 스크롤 조회
+ */
+export const useGetInfiniteCurations = ({
+  sort = 'similarity',
+  size = 10,
+}: Omit<GetCurationsRequest, 'cursor'>) => {
+  return useInfiniteQuery({
+    queryKey: ['curations', 'infinite', sort, size],
+    queryFn: async ({ pageParam }) => {
+      const response = await curationApi.getCurations({
+        sort,
+        cursor: pageParam,
+        size,
+      })
+      return response.data
+    },
+    initialPageParam: undefined as number | undefined,
+    getNextPageParam: (lastPage) => {
+      if (lastPage.hasNext) {
+        return lastPage.nextCursor
+      }
+      return undefined
     },
   })
 }

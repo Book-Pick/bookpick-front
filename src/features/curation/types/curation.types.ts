@@ -135,7 +135,7 @@ export type UpdateReadingPreferenceRequest = Partial<ReadingPreference>
 // 확인완료
 export interface GetCurationsRequest {
   sort: SortType
-  cursor: number
+  cursor?: number
   size: number
 }
 

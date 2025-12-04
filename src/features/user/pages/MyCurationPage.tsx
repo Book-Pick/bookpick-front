@@ -18,7 +18,7 @@ export default function MyCurationPage() {
   const { data: myCurations } = useGetCurations({
     sort: 'my',
     cursor: 0,
-    size: 10,
+    size: 1000,
   })
 
   const curations = useMemo(() => myCurations?.content ?? [], [myCurations])

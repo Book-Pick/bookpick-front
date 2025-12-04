@@ -118,9 +118,11 @@ export const curationApi = {
     size,
   }: GetCurationsRequest): Promise<GetCurationsResponse> => {
     try {
-      const response = await axios.get(`${urlPrefix}/curations`, {
-        params: { sort, cursor, size },
-      })
+      const params: { sort: string; size: number; cursor?: number } = { sort, size }
+      if (cursor !== undefined) {
+        params.cursor = cursor
+      }
+      const response = await axios.get(`${urlPrefix}/curations`, { params })
       return response.data
     } catch (error: unknown) {
       const axiosError = error as AxiosErrorResponse

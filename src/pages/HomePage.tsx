@@ -1,9 +1,10 @@
+import { useEffect, useRef, useCallback } from 'react'
 import { EditorPickSection } from '@/shared/components/EditorPickSection'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui'
 import { useNavigate } from 'react-router-dom'
 import { ContentsLayout } from '@/app/layout'
 import CurationList from '@/features/curation/components/CurationList'
-import { useGetCurations } from '@/features/curation/hooks/useCuration'
+import { useGetInfiniteCurations } from '@/features/curation/hooks/useCuration'
 import EmptyCurations from '@/features/curation/components/EmptyCurations'
 import EmptyCurationsCta from '@/features/curation/components/EmptyCurationsCta'
 import toast from 'react-hot-toast'
@@ -11,29 +12,109 @@ import toast from 'react-hot-toast'
 export default function HomePage() {
   const navigate = useNavigate()
 
-  const { data: personalizedData, isLoading: isLoadingPersonalized } = useGetCurations({
+  // 무한 스크롤을 위한 ref
+  const popularObserverRef = useRef<HTMLDivElement>(null)
+  const similarObserverRef = useRef<HTMLDivElement>(null)
+  const recentObserverRef = useRef<HTMLDivElement>(null)
+
+  const {
+    data: personalizedData,
+    isLoading: isLoadingPersonalized,
+    fetchNextPage: fetchNextPersonalized,
+    hasNextPage: hasNextPersonalized,
+    isFetchingNextPage: isFetchingNextPersonalized,
+  } = useGetInfiniteCurations({
     sort: 'similarity',
-    cursor: 0,
     size: 10,
   })
-  const { data: popularData, isLoading: isLoadingPopular } = useGetCurations({
+
+  const {
+    data: popularData,
+    isLoading: isLoadingPopular,
+    fetchNextPage: fetchNextPopular,
+    hasNextPage: hasNextPopular,
+    isFetchingNextPage: isFetchingNextPopular,
+  } = useGetInfiniteCurations({
     sort: 'popularity',
-    cursor: 0,
     size: 6,
   })
-  const { data: recentData, isLoading: isLoadingRecent } = useGetCurations({
+
+  const {
+    data: recentData,
+    isLoading: isLoadingRecent,
+    fetchNextPage: fetchNextRecent,
+    hasNextPage: hasNextRecent,
+    isFetchingNextPage: isFetchingNextRecent,
+  } = useGetInfiniteCurations({
     sort: 'latest',
-    cursor: 0,
     size: 6,
   })
+
+  // Intersection Observer 콜백
+  const createObserverCallback = useCallback(
+    (fetchNext: () => void, hasNext: boolean | undefined, isFetching: boolean) => {
+      return (entries: IntersectionObserverEntry[]) => {
+        if (entries[0].isIntersecting && hasNext && !isFetching) {
+          fetchNext()
+        }
+      }
+    },
+    [],
+  )
+
+  // 인기순 Observer
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      createObserverCallback(fetchNextPopular, hasNextPopular, isFetchingNextPopular),
+      { threshold: 0.1 },
+    )
+    if (popularObserverRef.current) {
+      observer.observe(popularObserverRef.current)
+    }
+    return () => observer.disconnect()
+  }, [fetchNextPopular, hasNextPopular, isFetchingNextPopular, createObserverCallback])
+
+  // 유사도순 Observer
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      createObserverCallback(
+        fetchNextPersonalized,
+        hasNextPersonalized,
+        isFetchingNextPersonalized,
+      ),
+      { threshold: 0.1 },
+    )
+    if (similarObserverRef.current) {
+      observer.observe(similarObserverRef.current)
+    }
+    return () => observer.disconnect()
+  }, [
+    fetchNextPersonalized,
+    hasNextPersonalized,
+    isFetchingNextPersonalized,
+    createObserverCallback,
+  ])
+
+  // 최신순 Observer
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      createObserverCallback(fetchNextRecent, hasNextRecent, isFetchingNextRecent),
+      { threshold: 0.1 },
+    )
+    if (recentObserverRef.current) {
+      observer.observe(recentObserverRef.current)
+    }
+    return () => observer.disconnect()
+  }, [fetchNextRecent, hasNextRecent, isFetchingNextRecent, createObserverCallback])
 
   const handleCardClick = (curationId: number) => {
     navigate(`/curation/detail/${curationId}`)
   }
 
-  const similarCurations = personalizedData?.content || []
-  const likeCurations = popularData?.content || []
-  const recentCurations = recentData?.content || []
+  // 무한 스크롤 데이터 평탄화
+  const similarCurations = personalizedData?.pages.flatMap((page) => page.content) || []
+  const likeCurations = popularData?.pages.flatMap((page) => page.content) || []
+  const recentCurations = recentData?.pages.flatMap((page) => page.content) || []
 
   // 에디터 픽 데이터
   const editorPicks = [
@@ -94,7 +175,15 @@ export default function HomePage() {
                     <p className='text-muted-foreground'>로딩 중...</p>
                   </div>
                 ) : likeCurations?.length > 0 ? (
-                  <CurationList curations={likeCurations} onCardClick={handleCardClick} />
+                  <>
+                    <CurationList curations={likeCurations} onCardClick={handleCardClick} />
+                    <div ref={popularObserverRef} className='h-4' />
+                    {isFetchingNextPopular && (
+                      <div className='flex justify-center items-center py-4'>
+                        <p className='text-muted-foreground'>더 불러오는 중...</p>
+                      </div>
+                    )}
+                  </>
                 ) : (
                   <EmptyCurations />
                 )}
@@ -105,7 +194,15 @@ export default function HomePage() {
                     <p className='text-muted-foreground'>로딩 중...</p>
                   </div>
                 ) : similarCurations?.length > 0 ? (
-                  <CurationList curations={similarCurations} onCardClick={handleCardClick} />
+                  <>
+                    <CurationList curations={similarCurations} onCardClick={handleCardClick} />
+                    <div ref={similarObserverRef} className='h-4' />
+                    {isFetchingNextPersonalized && (
+                      <div className='flex justify-center items-center py-4'>
+                        <p className='text-muted-foreground'>더 불러오는 중...</p>
+                      </div>
+                    )}
+                  </>
                 ) : (
                   <EmptyCurationsCta />
                 )}
@@ -116,7 +213,15 @@ export default function HomePage() {
                     <p className='text-muted-foreground'>로딩 중...</p>
                   </div>
                 ) : recentCurations?.length > 0 ? (
-                  <CurationList curations={recentCurations} onCardClick={handleCardClick} />
+                  <>
+                    <CurationList curations={recentCurations} onCardClick={handleCardClick} />
+                    <div ref={recentObserverRef} className='h-4' />
+                    {isFetchingNextRecent && (
+                      <div className='flex justify-center items-center py-4'>
+                        <p className='text-muted-foreground'>더 불러오는 중...</p>
+                      </div>
+                    )}
+                  </>
                 ) : (
                   <EmptyCurations />
                 )}
