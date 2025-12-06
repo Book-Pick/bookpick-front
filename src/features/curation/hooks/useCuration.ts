@@ -8,8 +8,6 @@ import type {
   GetCurationsRequest,
   GetCurationsByFieldRequest,
   CreateCurationRequest,
-  SaveCurationRequest,
-  UpdateCurationRequest,
 } from '../types/curation.types'
 
 /**
@@ -171,49 +169,6 @@ export const useCreateCurationDraft = () => {
     },
     onError: (error: Error) => {
       toast.error(error.message || '큐레이션 임시저장에 실패했습니다.')
-    },
-  })
-}
-
-/**
- * 8. 큐레이션 저장 (임시저장/일반저장)
- */
-export const useSaveCuration = () => {
-  const queryClient = useQueryClient()
-
-  return useMutation({
-    mutationFn: async (request: SaveCurationRequest) => {
-      const response = await curationApi.saveCuration(request)
-      return response
-    },
-    onSuccess: (response) => {
-      queryClient.invalidateQueries({ queryKey: ['curations'] })
-      toast.success(response.message || '큐레이션이 저장되었습니다.')
-    },
-    onError: (error: Error) => {
-      toast.error(error.message || '큐레이션 저장에 실패했습니다.')
-    },
-  })
-}
-
-/**
- * 9. 큐레이션 수정
- */
-export const useUpdateCuration = () => {
-  const queryClient = useQueryClient()
-
-  return useMutation({
-    mutationFn: async (request: UpdateCurationRequest) => {
-      const response = await curationApi.updateCuration(request)
-      return response.data
-    },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ['curations'] })
-      queryClient.invalidateQueries({ queryKey: ['curation', data.id] })
-      toast.success('큐레이션이 성공적으로 수정되었습니다.')
-    },
-    onError: (error: Error) => {
-      toast.error(error.message || '큐레이션 수정에 실패했습니다.')
     },
   })
 }

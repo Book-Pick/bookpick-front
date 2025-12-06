@@ -156,14 +156,6 @@ export interface CreateCurationRequest {
   recommend: RecommendTags
 }
 
-export interface SaveCurationRequest extends CreateCurationRequest {
-  isDraft: boolean // true: 임시저장, false: 일반저장
-}
-
-export interface UpdateCurationRequest extends Partial<CreateCurationRequest> {
-  id: number
-}
-
 // API Response 타입들
 // 확인완료
 export type SetReadingPreferenceResponse = ApiResponse<ReadingPreference>
