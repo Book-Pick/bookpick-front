@@ -8,6 +8,7 @@ import type {
   GetCurationsRequest,
   GetCurationsByFieldRequest,
   CreateCurationRequest,
+  DeleteCurationsRequest,
 } from '../types/curation.types'
 
 /**
@@ -182,6 +183,24 @@ export const useDeleteCuration = () => {
   return useMutation({
     mutationFn: async (curationId: number) => {
       const response = await curationApi.deleteCuration(curationId)
+      return response
+    },
+    onSuccess: (response) => {
+      queryClient.invalidateQueries({ queryKey: ['curations'] })
+      toast.success(response.message || '큐레이션이 삭제되었습니다.')
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || '큐레이션 삭제에 실패했습니다.')
+    },
+  })
+}
+
+export const useDeleteCurations = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async (request: DeleteCurationsRequest) => {
+      const response = await curationApi.deleteCurations(request)
       return response
     },
     onSuccess: (response) => {

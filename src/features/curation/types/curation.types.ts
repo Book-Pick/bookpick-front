@@ -156,6 +156,15 @@ export interface CreateCurationRequest {
   recommend: RecommendTags
 }
 
+export interface DeleteCurationsRequest {
+  curationIds: number[]
+}
+
+export type DeleteCurationsResult = {
+  ids: number[]
+  deletedAt: string
+}
+
 // API Response 타입들
 // 확인완료
 export type SetReadingPreferenceResponse = ApiResponse<ReadingPreference>
@@ -179,5 +188,7 @@ export type SaveCurationResponse = ApiResponse<Curation>
 export type UpdateCurationResponse = ApiResponse<Curation>
 
 export type DeleteCurationResponse = ApiResponse<null>
+
+export type DeleteCurationsResponse = ApiResponse<DeleteCurationsResult>
 
 export type GetBooksResponse = ApiResponse<PaginatedBooks>

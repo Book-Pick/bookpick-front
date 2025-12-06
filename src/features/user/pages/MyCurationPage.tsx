@@ -6,14 +6,14 @@ import { Button } from '@/shared/ui/button'
 import { Badge } from '@/shared/ui/badge'
 import CurationCardSocial from '@/features/curation/components/CurationCardSocial'
 import { useConfirm } from '@/app/providers'
-import { useGetCurations, useDeleteCuration } from '@/features/curation/hooks/useCuration'
+import { useGetCurations, useDeleteCurations } from '@/features/curation/hooks/useCuration'
 import toast from 'react-hot-toast'
 
 export default function MyCurationPage() {
   const navigate = useNavigate()
   const { confirm } = useConfirm()
   const [selectedIds, setSelectedIds] = useState<Set<number | string>>(new Set())
-  const deleteCuration = useDeleteCuration()
+  const { mutate: deleteCurations } = useDeleteCurations()
 
   const { data: myCurations } = useGetCurations({
     sort: 'my',
@@ -54,27 +54,16 @@ export default function MyCurationPage() {
     })
 
     if (confirmed) {
-      const ids = Array.from(selectedIds)
-      let successCount = 0
-      let failCount = 0
-
-      for (const id of ids) {
-        try {
-          await deleteCuration.mutateAsync(Number(id))
-          successCount++
-        } catch (error) {
-          console.error(`큐레이션 ${id} 삭제 실패:`, error)
-          failCount++
-        }
-      }
-
-      if (failCount === 0) {
-        toast.success(`${successCount}개의 추천사가 삭제되었습니다.`)
-      } else {
-        toast.error(`${successCount}개 삭제 성공, ${failCount}개 실패했습니다.`)
-      }
-
-      setSelectedIds(new Set())
+      deleteCurations(
+        {
+          curationIds: Array.from(selectedIds).map(Number),
+        },
+        {
+          onSettled: () => {
+            setSelectedIds(new Set())
+          },
+        },
+      )
     }
   }
 

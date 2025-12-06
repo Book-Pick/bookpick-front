@@ -11,6 +11,8 @@ import type {
   CreateCurationRequest,
   CreateCurationResponse,
   DeleteCurationResponse,
+  DeleteCurationsRequest,
+  DeleteCurationsResponse,
   GetBooksRequest,
   GetBooksResponse,
 } from '../types/curation.types'
@@ -193,6 +195,25 @@ export const curationApi = {
   deleteCuration: async (curationId: number): Promise<DeleteCurationResponse> => {
     try {
       const response = await axios.delete(`${urlPrefix}/curations/${curationId}`)
+      return response.data
+    } catch (error: unknown) {
+      const axiosError = error as AxiosErrorResponse
+      if (axiosError.response?.status === 403) {
+        throw new Error('삭제 권한이 없습니다.')
+      }
+      if (axiosError.response?.status === 404) {
+        throw new Error('큐레이션을 찾을 수 없습니다.')
+      }
+      throw error
+    }
+  },
+
+  /**
+   * 10. 큐레이션 리스트 삭제
+   */
+  deleteCurations: async (request: DeleteCurationsRequest): Promise<DeleteCurationsResponse> => {
+    try {
+      const response = await axios.delete(`${urlPrefix}/curations`, { data: request })
       return response.data
     } catch (error: unknown) {
       const axiosError = error as AxiosErrorResponse
