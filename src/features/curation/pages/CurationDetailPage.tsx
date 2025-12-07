@@ -1,13 +1,13 @@
 import CuratorProfileCard from '../components/CuratorProfileCard'
 import CurationPurchaseCard from '../components/CurationPurchaseCard'
 import CommentSection from '@/features/community/components/CommentSection'
-// import BookStoreMap from '../components/BookStoreMap'
 import toast from 'react-hot-toast'
 import { Badge } from '@/shared/ui'
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Heart } from 'lucide-react'
 import { useGetCurationById } from '../hooks/useCuration'
+import { useSubscriptionToggle } from '@/features/user/hooks/useSubscription'
 
 export default function CurationDetailPage() {
   const { id } = useParams<{ id: string }>()
@@ -15,6 +15,12 @@ export default function CurationDetailPage() {
   const navigate = useNavigate()
 
   const { data: curation, isLoading, error } = useGetCurationById(curationId)
+
+  const {
+    isSubscribed,
+    toggle: toggleSubscription,
+    isLoading: isSubscriptionLoading,
+  } = useSubscriptionToggle(curation?.userId ?? 0)
 
   const [isLiked, setIsLiked] = useState(false)
 
@@ -34,13 +40,8 @@ export default function CurationDetailPage() {
     })
   }
 
-  const handleSubscribeToggle = (curatorId: number, isSubscribed: boolean) => {
-    console.log(`큐레이터 ${curatorId} 구독 상태 변경:`, isSubscribed ? '구독' : '구독취소')
-    if (isSubscribed) {
-      toast.success('큐레이터를 구독했습니다.')
-    } else {
-      toast.success('큐레이터의 구독을 취소했습니다.')
-    }
+  const handleSubscribeToggle = () => {
+    toggleSubscription()
   }
 
   // 로딩 상태
@@ -91,7 +92,8 @@ export default function CurationDetailPage() {
           name={curation.nickName}
           favoriteGenres={[]}
           introduction={curation.introduction || undefined}
-          isSubscribed={false}
+          isSubscribed={isSubscribed}
+          isSubscriptionLoading={isSubscriptionLoading}
           onSubscribeToggle={handleSubscribeToggle}
           profileImage={curation.profileImageUrl || undefined}
         />

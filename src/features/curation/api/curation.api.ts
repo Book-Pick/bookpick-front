@@ -10,6 +10,8 @@ import type {
   GetCurationsByFieldRequest,
   CreateCurationRequest,
   CreateCurationResponse,
+  UpdateCurationRequest,
+  UpdateCurationResponse,
   DeleteCurationResponse,
   DeleteCurationsRequest,
   DeleteCurationsResponse,
@@ -184,6 +186,29 @@ export const curationApi = {
       const axiosError = error as AxiosErrorResponse
       if (axiosError.response?.status === 400) {
         throw new Error('잘못된 요청입니다.')
+      }
+      throw error
+    }
+  },
+
+  /**
+   * 9. 큐레이션 수정
+   */
+  updateCuration: async (request: UpdateCurationRequest): Promise<UpdateCurationResponse> => {
+    try {
+      const { id, ...body } = request
+      const response = await axios.patch(`${urlPrefix}/curations/${id}`, body)
+      return response.data
+    } catch (error: unknown) {
+      const axiosError = error as AxiosErrorResponse
+      if (axiosError.response?.status === 400) {
+        throw new Error('잘못된 요청입니다.')
+      }
+      if (axiosError.response?.status === 403) {
+        throw new Error('수정 권한이 없습니다.')
+      }
+      if (axiosError.response?.status === 404) {
+        throw new Error('큐레이션을 찾을 수 없습니다.')
       }
       throw error
     }

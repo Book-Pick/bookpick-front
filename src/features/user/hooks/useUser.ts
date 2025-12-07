@@ -1,7 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { userApi } from '../api/user.api'
-import type { CreateProfileRequest, UpdateProfileRequest } from '../types/user.types'
+import type {
+  CreateProfileRequest,
+  UpdateProfileRequest,
+  SubscribeRequest,
+  GetSubscriptionsRequest,
+} from '../types/user.types'
 
 /**
  * 1. 프로필 조회
@@ -54,6 +59,39 @@ export const useUpdateProfile = () => {
     },
     onError: (error: Error) => {
       toast.error(error.message || '프로필 수정에 실패했습니다.')
+    },
+  })
+}
+
+/**
+ * 4. 큐레이터 구독/취소 (토글)
+ */
+export const useSubscribe = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async (request: SubscribeRequest) => {
+      const response = await userApi.subscribe(request)
+      return response
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['subscriptions'] })
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || '구독 처리에 실패했습니다.')
+    },
+  })
+}
+
+/**
+ * 5. 구독한 큐레이터 리스트 조회
+ */
+export const useGetSubscriptions = (request: GetSubscriptionsRequest = { page: 0, size: 1000 }) => {
+  return useQuery({
+    queryKey: ['subscriptions', request.page, request.size],
+    queryFn: async () => {
+      const response = await userApi.getSubscriptions(request)
+      return response.data
     },
   })
 }

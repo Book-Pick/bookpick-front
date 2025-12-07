@@ -23,8 +23,8 @@ import ThumbnailPreview from '../components/ThumbnailPreview'
 import { COLOR_PALETTE, type DraftCuration } from '../constants/curationCreateData'
 import { READING_MOODS, GENRES, KEYWORDS, READING_STYLES } from '../constants/preferences'
 import toast from 'react-hot-toast'
-import type { CreateCurationRequest, Book } from '../types/curation.types'
-import { useCreateCuration, useCreateCurationDraft, useGetCurationById } from '../hooks/useCuration'
+import type { Book, UpdateCurationRequest } from '../types/curation.types'
+import { useCreateCurationDraft, useGetCurationById, useUpdateCuration } from '../hooks/useCuration'
 
 export default function CurationCreatePage() {
   const navigate = useNavigate()
@@ -32,7 +32,7 @@ export default function CurationCreatePage() {
   const curationId = id ? Number(id) : 0
 
   const { data: curationData, isLoading, isError } = useGetCurationById(curationId)
-  const { mutate: createCurationMutate, isPending } = useCreateCuration()
+  const { mutate: updateCurationMutate, isPending } = useUpdateCuration()
   const { mutate: createCurationDraftMutate, isPending: isDraftPending } = useCreateCurationDraft()
 
   const [title, setTitle] = useState('')
@@ -137,8 +137,9 @@ export default function CurationCreatePage() {
     setThumbnailUrl(url)
   }
 
-  const getCreateCurationRequest = (): CreateCurationRequest => {
+  const getUpdateCurationRequest = (): UpdateCurationRequest => {
     return {
+      id: curationId,
       title,
       thumbnail: {
         imageUrl: thumbnailUrl,
@@ -161,7 +162,7 @@ export default function CurationCreatePage() {
   }
 
   const handleSaveDraft = () => {
-    const request = getCreateCurationRequest()
+    const request = getUpdateCurationRequest()
 
     createCurationDraftMutate(request, {
       onSuccess: () => {
@@ -170,7 +171,7 @@ export default function CurationCreatePage() {
     })
   }
 
-  const handlePublish = () => {
+  const handleSave = () => {
     if (!title) {
       toast.error('제목을 입력해주세요.')
       return
@@ -188,9 +189,9 @@ export default function CurationCreatePage() {
       return
     }
 
-    const request = getCreateCurationRequest()
+    const request = getUpdateCurationRequest()
 
-    createCurationMutate(request, {
+    updateCurationMutate(request, {
       onSuccess: () => {
         navigate('/mypage/curation')
       },
@@ -452,11 +453,11 @@ export default function CurationCreatePage() {
             </Button>
             <Button
               size='lg'
-              onClick={handlePublish}
+              onClick={handleSave}
               className='flex-1 sm:flex-none'
               disabled={isDraftPending || isPending || isEmptyContent}
             >
-              {isPending ? '등록 중...' : '등록하기'}
+              {isPending ? '등록 중...' : '저장하기'}
             </Button>
           </div>
         </div>

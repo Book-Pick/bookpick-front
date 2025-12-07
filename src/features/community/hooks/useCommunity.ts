@@ -69,6 +69,7 @@ export const useCreateComment = (curationId: number) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['comments', curationId] })
+      queryClient.invalidateQueries({ queryKey: ['comments', 'infinite', curationId] })
       toast.success('댓글을 등록했습니다.')
     },
     onError: (error: Error) => {
@@ -90,6 +91,7 @@ export const useUpdateComment = (curationId: number, commentId: number) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['comments', curationId] })
+      queryClient.invalidateQueries({ queryKey: ['comments', 'infinite', curationId] })
       queryClient.invalidateQueries({ queryKey: ['comment', curationId, commentId] })
       toast.success('댓글을 수정했습니다.')
     },
@@ -112,6 +114,7 @@ export const useDeleteComment = (curationId: number) => {
     },
     onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: ['comments', curationId] })
+      queryClient.invalidateQueries({ queryKey: ['comments', 'infinite', curationId] })
       toast.success(response.message || '댓글을 삭제했습니다.')
     },
     onError: (error: Error) => {

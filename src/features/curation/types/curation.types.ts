@@ -156,6 +156,10 @@ export interface CreateCurationRequest {
   recommend: RecommendTags
 }
 
+export type UpdateCurationRequest = CreateCurationRequest & {
+  id: number
+}
+
 export interface DeleteCurationsRequest {
   curationIds: number[]
 }
@@ -185,7 +189,7 @@ export type CreateCurationResponse = ApiResponse<Curation>
 
 export type SaveCurationResponse = ApiResponse<Curation>
 
-export type UpdateCurationResponse = ApiResponse<Curation>
+export type UpdateCurationResponse = ApiResponse<{ id: number }>
 
 export type DeleteCurationResponse = ApiResponse<null>
 

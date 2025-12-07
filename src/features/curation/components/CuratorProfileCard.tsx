@@ -15,22 +15,26 @@ interface CuratorProfileCardProps {
   favoriteGenres: string[]
   introduction?: string
   isSubscribed: boolean
+  isSubscriptionLoading?: boolean
   className?: string
-  onSubscribeToggle?: (curatorId: number, isSubscribed: boolean) => void
+  onSubscribeToggle?: () => void
 }
 
 const CuratorProfileCard = ({
-  curatorId,
+  curatorId: _curatorId,
   name,
   profileImage,
   favoriteGenres,
   introduction,
   isSubscribed,
+  isSubscriptionLoading = false,
   className,
   onSubscribeToggle,
 }: CuratorProfileCardProps) => {
+  void _curatorId // curatorId는 부모에서 관리
+
   const handleSubscribeClick = () => {
-    onSubscribeToggle?.(curatorId, !isSubscribed)
+    onSubscribeToggle?.()
   }
 
   return (
@@ -64,8 +68,12 @@ const CuratorProfileCard = ({
         </div>
         {/* 데스크톱용 버튼 */}
         <CardAction className='hidden md:flex md:self-center'>
-          <Button onClick={handleSubscribeClick} variant={isSubscribed ? 'outline' : 'default'}>
-            {isSubscribed ? '구독취소' : '구독하기'}
+          <Button
+            onClick={handleSubscribeClick}
+            variant={isSubscribed ? 'outline' : 'default'}
+            disabled={isSubscriptionLoading}
+          >
+            {isSubscriptionLoading ? '처리 중...' : isSubscribed ? '구독취소' : '구독하기'}
           </Button>
         </CardAction>
       </CardHeader>
@@ -76,8 +84,9 @@ const CuratorProfileCard = ({
           className='w-full'
           onClick={handleSubscribeClick}
           variant={isSubscribed ? 'outline' : 'default'}
+          disabled={isSubscriptionLoading}
         >
-          {isSubscribed ? '구독취소' : '구독하기'}
+          {isSubscriptionLoading ? '처리 중...' : isSubscribed ? '구독취소' : '구독하기'}
         </Button>
       </div>
     </Card>

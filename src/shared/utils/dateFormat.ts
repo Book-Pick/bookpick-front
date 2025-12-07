@@ -1,10 +1,11 @@
 /**
  * Format ISO date string to relative time
- * @param isoString - ISO 8601 date string
+ * @param isoString - ISO 8601 date string (UTC)
  * @returns Relative time string (e.g., "Just now", "3 hours ago", "2024.01.20")
  */
 export function formatRelativeTime(isoString: string): string {
-  const date = new Date(isoString)
+  // 서버에서 오는 시간이 UTC 기준이므로, 타임존 정보가 없으면 Z를 붙여서 UTC로 파싱
+  const date = new Date(isoString.endsWith('Z') ? isoString : isoString + 'Z')
   const now = new Date()
   const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000)
 

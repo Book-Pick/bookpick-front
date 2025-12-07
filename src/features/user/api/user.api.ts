@@ -4,6 +4,10 @@ import type {
   CreateProfileResponse,
   UpdateProfileRequest,
   UpdateProfileResponse,
+  SubscribeRequest,
+  SubscribeResponse,
+  GetSubscriptionsRequest,
+  GetSubscriptionsResponse,
 } from '../types/user.types'
 import type { AxiosErrorResponse } from '@/shared/api/api.types'
 import { createAxiosClient } from '@/shared/api/axiosClient'
@@ -59,6 +63,44 @@ export const userApi = {
       if (axiosError.response?.status === 404) {
         throw new Error('프로필을 찾을 수 없습니다.')
       }
+      throw error
+    }
+  },
+
+  /**
+   * 큐레이터 구독/취소 (토글)
+   */
+  subscribe: async (request: SubscribeRequest): Promise<SubscribeResponse> => {
+    try {
+      const response = await axios.post(`${urlPrefix}/subscribe`, request)
+      return response.data
+    } catch (error: unknown) {
+      const axiosError = error as AxiosErrorResponse
+      if (axiosError.response?.status === 400) {
+        throw new Error('잘못된 요청입니다.')
+      }
+      if (axiosError.response?.status === 404) {
+        throw new Error('큐레이션을 찾을 수 없습니다.')
+      }
+      throw error
+    }
+  },
+
+  /**
+   * 구독한 큐레이터 리스트 조회
+   */
+  getSubscriptions: async (request: GetSubscriptionsRequest): Promise<GetSubscriptionsResponse> => {
+    try {
+      const response = await axios.get(`${urlPrefix}/subscribe/curators`, {
+        params: {
+          page: request.page ?? 1,
+          size: request.size ?? 10,
+        },
+      })
+      return response.data
+    } catch (error: unknown) {
+      const axiosError = error as AxiosErrorResponse
+      console.error('getSubscriptions error', axiosError.response)
       throw error
     }
   },

@@ -7,7 +7,6 @@ import { Badge } from '@/shared/ui/badge'
 import CurationCardSocial from '@/features/curation/components/CurationCardSocial'
 import { useConfirm } from '@/app/providers'
 import { useGetCurations, useDeleteCurations } from '@/features/curation/hooks/useCuration'
-import toast from 'react-hot-toast'
 
 export default function MyCurationPage() {
   const navigate = useNavigate()

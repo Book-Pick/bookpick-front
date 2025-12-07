@@ -8,6 +8,7 @@ import type {
   GetCurationsRequest,
   GetCurationsByFieldRequest,
   CreateCurationRequest,
+  UpdateCurationRequest,
   DeleteCurationsRequest,
 } from '../types/curation.types'
 
@@ -170,6 +171,28 @@ export const useCreateCurationDraft = () => {
     },
     onError: (error: Error) => {
       toast.error(error.message || '큐레이션 임시저장에 실패했습니다.')
+    },
+  })
+}
+
+/**
+ * 9. 큐레이션 수정
+ */
+export const useUpdateCuration = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async (request: UpdateCurationRequest) => {
+      const response = await curationApi.updateCuration(request)
+      return response.data
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['curations'] })
+      queryClient.invalidateQueries({ queryKey: ['curation', data.id] })
+      toast.success('큐레이션이 수정되었습니다.')
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || '큐레이션 수정에 실패했습니다.')
     },
   })
 }
