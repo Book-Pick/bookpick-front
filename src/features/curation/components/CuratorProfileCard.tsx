@@ -16,6 +16,7 @@ interface CuratorProfileCardProps {
   introduction?: string
   isSubscribed: boolean
   isSubscriptionLoading?: boolean
+  isOwnProfile?: boolean
   className?: string
   onSubscribeToggle?: () => void
 }
@@ -28,6 +29,7 @@ const CuratorProfileCard = ({
   introduction,
   isSubscribed,
   isSubscriptionLoading = false,
+  isOwnProfile = false,
   className,
   onSubscribeToggle,
 }: CuratorProfileCardProps) => {
@@ -66,29 +68,33 @@ const CuratorProfileCard = ({
             </CardDescription>
           </div>
         </div>
-        {/* 데스크톱용 버튼 */}
-        <CardAction className='hidden md:flex md:self-center'>
+        {/* 데스크톱용 버튼 - 본인 프로필이 아닐 때만 표시 */}
+        {!isOwnProfile && (
+          <CardAction className='hidden md:flex md:self-center'>
+            <Button
+              onClick={handleSubscribeClick}
+              variant={isSubscribed ? 'outline' : 'default'}
+              disabled={isSubscriptionLoading}
+            >
+              {isSubscriptionLoading ? '처리 중...' : isSubscribed ? '구독취소' : '구독하기'}
+            </Button>
+          </CardAction>
+        )}
+      </CardHeader>
+
+      {/* 모바일용 버튼 - 본인 프로필이 아닐 때만 표시 */}
+      {!isOwnProfile && (
+        <div className='block md:hidden px-4 pb-4 pt-3'>
           <Button
+            className='w-full'
             onClick={handleSubscribeClick}
             variant={isSubscribed ? 'outline' : 'default'}
             disabled={isSubscriptionLoading}
           >
             {isSubscriptionLoading ? '처리 중...' : isSubscribed ? '구독취소' : '구독하기'}
           </Button>
-        </CardAction>
-      </CardHeader>
-
-      {/* 모바일용 버튼 */}
-      <div className='block md:hidden px-4 pb-4 pt-3'>
-        <Button
-          className='w-full'
-          onClick={handleSubscribeClick}
-          variant={isSubscribed ? 'outline' : 'default'}
-          disabled={isSubscriptionLoading}
-        >
-          {isSubscriptionLoading ? '처리 중...' : isSubscribed ? '구독취소' : '구독하기'}
-        </Button>
-      </div>
+        </div>
+      )}
     </Card>
   )
 }

@@ -8,11 +8,13 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { Heart } from 'lucide-react'
 import { useGetCurationById } from '../hooks/useCuration'
 import { useSubscriptionToggle } from '@/features/user/hooks/useSubscription'
+import { useAuth } from '@/features/auth/hooks/useAuth'
 
 export default function CurationDetailPage() {
   const { id } = useParams<{ id: string }>()
   const curationId = Number(id)
   const navigate = useNavigate()
+  const { user } = useAuth()
 
   const { data: curation, isLoading, error } = useGetCurationById(curationId)
 
@@ -21,6 +23,9 @@ export default function CurationDetailPage() {
     toggle: toggleSubscription,
     isLoading: isSubscriptionLoading,
   } = useSubscriptionToggle(curation?.userId ?? 0)
+
+  // 본인이 작성한 큐레이션인지 확인
+  const isOwnCuration = user?.userId === curation?.userId
 
   const [isLiked, setIsLiked] = useState(false)
 
@@ -94,6 +99,7 @@ export default function CurationDetailPage() {
           introduction={curation.introduction || undefined}
           isSubscribed={isSubscribed}
           isSubscriptionLoading={isSubscriptionLoading}
+          isOwnProfile={isOwnCuration}
           onSubscribeToggle={handleSubscribeToggle}
           profileImage={curation.profileImageUrl || undefined}
         />
