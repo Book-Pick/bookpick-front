@@ -54,10 +54,6 @@ export default function UIPreview() {
   const [isChecked, setIsChecked] = useState(false)
   const [selectedCurations, setSelectedCurations] = useState<number[]>([])
 
-  const handleSubscribeToggle = (curatorId: number, isSubscribed: boolean) => {
-    console.log(`큐레이터 ${curatorId} 구독 상태 변경:`, isSubscribed ? '구독' : '구독취소')
-  }
-
   const handlePurchase = (curationId: number, price: number) => {
     console.log(`큐레이션 ${curationId} 구매 요청, 가격: ${price}원`)
   }
@@ -582,7 +578,7 @@ export default function UIPreview() {
                     favoriteGenres={curator.favoriteGenres}
                     introduction={curator.introduction}
                     isSubscribed={curator.isSubscribed}
-                    onSubscribeToggle={handleSubscribeToggle}
+                    onSubscribeToggle={() => {}}
                   />
                 ))}
               </div>
