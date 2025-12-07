@@ -115,7 +115,7 @@ export const useGetInfiniteCurations = ({
     },
     initialPageParam: undefined as number | undefined,
     getNextPageParam: (lastPage) => {
-      if (lastPage.hasNext) {
+      if (lastPage?.hasNext) {
         return lastPage.nextCursor
       }
       return undefined

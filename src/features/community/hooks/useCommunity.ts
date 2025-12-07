@@ -32,7 +32,7 @@ export const useGetInfiniteComments = (curationId: number, size: number = 10) =>
       return response.data
     },
     getNextPageParam: (lastPage) => {
-      if (lastPage.pageInfo.hasNext) {
+      if (lastPage?.pageInfo?.hasNext) {
         return lastPage.pageInfo.currentPage + 1
       }
       return undefined
