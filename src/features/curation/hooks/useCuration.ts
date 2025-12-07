@@ -111,7 +111,17 @@ export const useGetInfiniteCurations = ({
         cursor: pageParam,
         size,
       })
-      return response.data
+      // null 응답 시 기본값 반환
+      return (
+        response.data ?? {
+          sortType: sort,
+          description: '',
+          content: [],
+          size: 0,
+          hasNext: false,
+          nextCursor: 0,
+        }
+      )
     },
     initialPageParam: undefined as number | undefined,
     getNextPageParam: (lastPage) => {

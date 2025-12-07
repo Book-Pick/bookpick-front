@@ -29,7 +29,18 @@ export const useGetInfiniteComments = (curationId: number, size: number = 10) =>
     queryKey: ['comments', 'infinite', curationId],
     queryFn: async ({ pageParam = 1 }) => {
       const response = await communityApi.getComments({ curationId, page: pageParam, size })
-      return response.data
+      // null 응답 시 기본값 반환
+      return (
+        response.data ?? {
+          comments: [],
+          pageInfo: {
+            currentPage: pageParam,
+            totalPages: 0,
+            totalElements: 0,
+            hasNext: false,
+          },
+        }
+      )
     },
     getNextPageParam: (lastPage) => {
       if (lastPage?.pageInfo?.hasNext) {
