@@ -4,7 +4,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui'
 import { useNavigate } from 'react-router-dom'
 import { ContentsLayout } from '@/app/layout'
 import CurationList from '@/features/curation/components/CurationList'
-import { useGetInfiniteCurations } from '@/features/curation/hooks/useCuration'
+import {
+  useGetInfiniteCurations,
+  useGetReadingPreference,
+} from '@/features/curation/hooks/useCuration'
 import EmptyCurations from '@/features/curation/components/EmptyCurations'
 import EmptyCurationsCta from '@/features/curation/components/EmptyCurationsCta'
 import toast from 'react-hot-toast'
@@ -122,6 +125,18 @@ export default function HomePage() {
   const likeCurations = popularData?.pages.flatMap((page) => page.content) || []
   const recentCurations = recentData?.pages.flatMap((page) => page.content) || []
 
+  // 독서 취향 조회
+  const { data: readingPreference } = useGetReadingPreference()
+
+  const hasNoPreferenceData = readingPreference
+    ? Object.entries(readingPreference)
+        .filter(([key]) => key !== 'preferenceId')
+        .every(
+          ([, value]) =>
+            value == null || (Array.isArray(value) && value.length === 0) || value === '',
+        )
+    : true
+
   // 에디터 픽 데이터
   const editorPicks = [
     {
@@ -209,8 +224,10 @@ export default function HomePage() {
                       </div>
                     )}
                   </>
-                ) : (
+                ) : hasNoPreferenceData ? (
                   <EmptyCurationsCta />
+                ) : (
+                  <EmptyCurations />
                 )}
               </TabsContent>
               <TabsContent value='recent'>
