@@ -41,6 +41,8 @@ export function AuthorSearchSection({
                 }
               }}
               className='flex-1'
+              clearable
+              onClear={() => setSearchQuery('')}
             />
             {searchQuery.trim() && (
               <Button variant='outline' onClick={handleDirectAdd} disabled={isMaxReached}>

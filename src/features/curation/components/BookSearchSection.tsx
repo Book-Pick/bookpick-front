@@ -149,6 +149,11 @@ export function BookSearchSection({
                   }}
                   onKeyDown={handleKeyPress}
                   className='flex-1'
+                  clearable
+                  onClear={() => {
+                    setSearchQuery('')
+                    reset()
+                  }}
                 />
                 <Button onClick={handleSearch} disabled={!searchQuery.trim() || isPending}>
                   <Search size={16} className='mr-1' />
