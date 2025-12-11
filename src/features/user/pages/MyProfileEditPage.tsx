@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/shared/ui'
-import toast from 'react-hot-toast'
 import ReadingPreferenceForm from '@/features/curation/components/ReadingPreferenceForm'
 import { useReadingPreferenceForm } from '@/features/curation/hooks/useReadingPreferenceForm'
 import {
@@ -96,7 +95,6 @@ export default function MyProfileEditPage() {
       },
       {
         onSuccess: () => {
-          toast.success('프로필 및 독서 취향이 성공적으로 저장되었습니다.')
           navigate('/mypage/dashboard')
         },
       },

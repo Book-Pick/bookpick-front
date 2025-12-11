@@ -204,6 +204,13 @@ export default function HomePage() {
                         <p className='text-muted-foreground'>더 불러오는 중...</p>
                       </div>
                     )}
+                    {!hasNextPopular && (
+                      <div className='flex items-center justify-center gap-4 py-8 text-muted-foreground'>
+                        <div className='h-px flex-1 bg-border' />
+                        <span className='text-sm'>📚 모든 추천사를 확인했어요</span>
+                        <div className='h-px flex-1 bg-border' />
+                      </div>
+                    )}
                   </>
                 ) : (
                   <EmptyCurations />
@@ -221,6 +228,13 @@ export default function HomePage() {
                     {isFetchingNextPersonalized && (
                       <div className='flex justify-center items-center py-4'>
                         <p className='text-muted-foreground'>더 불러오는 중...</p>
+                      </div>
+                    )}
+                    {!hasNextPersonalized && (
+                      <div className='flex items-center justify-center gap-4 py-8 text-muted-foreground'>
+                        <div className='h-px flex-1 bg-border' />
+                        <span className='text-sm'>📚 모든 추천사를 확인했어요</span>
+                        <div className='h-px flex-1 bg-border' />
                       </div>
                     )}
                   </>
@@ -242,6 +256,13 @@ export default function HomePage() {
                     {isFetchingNextRecent && (
                       <div className='flex justify-center items-center py-4'>
                         <p className='text-muted-foreground'>더 불러오는 중...</p>
+                      </div>
+                    )}
+                    {!hasNextRecent && (
+                      <div className='flex items-center justify-center gap-4 py-8 text-muted-foreground'>
+                        <div className='h-px flex-1 bg-border' />
+                        <span className='text-sm'>📚 모든 추천사를 확인했어요</span>
+                        <div className='h-px flex-1 bg-border' />
                       </div>
                     )}
                   </>
