@@ -3,7 +3,7 @@ import CurationCardSocial from '@/features/curation/components/CurationCardSocia
 import { mockCurationData } from '@/data/mockCurationData'
 
 export default function LandingPage() {
-  // 랜덤 큐레이션 하나 선택
+  // 랜덤 추천사 하나 선택
   const randomCuration = mockCurationData[Math.floor(Math.random() * mockCurationData.length)]
 
   return (
@@ -120,7 +120,7 @@ export default function LandingPage() {
               </div>
               <h3 className='text-lg font-bold mb-3 text-gray-800'>나를 닮은 한권</h3>
               <p className='text-gray-600 text-sm leading-relaxed'>
-                한 권 한 권, 당신의 스타일에 맞춘 큐레이션을 받아보세요.
+                한 권 한 권, 당신의 스타일에 맞춘 추천사를 받아보세요.
               </p>
             </div>
 
@@ -160,11 +160,11 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 큐레이션 미리보기 섹션 */}
+      {/* 추천사 미리보기 섹션 */}
       <section className='py-16 sm:py-20 lg:py-24 bg-background'>
         <div className='max-w-[1440px] mx-auto px-4 sm:px-10 lg:px-20'>
           <h2 className='text-2xl sm:text-3xl lg:text-4xl font-bold text-center mb-12 sm:mb-16'>
-            이런 큐레이션이 기다려요
+            이런 추천사가 기다려요
           </h2>
           <div className='max-w-2xl mx-auto'>
             <CurationCardSocial

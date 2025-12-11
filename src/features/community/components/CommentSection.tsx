@@ -92,7 +92,7 @@ const CommentSection = ({ curationId, className }: CommentSectionProps) => {
         {/* New comment form */}
         <div>
           <Textarea
-            placeholder='이 큐레이션에 답글 남기기'
+            placeholder='이 추천사에 답글 남기기'
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
             className='mb-3 min-h-[100px] rounded-none'

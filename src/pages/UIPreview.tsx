@@ -55,7 +55,7 @@ export default function UIPreview() {
   const [selectedCurations, setSelectedCurations] = useState<number[]>([])
 
   const handlePurchase = (curationId: number, price: number) => {
-    console.log(`큐레이션 ${curationId} 구매 요청, 가격: ${price}원`)
+    console.log(`추천사 ${curationId} 구매 요청, 가격: ${price}원`)
   }
 
   const handleSelectCuration = (id: number | string) => {
@@ -66,8 +66,8 @@ export default function UIPreview() {
   }
 
   const handleDeleteSelected = () => {
-    console.log('선택된 큐레이션 삭제:', selectedCurations)
-    alert(`${selectedCurations.length}개의 큐레이션이 선택되었습니다.`)
+    console.log('선택된 추천사 삭제:', selectedCurations)
+    alert(`${selectedCurations.length}개의 추천사가 선택되었습니다.`)
   }
 
   const handleBookSelect = (book: Book | null) => {
@@ -465,10 +465,10 @@ export default function UIPreview() {
           <TabsContent value='features' className='space-y-12'>
             {/* Curation Cards Section */}
             <section className='bg-white rounded-lg p-6 shadow-sm'>
-              <h2 className='text-2xl font-bold mb-6'>큐레이션 카드</h2>
+              <h2 className='text-2xl font-bold mb-6'>추천사 카드</h2>
               <div className='space-y-6'>
                 <div>
-                  <h3 className='text-lg font-semibold mb-3'>기본 큐레이션 카드</h3>
+                  <h3 className='text-lg font-semibold mb-3'>기본 추천사 카드</h3>
                   <CurationCardBasic
                     similarity={95}
                     title='일상에서 발견하는 철학적 순간들'
@@ -479,7 +479,7 @@ export default function UIPreview() {
                   />
                 </div>
                 <div>
-                  <h3 className='text-lg font-semibold mb-3'>상세 큐레이션 카드</h3>
+                  <h3 className='text-lg font-semibold mb-3'>상세 추천사 카드</h3>
                   <CurationCardFull
                     title='결국 어른이 된다는 건, 아픔과 불안, 외로움을 숨기면서도 하루하루를 살아내는 법을 배워가는 일'
                     description='어른이 된다는 건 단순히 나이를 먹는 게 아니라, 세상 속에서 살아남기 위해 새로운 방식을 배우는 과정 같아. 진짜로 괜찮지 않아도, 사람들 앞에서는 웃을 줄 알고 괜찮아라는 말을 입에 달고 사는 법을 익히는 거지.'
@@ -493,9 +493,9 @@ export default function UIPreview() {
                   />
                 </div>
                 <div>
-                  <h3 className='text-lg font-semibold mb-3'>SNS 스타일 큐레이션 카드</h3>
+                  <h3 className='text-lg font-semibold mb-3'>SNS 스타일 추천사 카드</h3>
                   <p className='text-sm text-gray-600 mb-4'>
-                    모바일 친화적인 소셜 미디어 스타일의 큐레이션 카드입니다.
+                    모바일 친화적인 소셜 미디어 스타일의 추천사 카드입니다.
                   </p>
                   <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl'>
                     {mockCurationData.slice(0, 3).map((curation, index) => (
@@ -512,7 +512,7 @@ export default function UIPreview() {
                         views={curation.views}
                         tags={curation.tags.join(', ')}
                         thumbnailSrc={[sampleImage1, sampleImage2, sampleImage3][index]}
-                        onClick={() => console.log(`클릭된 큐레이션: ${curation.title}`)}
+                        onClick={() => console.log(`클릭된 추천사: ${curation.title}`)}
                       />
                     ))}
                   </div>
@@ -520,7 +520,7 @@ export default function UIPreview() {
                 <div>
                   <h3 className='text-lg font-semibold mb-3'>편집 모드 (EditMode)</h3>
                   <p className='text-sm text-gray-600 mb-4'>
-                    체크박스로 여러 큐레이션을 선택하여 삭제할 수 있습니다. 카드를 클릭하거나
+                    체크박스로 여러 추천사를 선택하여 삭제할 수 있습니다. 카드를 클릭하거나
                     체크박스를 클릭하여 선택하세요.
                   </p>
                   <div className='mb-4 flex items-center gap-3'>
@@ -586,7 +586,7 @@ export default function UIPreview() {
 
             {/* Purchase Cards Section */}
             <section className='bg-white rounded-lg p-6 shadow-sm'>
-              <h2 className='text-2xl font-bold mb-6'>큐레이션 구매 정보 카드</h2>
+              <h2 className='text-2xl font-bold mb-6'>추천사 구매 정보 카드</h2>
               <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                 {mockCurationData.slice(0, 2).map((curation) => (
                   <CurationPurchaseCard

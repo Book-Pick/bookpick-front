@@ -83,8 +83,8 @@ export default function CurationCreatePage() {
   }
 
   const handlePublish = () => {
-    // 큐레이션 등록 로직
-    console.log('큐레이션 등록:', {
+    // 추천사 등록 로직
+    console.log('추천사 등록:', {
       title,
       selectedColor,
       thumbnail,
@@ -96,7 +96,7 @@ export default function CurationCreatePage() {
       recommendedKeywords,
       recommendedStyles,
     })
-    toast.success('큐레이션이 등록되었습니다.')
+    toast.success('추천사가 등록되었습니다.')
     navigate('/mypage/curation')
   }
 

@@ -79,7 +79,7 @@ export default function OrderCompletePage() {
           <Card>
             <CardContent className='p-4 sm:p-6'>
               <div className='flex flex-col sm:flex-row gap-4'>
-                {/* 카드 왼쪽: 큐레이션 썸네일 */}
+                {/* 카드 왼쪽: 추천사 썸네일 */}
                 <div className='w-full sm:w-32 sm:h-32 max-h-[300px] aspect-square rounded-lg overflow-hidden flex-shrink-0 bg-muted'>
                   <CurationThumbnail
                     thumbnailImage={mockOrderData.curation.thumbnailImage}

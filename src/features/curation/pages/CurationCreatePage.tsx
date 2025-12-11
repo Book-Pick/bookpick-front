@@ -388,7 +388,7 @@ export default function CurationCreatePage() {
               className='flex-1 sm:flex-none'
               disabled={isDraftPending || isPending || isEmptyContent}
             >
-              {isPending ? '등록 중...' : '등록하기'}
+              {isPending ? '발행 중...' : '발행하기'}
             </Button>
           </div>
         </div>

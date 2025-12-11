@@ -31,7 +31,7 @@ const mockFeedbacks = [
   },
   {
     id: 4,
-    content: '큐레이션 내용이 정말 자세하고 좋았습니다.',
+    content: '추천사 내용이 정말 자세하고 좋았습니다.',
     date: '2025-7-15',
   },
 ]

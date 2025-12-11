@@ -24,13 +24,13 @@ export default function CurationDetailPage() {
     isLoading: isSubscriptionLoading,
   } = useSubscriptionToggle(curation?.userId ?? 0)
 
-  // 본인이 작성한 큐레이션인지 확인
+  // 본인이 작성한 추천사인지 확인
   const isOwnCuration = user?.userId === curation?.userId
 
   const [isLiked, setIsLiked] = useState(false)
 
   const handlePurchase = (_curationId: number, _price: number) => {
-    // console.log(`큐레이션 ${curationId} 구매 요청, 가격: ${price}원`)
+    // console.log(`추천사 ${curationId} 구매 요청, 가격: ${price}원`)
     toast('서비스 준비 중입니다.', {
       icon: '⏳',
     })
@@ -38,8 +38,8 @@ export default function CurationDetailPage() {
   }
 
   const handleCart = (_curationId: number, _price: number) => {
-    // console.log(`큐레이션 ${curationId} 장바구니 담기 요청, 가격: ${price}원`)
-    // toast.success('큐레이션이 장바구니에 담겼습니다.')
+    // console.log(`추천사 ${curationId} 장바구니 담기 요청, 가격: ${price}원`)
+    // toast.success('추천사가 장바구니에 담겼습니다.')
     toast('서비스 준비 중입니다.', {
       icon: '⏳',
     })
@@ -62,7 +62,7 @@ export default function CurationDetailPage() {
   if (error) {
     return (
       <div className='flex flex-col justify-center items-center min-h-[400px] gap-4'>
-        <p className='text-destructive'>큐레이션을 불러오는데 실패했습니다.</p>
+        <p className='text-destructive'>추천사를 불러오는데 실패했습니다.</p>
         <button
           onClick={() => navigate(-1)}
           className='px-4 py-2 bg-primary text-primary-foreground rounded-md'
@@ -77,7 +77,7 @@ export default function CurationDetailPage() {
   if (!curation) {
     return (
       <div className='flex flex-col justify-center items-center min-h-[400px] gap-4'>
-        <p className='text-muted-foreground'>큐레이션을 찾을 수 없습니다.</p>
+        <p className='text-muted-foreground'>추천사를 찾을 수 없습니다.</p>
         <button
           onClick={() => navigate(-1)}
           className='px-4 py-2 bg-primary text-primary-foreground rounded-md'
@@ -90,7 +90,7 @@ export default function CurationDetailPage() {
 
   return (
     <>
-      {/* 큐레이션 내용 */}
+      {/* 추천사 내용 */}
       <div className='my-10 xl:my-15'>
         <CuratorProfileCard
           curatorId={curation.userId}
@@ -133,7 +133,7 @@ export default function CurationDetailPage() {
       {/* 댓글 및 피드백 */}
       <CommentSection curationId={curationId} className='bg-transparent' />
 
-      {/* 큐레이션 구매 정보 */}
+      {/* 추천사 구매 정보 */}
       <CurationPurchaseCard
         curationId={curation.curationId || curation.id || 0}
         price={15000}

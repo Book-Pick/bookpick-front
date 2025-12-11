@@ -66,7 +66,7 @@ export const useUpdateReadingPreference = () => {
 }
 
 /**
- * 4. 큐레이션 단건 조회
+ * 4. 추천사 단건 조회
  */
 export const useGetCurationById = (curationId: number) => {
   return useQuery({
@@ -80,7 +80,7 @@ export const useGetCurationById = (curationId: number) => {
 }
 
 /**
- * 5. 큐레이션 목록 조회 (정렬: similarity, popularity, latest, liked, my)
+ * 5. 추천사 목록 조회 (정렬: similarity, popularity, latest, liked, my)
  */
 export const useGetCurations = ({
   sort = 'similarity',
@@ -97,7 +97,7 @@ export const useGetCurations = ({
 }
 
 /**
- * 5-1. 큐레이션 목록 무한 스크롤 조회
+ * 5-1. 추천사 목록 무한 스크롤 조회
  */
 export const useGetInfiniteCurations = ({
   sort = 'similarity',
@@ -134,7 +134,7 @@ export const useGetInfiniteCurations = ({
 }
 
 /**
- * 6. 특정 필드로 큐레이션 조회
+ * 6. 특정 필드로 추천사 조회
  */
 export const useGetCurationsByField = (request: GetCurationsByFieldRequest) => {
   return useQuery({
@@ -148,7 +148,7 @@ export const useGetCurationsByField = (request: GetCurationsByFieldRequest) => {
 }
 
 /**
- * 7. 큐레이션 작성
+ * 7. 추천사 작성
  */
 export const useCreateCuration = () => {
   const queryClient = useQueryClient()
@@ -160,10 +160,10 @@ export const useCreateCuration = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['curations'] })
-      toast.success('큐레이션이 등록되었습니다.')
+      toast.success('추천사가 등록되었습니다.')
     },
     onError: (error: Error) => {
-      toast.error(error.message || '큐레이션 저장에 실패했습니다.')
+      toast.error(error.message || '추천사 저장에 실패했습니다.')
     },
   })
 }
@@ -177,16 +177,16 @@ export const useCreateCurationDraft = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['curations'] })
-      toast.success('큐레이션이 임시저장되었습니다.')
+      toast.success('추천사가 임시저장되었습니다.')
     },
     onError: (error: Error) => {
-      toast.error(error.message || '큐레이션 임시저장에 실패했습니다.')
+      toast.error(error.message || '추천사 임시저장에 실패했습니다.')
     },
   })
 }
 
 /**
- * 9. 큐레이션 수정
+ * 9. 추천사 수정
  */
 export const useUpdateCuration = () => {
   const queryClient = useQueryClient()
@@ -199,16 +199,16 @@ export const useUpdateCuration = () => {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['curations'] })
       queryClient.invalidateQueries({ queryKey: ['curation', data.id] })
-      toast.success('큐레이션이 수정되었습니다.')
+      toast.success('추천사가 수정되었습니다.')
     },
     onError: (error: Error) => {
-      toast.error(error.message || '큐레이션 수정에 실패했습니다.')
+      toast.error(error.message || '추천사 수정에 실패했습니다.')
     },
   })
 }
 
 /**
- * 10. 큐레이션 삭제
+ * 10. 추천사 삭제
  */
 export const useDeleteCuration = () => {
   const queryClient = useQueryClient()
@@ -220,10 +220,10 @@ export const useDeleteCuration = () => {
     },
     onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: ['curations'] })
-      toast.success(response.message || '큐레이션이 삭제되었습니다.')
+      toast.success(response.message || '추천사가 삭제되었습니다.')
     },
     onError: (error: Error) => {
-      toast.error(error.message || '큐레이션 삭제에 실패했습니다.')
+      toast.error(error.message || '추천사 삭제에 실패했습니다.')
     },
   })
 }
@@ -238,10 +238,10 @@ export const useDeleteCurations = () => {
     },
     onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: ['curations'] })
-      toast.success(response.message || '큐레이션이 삭제되었습니다.')
+      toast.success(response.message || '추천사가 삭제되었습니다.')
     },
     onError: (error: Error) => {
-      toast.error(error.message || '큐레이션 삭제에 실패했습니다.')
+      toast.error(error.message || '추천사 삭제에 실패했습니다.')
     },
   })
 }

@@ -80,7 +80,7 @@ export const userApi = {
         throw new Error('잘못된 요청입니다.')
       }
       if (axiosError.response?.status === 404) {
-        throw new Error('큐레이션을 찾을 수 없습니다.')
+        throw new Error('추천사를 찾을 수 없습니다.')
       }
       throw error
     }

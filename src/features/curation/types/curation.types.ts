@@ -1,5 +1,5 @@
 /**
- * 큐레이션 관련 타입 정의
+ * 추천사 관련 타입 정의
  */
 
 import type { ApiResponse } from '@/shared/api/api.types'
@@ -33,7 +33,7 @@ export interface ReadingPreference {
   readingStyles?: string[]
 }
 
-// 큐레이션 타입
+// 추천사 타입
 export interface Curation {
   id: number
   userId?: number

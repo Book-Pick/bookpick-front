@@ -192,7 +192,7 @@ export function CurationTitleSection({
           </Popover>
         </div>
 
-        {/* 큐레이션 제목 */}
+        {/* 추천사 제목 */}
         <div className='flex-1 flex items-end'>
           <div className='w-full'>
             <div className='bg-black/20 backdrop-blur-sm rounded-lg p-4'>

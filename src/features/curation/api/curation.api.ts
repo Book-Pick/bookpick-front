@@ -92,7 +92,7 @@ export const curationApi = {
   },
 
   /**
-   * 4. 큐레이션 단건 조회 - 확인
+   * 4. 추천사 단건 조회 - 확인
    */
   getCurationById: async (curationId: number): Promise<GetCurationByIdResponse> => {
     try {
@@ -100,13 +100,13 @@ export const curationApi = {
       return response.data
     } catch (error: unknown) {
       const axiosError = error as AxiosErrorResponse
-      console.error('큐레이션 조회 에러:', axiosError)
+      console.error('추천사 조회 에러:', axiosError)
       throw error
     }
   },
 
   /**
-   * 5. 큐레이션 목록 조회(취향 유사도순, 인기순, 최신순 정렬) - 확인
+   * 5. 추천사 목록 조회(취향 유사도순, 인기순, 최신순 정렬) - 확인
    */
   getCurations: async ({
     sort,
@@ -130,7 +130,7 @@ export const curationApi = {
   },
 
   /**
-   * 6. 특정 필드로 큐레이션 조회(보류: 큐레이션 필터링 기능 추가 시 사용)
+   * 6. 특정 필드로 추천사 조회(보류: 추천사 필터링 기능 추가 시 사용)
    */
   getCurationsByField: async (
     request: GetCurationsByFieldRequest,
@@ -154,7 +154,7 @@ export const curationApi = {
     // }
 
     // 목업 데이터 반환
-    console.log('특정 필드로 큐레이션 조회 요청:', request)
+    console.log('특정 필드로 추천사 조회 요청:', request)
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(mockGetCurationsByFieldResponse)
@@ -163,7 +163,7 @@ export const curationApi = {
   },
 
   /**
-   * 7. 큐레이션 작성
+   * 7. 추천사 작성
    */
   createCuration: async (request: CreateCurationRequest): Promise<CreateCurationResponse> => {
     try {
@@ -192,7 +192,7 @@ export const curationApi = {
   },
 
   /**
-   * 9. 큐레이션 수정
+   * 9. 추천사 수정
    */
   updateCuration: async (request: UpdateCurationRequest): Promise<UpdateCurationResponse> => {
     try {
@@ -208,14 +208,14 @@ export const curationApi = {
         throw new Error('수정 권한이 없습니다.')
       }
       if (axiosError.response?.status === 404) {
-        throw new Error('큐레이션을 찾을 수 없습니다.')
+        throw new Error('추천사를 찾을 수 없습니다.')
       }
       throw error
     }
   },
 
   /**
-   * 10. 큐레이션 삭제
+   * 10. 추천사 삭제
    */
   deleteCuration: async (curationId: number): Promise<DeleteCurationResponse> => {
     try {
@@ -227,14 +227,14 @@ export const curationApi = {
         throw new Error('삭제 권한이 없습니다.')
       }
       if (axiosError.response?.status === 404) {
-        throw new Error('큐레이션을 찾을 수 없습니다.')
+        throw new Error('추천사를 찾을 수 없습니다.')
       }
       throw error
     }
   },
 
   /**
-   * 10. 큐레이션 리스트 삭제
+   * 10. 추천사 리스트 삭제
    */
   deleteCurations: async (request: DeleteCurationsRequest): Promise<DeleteCurationsResponse> => {
     try {
@@ -246,7 +246,7 @@ export const curationApi = {
         throw new Error('삭제 권한이 없습니다.')
       }
       if (axiosError.response?.status === 404) {
-        throw new Error('큐레이션을 찾을 수 없습니다.')
+        throw new Error('추천사를 찾을 수 없습니다.')
       }
       throw error
     }

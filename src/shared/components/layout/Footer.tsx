@@ -13,7 +13,7 @@ export function Footer() {
               <p className='text-muted-foreground leading-normal tracking-tight mb-10'>
                 "당신에게 꼭 맞는 책, 북픽이 찾아드릴게요."
                 <br />
-                지금의 기분, 상황, 취향을 바탕으로 추천받는 독서 큐레이션
+                지금의 기분, 상황, 취향을 바탕으로 추천받는 독서 추천사
               </p>
             </div>
 

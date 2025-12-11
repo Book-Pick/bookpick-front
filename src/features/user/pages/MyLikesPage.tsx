@@ -24,7 +24,7 @@ export default function MyLikesPage() {
         <h2 className='font-title'>좋아요한 추천사</h2>
       </div>
 
-      {/* 좋아요한 큐레이션 목록 */}
+      {/* 좋아요한 추천사 목록 */}
       <div className='flex flex-col gap-4'>
         {curations.length > 0 ? (
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>

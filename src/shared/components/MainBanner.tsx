@@ -45,7 +45,7 @@ const MainBanner = () => {
         </h1>
         <p className='text-base sm:text-lg md:text-xl text-white/90 mb-6 sm:mb-8 lg:mb-10 max-w-2xl leading-normal drop-shadow-md'>
           "당신에게 꼭 맞는 책, 북픽이 찾아드릴게요."<br></br>
-          지금의 기분, 상황, 취향을 바탕으로 추천받는 독서 큐레이션
+          지금의 기분, 상황, 취향을 바탕으로 추천받는 독서 추천사
         </p>
         <div className='flex flex-col gap-2 sm:flex-row'>
           {isFirstLogin ? (

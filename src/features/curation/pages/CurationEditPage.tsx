@@ -55,7 +55,7 @@ export default function CurationCreatePage() {
     [title, selectedBook, content],
   )
 
-  // 큐레이션 데이터로 폼 초기화
+  // 추천사 데이터 로 폼 초기화
   useEffect(() => {
     if (curationData) {
       setTitle(curationData.title || '')
@@ -209,7 +209,7 @@ export default function CurationCreatePage() {
     return (
       <div className='flex items-center justify-center min-h-screen'>
         <div className='text-center'>
-          <div className='text-lg font-medium'>큐레이션 데이터를 불러오는 중...</div>
+          <div className='text-lg font-medium'>추천사 데이터를 불러오는 중...</div>
         </div>
       </div>
     )
@@ -221,7 +221,7 @@ export default function CurationCreatePage() {
       <div className='flex items-center justify-center min-h-screen'>
         <div className='text-center space-y-4'>
           <div className='text-lg font-medium text-destructive'>
-            큐레이션 데이터를 불러오는데 실패했습니다.
+            추천사 데이터를 불러오는데 실패했습니다.
           </div>
           <Button onClick={() => navigate('/mypage/curation')}>목록으로 돌아가기</Button>
         </div>
@@ -451,13 +451,14 @@ export default function CurationCreatePage() {
             >
               {isDraftPending ? '임시 저장 중...' : '임시 저장'}
             </Button>
+            {/* Todo: 임시저장된 추천사 수정일 경우 발행하기 버튼, 공개된 추천사 수정일 경우 수정하기 버튼 표시 필요 api 요청시에도 isDrafted 플래그값 다르게 요청 */}
             <Button
               size='lg'
               onClick={handleSave}
               className='flex-1 sm:flex-none'
               disabled={isDraftPending || isPending || isEmptyContent}
             >
-              {isPending ? '등록 중...' : '저장하기'}
+              {isPending ? '수정 중...' : '수정하기'}
             </Button>
           </div>
         </div>
