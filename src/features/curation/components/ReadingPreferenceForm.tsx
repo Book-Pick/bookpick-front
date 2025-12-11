@@ -72,12 +72,14 @@ export default function ReadingPreferenceForm({ formData, handlers }: ReadingPre
                       key={book.id}
                       variant='outline'
                       size='default'
-                      className='flex items-center gap-1'
+                      className='flex items-center gap-1 max-w-full'
                     >
-                      {book.title} - {book.author}
+                      <span className='truncate'>
+                        {book.title} - {book.author}
+                      </span>
                       <button
                         type='button'
-                        className='ml-1 cursor-pointer hover:text-destructive'
+                        className='ml-1 shrink-0 cursor-pointer hover:text-destructive'
                         onClick={(e) => {
                           e.stopPropagation()
                           handlers.removeLifeBook(book)
@@ -115,12 +117,12 @@ export default function ReadingPreferenceForm({ formData, handlers }: ReadingPre
                       key={author}
                       variant='outline'
                       size='default'
-                      className='flex items-center gap-1'
+                      className='flex items-center gap-1 max-w-full'
                     >
-                      {author}
+                      <span className='truncate'>{author}</span>
                       <button
                         type='button'
-                        className='ml-1 cursor-pointer hover:text-destructive'
+                        className='ml-1 shrink-0 cursor-pointer hover:text-destructive'
                         onClick={(e) => {
                           e.stopPropagation()
                           handlers.removeAuthor(author)
