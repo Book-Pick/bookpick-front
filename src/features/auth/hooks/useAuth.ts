@@ -92,23 +92,14 @@ export const useAuth = () => {
         await authApi.logout()
       },
       onSuccess: () => {
+        localStorage.removeItem('bookpick-auth')
         toast.success('로그아웃 되었습니다.')
         setTimeout(() => {
-          location.href = '/'
-        }, 1500)
+          window.location.href = '/'
+        }, 1000)
       },
       onError: (error: Error) => {
         toast.error(error.message || '로그아웃에 실패했습니다.')
-      },
-      onSettled: () => {
-        localStorage.removeItem('bookpick-auth')
-        setAuthState({
-          user: null,
-          token: null,
-          isAuthenticated: false,
-          isLoading: false,
-          isFirstLogin: false,
-        })
       },
     })
   }
