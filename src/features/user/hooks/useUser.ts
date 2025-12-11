@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { userApi } from '../api/user.api'
+import { useAuth } from '@/app/providers'
 import type {
   CreateProfileRequest,
   UpdateProfileRequest,
@@ -26,15 +27,22 @@ export const useGetProfile = () => {
  */
 export const useCreateProfile = () => {
   const queryClient = useQueryClient()
+  const { updateUser } = useAuth()
 
   return useMutation({
     mutationFn: async (request: CreateProfileRequest) => {
       const response = await userApi.createProfile(request)
       return response.data
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log('프로필 등록 성공: ', data)
       queryClient.invalidateQueries({ queryKey: ['profile'] })
       toast.success('프로필이 성공적으로 등록되었습니다.')
+      updateUser({
+        nickname: data?.nickName ?? '',
+        bio: data?.introduction ?? '',
+        profileImageUrl: data?.profileImage ?? '',
+      })
     },
     onError: (error: Error) => {
       toast.error(error.message || '프로필 등록에 실패했습니다.')
@@ -47,15 +55,21 @@ export const useCreateProfile = () => {
  */
 export const useUpdateProfile = () => {
   const queryClient = useQueryClient()
+  const { updateUser } = useAuth()
 
   return useMutation({
     mutationFn: async (request: UpdateProfileRequest) => {
       const response = await userApi.updateProfile(request)
       return response.data
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['profile'] })
       toast.success('프로필이 성공적으로 수정되었습니다.')
+      updateUser({
+        nickname: data?.nickName ?? '',
+        bio: data?.introduction ?? '',
+        profileImageUrl: data?.profileImage ?? '',
+      })
     },
     onError: (error: Error) => {
       toast.error(error.message || '프로필 수정에 실패했습니다.')
