@@ -34,6 +34,7 @@ interface CurationCardSocialProps {
   isSelected?: boolean
   onSelect?: (id: number | string) => void
   isLiked?: boolean
+  onLikeClick?: (id: number | string) => void
 }
 
 const CurationCardSocial = ({
@@ -56,6 +57,7 @@ const CurationCardSocial = ({
   isSelected = false,
   onSelect,
   isLiked = false,
+  onLikeClick,
 }: CurationCardSocialProps) => {
   // tags 문자열을 배열로 변환
   const tagArray = tags
@@ -167,8 +169,19 @@ const CurationCardSocial = ({
             <ViewerIcon size={18} />
             <span className='text-sm font-medium'>{views}</span>
           </button>
-          <button className='flex items-center gap-1 text-gray-600 hover:text-accent transition-colors'>
-            <Heart size={18} className={isLiked ? 'fill-current text-accent' : ''} />
+          <button
+            className='flex items-center gap-1 text-gray-600 hover:text-accent transition-colors'
+            onClick={(e) => {
+              e.stopPropagation()
+              if (id !== undefined && onLikeClick) {
+                onLikeClick(id)
+              }
+            }}
+          >
+            <Heart
+              size={18}
+              className={`transition-all hover:scale-110 active:scale-95 ${isLiked ? 'fill-current text-accent animate-heart-bounce' : ''}`}
+            />
             <span className='text-sm font-medium'>{likes}</span>
           </button>
           <button className='flex items-center gap-1 text-gray-600 hover:text-blue-500 transition-colors'>

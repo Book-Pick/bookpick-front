@@ -1,5 +1,6 @@
 import CurationCardSocial from '@/features/curation/components/CurationCardSocial'
 import type { CurationItem } from '@/features/curation/types/curation.types'
+import { useLikeCuration } from '@/features/community/hooks/useCommunity'
 
 const CurationList = ({
   curations,
@@ -8,6 +9,12 @@ const CurationList = ({
   curations: CurationItem[]
   onCardClick: (id: number) => void
 }) => {
+  const { mutate: likeCurationMutate } = useLikeCuration()
+
+  const handleLikeClick = (id: number) => {
+    likeCurationMutate(id)
+  }
+
   return (
     <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6'>
       {curations.map((curation) => (
@@ -16,7 +23,7 @@ const CurationList = ({
           id={curation.curationId}
           similarity={curation.similarity}
           title={curation.title || '제목 없음'}
-          description={curation.summary || curation.review || ''}
+          description={curation.review || ''}
           curator={curation.nickName}
           likes={curation.likeCount || 0}
           comments={curation.commentCount || 0}
@@ -26,7 +33,9 @@ const CurationList = ({
           thumbnailColor={curation?.thumbnail.imageColor || undefined}
           curatorImage={curation.profileImageUrl || undefined}
           curatorBio={curation.introduction || ''}
+          isLiked={curation.isLiked}
           onClick={() => onCardClick(curation.curationId || curation.id || 0)}
+          onLikeClick={(id) => handleLikeClick(Number(id))}
         />
       ))}
     </div>

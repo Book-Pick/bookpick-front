@@ -7,6 +7,7 @@ import type {
   UpdateCommentRequest,
   UpdateCommentResponse,
   DeleteCommentResponse,
+  LikeCurationResponse,
 } from '../types/community.types'
 import type { AxiosErrorResponse } from '@/shared/api/api.types'
 import { createAxiosClient } from '@/shared/api/axiosClient'
@@ -31,7 +32,7 @@ export const communityApi = {
     } catch (error: unknown) {
       const axiosError = error as AxiosErrorResponse
       if (axiosError.response?.status === 404) {
-        throw new Error('Curation not found.')
+        throw new Error('추천사를 찾을 수 없습니다.')
       }
       throw error
     }
@@ -50,7 +51,7 @@ export const communityApi = {
     } catch (error: unknown) {
       const axiosError = error as AxiosErrorResponse
       if (axiosError.response?.status === 404) {
-        throw new Error('Comment not found.')
+        throw new Error('댓글을 찾을 수 없습니다.')
       }
       throw error
     }
@@ -69,10 +70,10 @@ export const communityApi = {
     } catch (error: unknown) {
       const axiosError = error as AxiosErrorResponse
       if (axiosError.response?.status === 400) {
-        throw new Error('Invalid request.')
+        throw new Error('잘못된 요청입니다.')
       }
       if (axiosError.response?.status === 404) {
-        throw new Error('Curation not found.')
+        throw new Error('추천사를 찾을 수 없습니다.')
       }
       throw error
     }
@@ -95,13 +96,13 @@ export const communityApi = {
     } catch (error: unknown) {
       const axiosError = error as AxiosErrorResponse
       if (axiosError.response?.status === 400) {
-        throw new Error('Invalid request.')
+        throw new Error('잘못된 요청입니다.')
       }
       if (axiosError.response?.status === 403) {
-        throw new Error('No permission to update.')
+        throw new Error('수정 권한이 없습니다.')
       }
       if (axiosError.response?.status === 404) {
-        throw new Error('Comment not found.')
+        throw new Error('댓글을 찾을 수 없습니다.')
       }
       throw error
     }
@@ -119,10 +120,26 @@ export const communityApi = {
     } catch (error: unknown) {
       const axiosError = error as AxiosErrorResponse
       if (axiosError.response?.status === 403) {
-        throw new Error('No permission to delete.')
+        throw new Error('삭제 권한이 없습니다.')
       }
       if (axiosError.response?.status === 404) {
-        throw new Error('Comment not found.')
+        throw new Error('댓글을 찾을 수 없습니다.')
+      }
+      throw error
+    }
+  },
+
+  /**
+   * 6. 큐레이션 좋아요
+   */
+  likeCuration: async (curationId: number): Promise<LikeCurationResponse> => {
+    try {
+      const response = await axios.post(`${urlPrefix}/curations/like/${curationId}`)
+      return response.data
+    } catch (error: unknown) {
+      const axiosError = error as AxiosErrorResponse
+      if (axiosError.response?.status === 404) {
+        throw new Error('추천사를 찾을 수 없습니다.')
       }
       throw error
     }

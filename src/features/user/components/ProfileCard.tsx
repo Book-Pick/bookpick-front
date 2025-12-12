@@ -21,7 +21,7 @@ export default function ProfileCard({
     <div className='flex flex-col gap-2.5 border border-border rounded-lg p-4 md:justify-center md:items-center md:gap-5 md:p-7.5 md:h-full md:rounded-xl'>
       <div className='flex flex-row items-center gap-3.5 w-full md:flex-col md:gap-4'>
         <Avatar className='w-[60px] h-[60px] flex-shrink-0 md:w-[80px] md:h-[80px]'>
-          <AvatarImage src={avatarUrl} alt={name} />
+          <AvatarImage src={avatarUrl} alt={name} className='object-cover' />
           <AvatarFallback className='bg-secondary text-secondary-foreground text-base md:text-xl font-semibold'>
             {name.charAt(0)}
           </AvatarFallback>

@@ -7,7 +7,7 @@ import { useAuth } from '../hooks/useAuth.ts'
 
 export default function RegisterPage() {
   const { useRegister } = useAuth()
-  const { mutate: registerMutate } = useRegister()
+  const { mutate: registerMutate, isPending: isRegisterPending } = useRegister()
   const {
     register,
     handleSubmit,
@@ -75,8 +75,8 @@ export default function RegisterPage() {
               )}
             </div>
 
-            <Button type='submit' size='lg' className='w-full'>
-              회원가입
+            <Button type='submit' size='lg' className='w-full' disabled={isRegisterPending}>
+              {isRegisterPending ? '회원가입 중...' : '회원가입'}
             </Button>
           </form>
         </CardContent>

@@ -74,7 +74,6 @@ export interface CurationItem {
   userId: number
   nickName: string
   thumbnail: Thumbnail
-  summary?: string
   review: string
   book: {
     title: string
@@ -82,6 +81,7 @@ export interface CurationItem {
     image?: string
     isbn?: string
   }
+  isLiked?: boolean
   likeCount?: number | null
   commentCount?: number
   viewCount?: number
@@ -94,6 +94,7 @@ export interface CurationItem {
   recommend?: RecommendTags
   profileImageUrl?: string | null
   introduction?: string | null
+  subscribed?: boolean
 }
 
 export interface PaginatedCurations {

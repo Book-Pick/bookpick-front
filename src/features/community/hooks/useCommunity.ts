@@ -186,3 +186,93 @@ export const useDeleteComment = (curationId: number) => {
     },
   })
 }
+
+interface CurationItemInList {
+  curationId: number
+  isLiked?: boolean
+  likeCount?: number | null
+}
+
+interface InfiniteQueryData {
+  pages: { content: CurationItemInList[] }[]
+  pageParams: unknown[]
+}
+
+/**
+ * 6. Like curation
+ */
+export const useLikeCuration = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async (curationId: number) => {
+      const response = await communityApi.likeCuration(curationId)
+      return response
+    },
+    onMutate: async (curationId: number) => {
+      // 1. 진행 중인 refetch 취소
+      await queryClient.cancelQueries({ queryKey: ['curation', curationId] })
+      await queryClient.cancelQueries({ queryKey: ['curations'] })
+
+      // 2. 현재 캐시 백업
+      const previousCuration = queryClient.getQueryData(['curation', curationId])
+      const previousCurations = queryClient.getQueriesData<InfiniteQueryData>({
+        queryKey: ['curations'],
+      })
+
+      // 3. 상세 페이지 캐시 낙관적 업데이트
+      queryClient.setQueryData(['curation', curationId], (old: unknown) => {
+        const oldData = old as { isLiked?: boolean; likeCount?: number | null } | undefined
+        if (!oldData) return oldData
+
+        const newIsLiked = !oldData.isLiked
+        const currentLikeCount = oldData.likeCount ?? 0
+        const newLikeCount = newIsLiked ? currentLikeCount + 1 : currentLikeCount - 1
+
+        return {
+          ...oldData,
+          isLiked: newIsLiked,
+          likeCount: newLikeCount,
+        }
+      })
+
+      // 4. 리스트 캐시 낙관적 업데이트
+      queryClient.setQueriesData<InfiniteQueryData>({ queryKey: ['curations'] }, (oldData) => {
+        if (!oldData?.pages) return oldData
+
+        return {
+          ...oldData,
+          pages: oldData.pages.map((page) => ({
+            ...page,
+            content: page.content.map((item) => {
+              if (item.curationId === curationId) {
+                const newIsLiked = !item.isLiked
+                const currentLikeCount = item.likeCount ?? 0
+                return {
+                  ...item,
+                  isLiked: newIsLiked,
+                  likeCount: newIsLiked ? currentLikeCount + 1 : currentLikeCount - 1,
+                }
+              }
+              return item
+            }),
+          })),
+        }
+      })
+
+      return { previousCuration, previousCurations, curationId }
+    },
+    onError: (_err, _curationId, context) => {
+      // 에러 시 롤백
+      if (context?.previousCuration) {
+        queryClient.setQueryData(['curation', context.curationId], context.previousCuration)
+      }
+      if (context?.previousCurations) {
+        context.previousCurations.forEach(([queryKey, data]) => {
+          queryClient.setQueryData(queryKey, data)
+        })
+      }
+      toast.error('좋아요에 실패했습니다.')
+    },
+  })
+}

@@ -95,3 +95,8 @@ export type DeleteCommentResponse = ApiResponse<{
   commentId: number
   deletedAt: string
 }>
+
+/**
+ * Like curation response
+ */
+export type LikeCurationResponse = ApiResponse<string>

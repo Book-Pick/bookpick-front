@@ -3,12 +3,12 @@ import CurationPurchaseCard from '../components/CurationPurchaseCard'
 import CommentSection from '@/features/community/components/CommentSection'
 import toast from 'react-hot-toast'
 import { Badge } from '@/shared/ui'
-import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Heart } from 'lucide-react'
 import { useGetCurationById } from '../hooks/useCuration'
 import { useSubscriptionToggle } from '@/features/user/hooks/useSubscription'
 import { useAuth } from '@/features/auth/hooks/useAuth'
+import { useLikeCuration } from '@/features/community/hooks/useCommunity'
 
 export default function CurationDetailPage() {
   const { id } = useParams<{ id: string }>()
@@ -24,10 +24,10 @@ export default function CurationDetailPage() {
     isLoading: isSubscriptionLoading,
   } = useSubscriptionToggle(curation?.userId ?? 0)
 
+  const { mutate: likeCurationMutate, isPending: isLikePending } = useLikeCuration()
+
   // 본인이 작성한 추천사인지 확인
   const isOwnCuration = user?.userId === curation?.userId
-
-  const [isLiked, setIsLiked] = useState(false)
 
   const handlePurchase = (_curationId: number, _price: number) => {
     // console.log(`추천사 ${curationId} 구매 요청, 가격: ${price}원`)
@@ -47,6 +47,10 @@ export default function CurationDetailPage() {
 
   const handleSubscribeToggle = () => {
     toggleSubscription()
+  }
+
+  const handleToggleLike = () => {
+    likeCurationMutate(curationId)
   }
 
   // 로딩 상태
@@ -105,7 +109,7 @@ export default function CurationDetailPage() {
         />
         <h3 className='font-curation-title my-12'>{curation.title || '제목 없음'}</h3>
         <p className='font-curation-text leading-normal mb-12 whitespace-pre-line'>
-          {curation.review || curation.summary || '내용이 없습니다.'}
+          {curation.review || '내용이 없습니다.'}
         </p>
         <div className='flex justify-between items-center'>
           <div className='flex gap-1'>
@@ -119,11 +123,17 @@ export default function CurationDetailPage() {
                 </Badge>
               ))}
           </div>
-          <button onClick={() => setIsLiked(!isLiked)} className='flex flex-col items-center gap-1'>
+          <button
+            onClick={handleToggleLike}
+            disabled={isLikePending}
+            className='flex flex-col items-center gap-1'
+          >
             <Heart
-              className={`size-6 text-accent transition-all ${isLiked ? 'fill-accent' : ''}`}
+              className={`size-6 text-accent transition-all cursor-pointer hover:scale-110 active:scale-95 ${curation.isLiked ? 'fill-accent animate-heart-bounce' : ''}`}
             />
-            <span className='text-sm font-medium text-accent'>좋아요</span>
+            <span className='text-sm font-medium text-accent'>
+              {curation.likeCount ?? '좋아요'}
+            </span>
           </button>
         </div>
       </div>
