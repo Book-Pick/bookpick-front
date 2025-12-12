@@ -34,7 +34,7 @@ const CommentItem = ({ comment, onReply, isReply = false }: CommentItemProps) =>
             />
           ) : (
             <div className='w-full h-full bg-neutral-200 flex items-center justify-center text-xs text-neutral-500'>
-              {comment.nickname.slice(0, 2)}
+              {comment.nickname?.slice(0, 2) ?? '??'}
             </div>
           )}
         </Avatar>

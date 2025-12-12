@@ -42,16 +42,16 @@ export const createAxiosClient = (
       const message = response?.data?.message
       const exceptionType = response?.data?.exception
 
-      const redirectToLogin = (message?: string) => {
+      const redirectToLogin = (message?: string, toastId?: string) => {
         localStorage.removeItem('bookpick-auth')
-        toast.error(message || '다시 로그인 하세요.')
+        toast.error(message || '다시 로그인 하세요.', { id: toastId || 'redirect-login' })
         setTimeout(() => {
           window.location.href = '/login'
         }, 1500)
       }
 
       if (!response) {
-        toast.error('네트워크 오류가 발생했습니다.')
+        toast.error('네트워크 오류가 발생했습니다.', { id: 'network-error' })
         return Promise.reject(error)
       }
 
@@ -62,24 +62,24 @@ export const createAxiosClient = (
               error.config?.url?.includes('/login') || error.config?.url?.includes('/register')
 
             if (!isAuthEndpoint) {
-              redirectToLogin(message || '인증이 필요합니다.')
+              redirectToLogin(message || '인증이 필요합니다.', 'auth-required')
             }
             break
           }
           case 403:
-            toast.error(message)
-            redirectToLogin()
+            toast.error(message, { id: 'forbidden' })
+            redirectToLogin(undefined, 'forbidden')
             break
           // case 400:
           //   toast.error(message)
           //   break
           case 500:
             if (exceptionType?.includes('JwtTokenExpiredException')) {
-              redirectToLogin(message || '로그인 토큰이 만료되었습니다.')
+              redirectToLogin(message || '로그인 토큰이 만료되었습니다.', 'token-expired')
             } else if (exceptionType?.includes('InvalidTokenTypeException')) {
-              redirectToLogin(message || ' 유효하지않은 토큰 타입입니다.')
+              redirectToLogin(message || ' 유효하지않은 토큰 타입입니다.', 'invalid-token')
             } else {
-              toast.error(message)
+              toast.error(message, { id: 'server-error' })
               // window.location.href = '/error'
             }
             break
