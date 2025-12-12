@@ -13,14 +13,15 @@ const CurationThumbnail = ({
   title,
   className,
 }: CurationThumbnailProps) => {
-  // 이미지가 있으면 이미지 표시
+  // 이미지가 있으면 이미지 + 제목 표시
   if (thumbnailImage) {
     return (
-      <img
-        src={thumbnailImage}
-        alt={title}
-        className={`w-full h-full object-cover ${className || ''}`}
-      />
+      <div className={`relative w-full h-full ${className || ''}`}>
+        <img src={thumbnailImage} alt={title} className='w-full h-full object-cover' />
+        <div className='absolute inset-0 bg-black/30 flex items-center justify-center p-4'>
+          <h3 className='font-bold text-center text-white line-clamp-3'>{title}</h3>
+        </div>
+      </div>
     )
   }
 

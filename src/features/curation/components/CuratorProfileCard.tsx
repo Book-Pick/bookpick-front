@@ -40,10 +40,11 @@ const CuratorProfileCard = ({
   }
 
   return (
-    <Card className={`py-4 pb-0 md:pb-3 bg-transparent ${className || ''}`}>
-      <CardHeader className='px-4 md:px-7'>
-        <div className='flex flex-col md:flex-row gap-4 items-center md:items-center'>
-          <div className='w-[80px] md:w-[100px] min-w-[80px] md:min-w-[100px] max-w-[80px] md:max-w-[100px] flex-shrink-0'>
+    <Card className={`py-4 pb-0 md:pb-3 bg-transparent border-0 md:border ${className || ''}`}>
+      <CardHeader className='px-0 md:px-7'>
+        {/* 모바일 레이아웃 */}
+        <div className='flex md:hidden flex-row gap-3 items-center'>
+          <div className='w-[48px] min-w-[48px] max-w-[48px] flex-shrink-0'>
             <AspectRatio ratio={1} className='w-full'>
               <div className='w-full h-full bg-neutral-200 rounded-full flex items-center justify-center overflow-hidden'>
                 {profileImage ? (
@@ -58,8 +59,48 @@ const CuratorProfileCard = ({
               </div>
             </AspectRatio>
           </div>
-          <div className='flex-1 text-center md:text-left'>
-            <CardTitle className='font-curation-title text-lg md:text-xl'>{name}</CardTitle>
+          <div className='flex-1 text-left'>
+            <CardTitle className='font-curation-title text-base'>{name}</CardTitle>
+            <CardDescription className='mt-1 text-sm'>
+              {favoriteGenres.length > 0 && (
+                <p className='text-neutral-900'>선호 장르: {favoriteGenres.join(', ')}</p>
+              )}
+              {introduction && <p className='text-neutral-600 line-clamp-1'>{introduction}</p>}
+            </CardDescription>
+          </div>
+          {!isOwnProfile && (
+            <div className='flex-shrink-0'>
+              <Button
+                size='xs'
+                onClick={handleSubscribeClick}
+                variant={isSubscribed ? 'outline' : 'default'}
+                disabled={isSubscriptionLoading}
+              >
+                {isSubscriptionLoading ? '...' : isSubscribed ? '구독취소' : '구독하기'}
+              </Button>
+            </div>
+          )}
+        </div>
+
+        {/* 데스크톱 레이아웃 (기존 디자인 유지) */}
+        <div className='hidden md:flex flex-row gap-4 items-center'>
+          <div className='w-[100px] min-w-[100px] max-w-[100px] flex-shrink-0'>
+            <AspectRatio ratio={1} className='w-full'>
+              <div className='w-full h-full bg-neutral-200 rounded-full flex items-center justify-center overflow-hidden'>
+                {profileImage ? (
+                  <img
+                    src={profileImage}
+                    alt={name}
+                    className='w-full h-full object-cover rounded-lg'
+                  />
+                ) : (
+                  <div className='text-xs text-neutral-500 font-medium'>프로필</div>
+                )}
+              </div>
+            </AspectRatio>
+          </div>
+          <div className='flex-1 text-left'>
+            <CardTitle className='font-curation-title text-xl'>{name}</CardTitle>
             <CardDescription className='mt-2 text-sm'>
               {favoriteGenres.length > 0 && (
                 <p className='text-neutral-900'>선호 장르: {favoriteGenres.join(', ')}</p>
@@ -81,20 +122,6 @@ const CuratorProfileCard = ({
           </CardAction>
         )}
       </CardHeader>
-
-      {/* 모바일용 버튼 - 본인 프로필이 아닐 때만 표시 */}
-      {!isOwnProfile && (
-        <div className='block md:hidden px-4 pb-4 pt-3'>
-          <Button
-            className='w-full'
-            onClick={handleSubscribeClick}
-            variant={isSubscribed ? 'outline' : 'default'}
-            disabled={isSubscriptionLoading}
-          >
-            {isSubscriptionLoading ? '처리 중...' : isSubscribed ? '구독취소' : '구독하기'}
-          </Button>
-        </div>
-      )}
     </Card>
   )
 }

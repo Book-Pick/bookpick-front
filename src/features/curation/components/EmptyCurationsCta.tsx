@@ -22,7 +22,6 @@ const EmptyCurationsCta = () => {
               comments={mockCurations[0].comments}
               views={mockCurations[0].views}
               tags={mockCurations[0].tags.join(', ')}
-              thumbnailSrc={mockCurations[0].thumbnailImage || undefined}
               thumbnailColor={mockCurations[0].thumbnailColor}
             />
           </div>

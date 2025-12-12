@@ -112,7 +112,7 @@ export default function CurationDetailPage() {
           {curation.review || '내용이 없습니다.'}
         </p>
         <div className='flex justify-between items-center'>
-          <div className='flex gap-1'>
+          <div className='flex gap-1 flex-wrap'>
             {(curation.matched || curation.recommend?.keywords?.join(', ') || '')
               .split(',')
               .map((tag) => tag.trim())
@@ -123,10 +123,11 @@ export default function CurationDetailPage() {
                 </Badge>
               ))}
           </div>
+          {/* 데스크톱에서만 좋아요 버튼 표시 (모바일은 하단 네비바에 표시) */}
           <button
             onClick={handleToggleLike}
             disabled={isLikePending}
-            className='flex flex-col items-center gap-1'
+            className='hidden md:flex flex-col items-center gap-1'
           >
             <Heart
               className={`size-6 text-accent transition-all cursor-pointer hover:scale-110 active:scale-95 ${curation.isLiked ? 'fill-accent animate-heart-bounce' : ''}`}
@@ -148,9 +149,16 @@ export default function CurationDetailPage() {
         curationId={curation.curationId || curation.id || 0}
         price={15000}
         className='mt-10 bg-neutral-100'
+        isLiked={curation.isLiked}
+        likeCount={curation.likeCount}
+        isLikePending={isLikePending}
         onPurchase={handlePurchase}
         onCart={handleCart}
+        onLikeToggle={handleToggleLike}
       />
+
+      {/* 모바일 하단 네비바를 위한 여백 */}
+      <div className='h-20 md:hidden' />
     </>
   )
 }

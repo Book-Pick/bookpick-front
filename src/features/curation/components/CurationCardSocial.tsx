@@ -121,8 +121,8 @@ const CurationCardSocial = ({
       <CardContent className='p-4 pt-0'>
         {/* 제목과 설명 */}
         <div className='mb-3'>
-          <h3 className='font-semibold text-sm text-gray-900 line-clamp-2 mb-2'>{title}</h3>
-          <p className='text-xs text-gray-600 line-clamp-3 leading-relaxed'>{description}</p>
+          {/* <h3 className='font-semibold text-sm text-gray-900 line-clamp-2 mb-2'>{title}</h3> */}
+          <p className='text-sm text-gray-600 line-clamp-5 leading-relaxed'>{description}</p>
         </div>
 
         {/* 취향 유사도 - 태그 위로 이동 */}

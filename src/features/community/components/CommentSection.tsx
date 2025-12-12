@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
-import { Card, CardHeader, CardContent, Textarea, Button } from '@/shared/ui'
-import { MessageCircle } from 'lucide-react'
+import { Card, CardHeader, CardContent, Textarea, Button, Input } from '@/shared/ui'
+import { MessageCircle, ArrowRight } from 'lucide-react'
 import CommentItem from './CommentItem'
 import { useGetInfiniteComments, useCreateComment } from '../hooks/useCommunity'
 import { buildCommentTree } from '@/shared/utils/dateFormat'
@@ -47,7 +47,7 @@ const CommentSection = ({ curationId, className }: CommentSectionProps) => {
   }
 
   return (
-    <Card className={`${className || ''}`}>
+    <Card className={`${className || ''} pb-0 md:pb-6`}>
       <CardHeader>
         <div className='flex items-center justify-between mb-5'>
           <h3 className='text-xl font-semibold'>댓글</h3>
@@ -89,8 +89,34 @@ const CommentSection = ({ curationId, className }: CommentSectionProps) => {
           )}
         </div>
 
-        {/* New comment form */}
-        <div>
+        {/* New comment form - 모바일 */}
+        <div className='md:hidden'>
+          <Input
+            placeholder='이 추천사에 답글 남기기'
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault()
+                handleSubmit()
+              }
+            }}
+            disabled={createComment.isPending}
+            rightElement={
+              <button
+                type='button'
+                onClick={handleSubmit}
+                disabled={!newComment.trim() || createComment.isPending}
+                className='disabled:opacity-40'
+              >
+                <ArrowRight className='size-4 text-neutral-900' />
+              </button>
+            }
+          />
+        </div>
+
+        {/* New comment form - 데스크톱 */}
+        <div className='hidden md:block'>
           <Textarea
             placeholder='이 추천사에 답글 남기기'
             value={newComment}

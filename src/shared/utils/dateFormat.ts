@@ -48,8 +48,8 @@ export function formatRelativeTime(isoString: string): string {
 export interface CommentTreeNode {
   commentId: number
   parentId: number | null
-  curationId: number
-  userId: number
+  curationId?: number
+  userId?: number
   nickname: string
   profileImageUrl: string | null
   content: string
@@ -62,8 +62,8 @@ export function buildCommentTree(
   comments: Array<{
     commentId: number
     parentId: number | null
-    curationId: number
-    userId: number
+    curationId?: number
+    userId?: number
     nickname: string
     profileImageUrl: string | null
     content: string

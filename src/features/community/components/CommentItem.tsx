@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import type { CommentTreeNode } from '@/shared/utils/dateFormat'
 import { formatRelativeTime } from '@/shared/utils/dateFormat'
-import { Avatar, Textarea, Button } from '@/shared/ui'
-import { Heart } from 'lucide-react'
+import { Avatar, Textarea, Button, Input } from '@/shared/ui'
+import { Heart, ArrowRight, X } from 'lucide-react'
 
 interface CommentItemProps {
   comment: CommentTreeNode
@@ -65,35 +65,75 @@ const CommentItem = ({ comment, onReply, isReply = false }: CommentItemProps) =>
             )}
           </div>
           {showReplyInput && (
-            <div className='mt-3 p-3 bg-neutral-50 rounded-lg'>
-              <Textarea
-                placeholder='답글을 입력해주세요.'
-                value={replyContent}
-                onChange={(e) => setReplyContent(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault()
-                    handleReplySubmit()
-                  }
-                }}
-                className='mb-2 min-h-[80px]'
-              />
-              <div className='flex justify-end gap-2'>
-                <Button
-                  size='sm'
-                  variant='outline'
-                  onClick={() => {
-                    setShowReplyInput(false)
-                    setReplyContent('')
+            <>
+              {/* 모바일: 인라인 Input */}
+              <div className='mt-3 md:hidden'>
+                <Input
+                  placeholder={`@${comment.nickname} 답글 입력...`}
+                  value={replyContent}
+                  onChange={(e) => setReplyContent(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault()
+                      handleReplySubmit()
+                    }
                   }}
-                >
-                  취소
-                </Button>
-                <Button size='sm' onClick={handleReplySubmit} disabled={!replyContent.trim()}>
-                  답글 작성
-                </Button>
+                  rightElement={
+                    replyContent.trim() ? (
+                      <button
+                        type='button'
+                        onClick={handleReplySubmit}
+                        className='text-neutral-900'
+                      >
+                        <ArrowRight className='size-4' />
+                      </button>
+                    ) : (
+                      <button
+                        type='button'
+                        onClick={() => {
+                          setShowReplyInput(false)
+                          setReplyContent('')
+                        }}
+                        className='text-neutral-400'
+                      >
+                        <X className='size-4' />
+                      </button>
+                    )
+                  }
+                />
               </div>
-            </div>
+
+              {/* 데스크톱: 기존 Textarea */}
+              <div className='mt-3 p-3 bg-neutral-50 rounded-lg hidden md:block'>
+                <Textarea
+                  placeholder='답글을 입력해주세요.'
+                  value={replyContent}
+                  onChange={(e) => setReplyContent(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault()
+                      handleReplySubmit()
+                    }
+                  }}
+                  className='mb-2 min-h-[80px]'
+                />
+                <div className='flex justify-end gap-2'>
+                  <Button
+                    size='sm'
+                    variant='outline'
+                    onClick={() => {
+                      setShowReplyInput(false)
+                      setReplyContent('')
+                    }}
+                  >
+                    취소
+                  </Button>
+                  <Button size='sm' onClick={handleReplySubmit} disabled={!replyContent.trim()}>
+                    답글 작성
+                  </Button>
+                </div>
+              </div>
+            </>
           )}
         </div>
       </div>

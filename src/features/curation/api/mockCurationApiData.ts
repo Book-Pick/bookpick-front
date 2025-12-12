@@ -52,7 +52,7 @@ export const mockCurations: Curation[] = [
     tags: ['철학', '일상', '에세이'],
     price: 18500,
     thumbnailImage: '/images/sample_image_01.jpeg',
-    thumbnailColor: null,
+    thumbnailColor: '#64748b',
     status: 'published',
     createdAt: '2024-01-15T10:00:00Z',
     updatedAt: '2024-01-15T10:00:00Z',
@@ -468,7 +468,6 @@ const convertCurationToCurationItem = (curation: Curation): CurationItem => ({
     imageUrl: curation.thumbnailImage || null,
     imageColor: curation.thumbnailColor || null,
   },
-  summary: curation.description,
   review: curation.description,
   book: {
     title: '책 제목', // 임시 데이터

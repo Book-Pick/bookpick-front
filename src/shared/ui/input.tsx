@@ -9,6 +9,7 @@ interface InputProps extends Omit<React.ComponentProps<'input'>, 'size'> {
   size?: 'sm' | 'md' | 'lg' | 'xl'
   clearable?: boolean
   onClear?: () => void
+  rightElement?: React.ReactNode
 }
 
 function Input({
@@ -21,9 +22,11 @@ function Input({
   clearable = false,
   onClear,
   value,
+  rightElement,
   ...props
 }: InputProps) {
   const showClearButton = clearable && value && String(value).length > 0
+  const hasRightContent = showClearButton || rightElement
 
   return (
     <div className='w-full'>
@@ -47,7 +50,7 @@ function Input({
             size === 'md' && 'h-9 px-3 py-1 text-xs md:text-sm file:h-7 file:text-sm',
             size === 'lg' && 'h-11 px-4 py-2 text-lg md:text-base file:h-9 file:text-base',
             size === 'xl' && 'h-16 px-6 py-4 text-2xl md:text-xl file:h-12 file:text-xl',
-            showClearButton && 'pr-8',
+            hasRightContent && 'pr-10',
             className,
           )}
           aria-invalid={!!errorMessage}
@@ -62,6 +65,11 @@ function Input({
           >
             <CircleX size={16} />
           </button>
+        )}
+        {rightElement && !showClearButton && (
+          <div className='absolute right-2 top-1/2 -translate-y-1/2 flex items-center justify-center'>
+            {rightElement}
+          </div>
         )}
       </div>
       {errorMessage && <p className='mt-1 text-xs text-destructive'>{errorMessage}</p>}
