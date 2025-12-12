@@ -73,7 +73,7 @@ export default function MyDashboardPage() {
         {/* Row 2, Col 1: 바로 가기 */}
         <QuickLinksCard />
 
-        {/* Row 2, Col 2: 새로운 피드백 */}
+        {/* Row 2, Col 2: 새로운 댓글 */}
         <RecentFeedbackCard feedbacks={mockFeedbacks} />
       </div>
     </div>

@@ -16,7 +16,7 @@ export default function RecentFeedbackCard({ feedbacks }: RecentFeedbackCardProp
   return (
     <div className='flex flex-col gap-5 border border-border rounded-lg p-5 md:gap-9 md:rounded-xl md:p-10'>
       <div className='flex items-center gap-2'>
-        <h3 className='text-lg font-semibold md:text-xl'>새로운 피드백</h3>
+        <h3 className='text-lg font-semibold md:text-xl'>새로운 댓글</h3>
         <Badge variant='default' size='sm'>
           🔅API 필요
         </Badge>
@@ -39,7 +39,7 @@ export default function RecentFeedbackCard({ feedbacks }: RecentFeedbackCardProp
             </div>
           ))
         ) : (
-          <p className='font-comment text-center py-4'>새로운 피드백이 없습니다.</p>
+          <p className='font-comment text-center py-4'>새로운 댓글이 없습니다.</p>
         )}
       </div>
     </div>
