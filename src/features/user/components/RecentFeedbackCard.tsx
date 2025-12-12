@@ -1,3 +1,5 @@
+import { Badge } from '@/shared/ui'
+
 interface Feedback {
   id: number
   content: string
@@ -13,7 +15,12 @@ export default function RecentFeedbackCard({ feedbacks }: RecentFeedbackCardProp
 
   return (
     <div className='flex flex-col gap-5 border border-border rounded-lg p-5 md:gap-9 md:rounded-xl md:p-10'>
-      <h3 className='text-lg font-semibold md:text-xl'>새로운 피드백</h3>
+      <div className='flex items-center gap-2'>
+        <h3 className='text-lg font-semibold md:text-xl'>새로운 피드백</h3>
+        <Badge variant='default' size='sm'>
+          🔅API 필요
+        </Badge>
+      </div>
       <div className='flex flex-col gap-2 md:gap-[26px]'>
         {displayFeedbacks.length > 0 ? (
           displayFeedbacks.map((feedback, index) => (

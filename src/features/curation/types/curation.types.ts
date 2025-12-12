@@ -197,3 +197,19 @@ export type DeleteCurationResponse = ApiResponse<null>
 export type DeleteCurationsResponse = ApiResponse<DeleteCurationsResult>
 
 export type GetBooksResponse = ApiResponse<PaginatedBooks>
+
+// 좋아요 캐시 업데이트용 타입
+export interface CurationLikeItem {
+  curationId: number
+  isLiked?: boolean
+  likeCount?: number | null
+}
+
+export interface InfiniteCurationsData {
+  pages: { content: CurationLikeItem[] }[]
+  pageParams: unknown[]
+}
+
+export interface RegularCurationsData {
+  content: CurationLikeItem[]
+}

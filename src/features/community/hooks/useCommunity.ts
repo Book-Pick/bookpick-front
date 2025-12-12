@@ -6,6 +6,11 @@ import type {
   CreateCommentRequest,
   UpdateCommentRequest,
 } from '../types/community.types'
+import type {
+  CurationLikeItem,
+  InfiniteCurationsData,
+  RegularCurationsData,
+} from '@/features/curation/types/curation.types'
 
 /**
  * 1. Get comments list
@@ -187,15 +192,14 @@ export const useDeleteComment = (curationId: number) => {
   })
 }
 
-interface CurationItemInList {
-  curationId: number
-  isLiked?: boolean
-  likeCount?: number | null
-}
-
-interface InfiniteQueryData {
-  pages: { content: CurationItemInList[] }[]
-  pageParams: unknown[]
+/**
+ * 좋아요 토글 로직 (공통)
+ */
+const toggleLike = (isLiked?: boolean, likeCount?: number | null) => {
+  const newIsLiked = !isLiked
+  const currentCount = likeCount ?? 0
+  const newCount = newIsLiked ? currentCount + 1 : currentCount - 1
+  return { isLiked: newIsLiked, likeCount: newCount }
 }
 
 /**
@@ -203,6 +207,69 @@ interface InfiniteQueryData {
  */
 export const useLikeCuration = () => {
   const queryClient = useQueryClient()
+
+  /**
+   * 무한 스크롤 캐시 업데이트 (pages 구조)
+   */
+  const updateInfiniteCache = (curationId: number) => {
+    queryClient.setQueriesData<InfiniteCurationsData>(
+      { queryKey: ['curations', 'infinite'] },
+      (oldData) => {
+        if (!oldData?.pages) return oldData
+
+        return {
+          ...oldData,
+          pages: oldData.pages.map((page) => ({
+            ...page,
+            content: page.content.map((item) =>
+              item.curationId === curationId
+                ? { ...item, ...toggleLike(item.isLiked, item.likeCount) }
+                : item,
+            ),
+          })),
+        }
+      },
+    )
+  }
+
+  /**
+   * 일반 쿼리 캐시 업데이트 (content 구조)
+   */
+  const updateRegularCache = (curationId: number) => {
+    // liked, my 등의 sort 타입에 대한 캐시 업데이트
+    const sortTypes = ['liked', 'my', 'similarity', 'popularity', 'latest']
+
+    sortTypes.forEach((sort) => {
+      queryClient.setQueriesData<RegularCurationsData>(
+        { queryKey: ['curations', sort] },
+        (oldData) => {
+          if (!oldData?.content) return oldData
+
+          return {
+            ...oldData,
+            content: oldData.content.map((item) =>
+              item.curationId === curationId
+                ? { ...item, ...toggleLike(item.isLiked, item.likeCount) }
+                : item,
+            ),
+          }
+        },
+      )
+    })
+  }
+
+  /**
+   * 상세 페이지 캐시 업데이트
+   */
+  const updateDetailCache = (curationId: number) => {
+    queryClient.setQueryData(
+      ['curation', curationId],
+      (oldData: (CurationLikeItem & Record<string, unknown>) | undefined) => {
+        if (!oldData) return oldData
+        return { ...oldData, ...toggleLike(oldData.isLiked, oldData.likeCount) }
+      },
+    )
+  }
 
   return useMutation({
     mutationFn: async (curationId: number) => {
@@ -216,49 +283,12 @@ export const useLikeCuration = () => {
 
       // 2. 현재 캐시 백업
       const previousCuration = queryClient.getQueryData(['curation', curationId])
-      const previousCurations = queryClient.getQueriesData<InfiniteQueryData>({
-        queryKey: ['curations'],
-      })
+      const previousCurations = queryClient.getQueriesData({ queryKey: ['curations'] })
 
-      // 3. 상세 페이지 캐시 낙관적 업데이트
-      queryClient.setQueryData(['curation', curationId], (old: unknown) => {
-        const oldData = old as { isLiked?: boolean; likeCount?: number | null } | undefined
-        if (!oldData) return oldData
-
-        const newIsLiked = !oldData.isLiked
-        const currentLikeCount = oldData.likeCount ?? 0
-        const newLikeCount = newIsLiked ? currentLikeCount + 1 : currentLikeCount - 1
-
-        return {
-          ...oldData,
-          isLiked: newIsLiked,
-          likeCount: newLikeCount,
-        }
-      })
-
-      // 4. 리스트 캐시 낙관적 업데이트
-      queryClient.setQueriesData<InfiniteQueryData>({ queryKey: ['curations'] }, (oldData) => {
-        if (!oldData?.pages) return oldData
-
-        return {
-          ...oldData,
-          pages: oldData.pages.map((page) => ({
-            ...page,
-            content: page.content.map((item) => {
-              if (item.curationId === curationId) {
-                const newIsLiked = !item.isLiked
-                const currentLikeCount = item.likeCount ?? 0
-                return {
-                  ...item,
-                  isLiked: newIsLiked,
-                  likeCount: newIsLiked ? currentLikeCount + 1 : currentLikeCount - 1,
-                }
-              }
-              return item
-            }),
-          })),
-        }
-      })
+      // 3. 낙관적 업데이트
+      updateDetailCache(curationId)
+      updateInfiniteCache(curationId)
+      updateRegularCache(curationId)
 
       return { previousCuration, previousCurations, curationId }
     },

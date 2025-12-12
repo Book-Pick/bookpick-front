@@ -3,14 +3,7 @@ import QuickLinksCard from '../components/QuickLinksCard'
 import StatsGrid from '../components/StatsGrid'
 import RecentFeedbackCard from '../components/RecentFeedbackCard'
 import { useGetProfile } from '../hooks/useUser'
-
-// TODO: 실제 API 연동 시 데이터 교체
-
-const mockStats = {
-  totalCurations: 34,
-  totalViews: 12423,
-  totalLikes: 12,
-}
+import { useGetCurations } from '@/features/curation/hooks/useCuration'
 
 const mockFeedbacks = [
   {
@@ -39,6 +32,23 @@ const mockFeedbacks = [
 export default function MyDashboardPage() {
   const { data: profile } = useGetProfile()
 
+  const { data: myCurations } = useGetCurations({
+    sort: 'my',
+    cursor: 0,
+    size: 1000,
+  })
+
+  const { data: likedCurations } = useGetCurations({
+    sort: 'liked',
+    cursor: 0,
+    size: 1000,
+  })
+
+  const myCurationsCount = myCurations?.content?.length ?? 0
+  const totalViewCount =
+    myCurations?.content?.reduce((acc, cur) => acc + (cur.viewCount ?? 0), 0) ?? 0
+  const likedCurationsCount = likedCurations?.content?.length ?? 0
+
   return (
     <div className='flex flex-col gap-5 my-5 md:gap-[60px] md:my-10 xl:my-15'>
       {/* 페이지 제목 - 데스크톱만 표시 */}
@@ -55,9 +65,9 @@ export default function MyDashboardPage() {
 
         {/* Row 1, Col 2: 통계 카드 */}
         <StatsGrid
-          totalCurations={mockStats.totalCurations}
-          totalViews={mockStats.totalViews}
-          totalLikes={mockStats.totalLikes}
+          totalCurations={myCurationsCount}
+          totalViews={totalViewCount}
+          totalLikes={likedCurationsCount}
         />
 
         {/* Row 2, Col 1: 바로 가기 */}

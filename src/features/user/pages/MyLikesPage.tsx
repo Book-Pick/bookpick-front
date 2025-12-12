@@ -1,22 +1,50 @@
-import CurationCardSocial from '@/features/curation/components/CurationCardSocial'
-import { useGetCurations } from '@/features/curation/hooks/useCuration'
-import { useMemo } from 'react'
+import { useRef, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
+import CurationList from '@/features/curation/components/CurationList'
+import { useGetInfiniteCurations } from '@/features/curation/hooks/useCuration'
 
 export default function MyLikesPage() {
   const navigate = useNavigate()
+  const observerInstance = useRef<IntersectionObserver | null>(null)
 
-  const { data: likedCurations } = useGetCurations({
+  const {
+    data: likedData,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useGetInfiniteCurations({
     sort: 'liked',
-    cursor: 0,
-    size: 1000,
+    size: 10,
   })
 
-  const curations = useMemo(() => likedCurations?.content ?? [], [likedCurations])
+  // 무한 스크롤 Observer
+  const observerRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (observerInstance.current) {
+        observerInstance.current.disconnect()
+      }
+      if (node) {
+        observerInstance.current = new IntersectionObserver(
+          (entries) => {
+            if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+              fetchNextPage()
+            }
+          },
+          { threshold: 0.1 },
+        )
+        observerInstance.current.observe(node)
+      }
+    },
+    [fetchNextPage, hasNextPage, isFetchingNextPage],
+  )
 
   const handleCardClick = (id: number) => {
     navigate(`/curation/detail/${id}`)
   }
+
+  // 무한 스크롤 데이터 평탄화
+  const curations = likedData?.pages.flatMap((page) => page.content) || []
 
   return (
     <div className='flex flex-col gap-8 md:gap-[60px] my-6 md:my-10 xl:my-15'>
@@ -26,28 +54,27 @@ export default function MyLikesPage() {
 
       {/* 좋아요한 추천사 목록 */}
       <div className='flex flex-col gap-4'>
-        {curations.length > 0 ? (
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-            {curations.map((curation) => (
-              <CurationCardSocial
-                key={curation.curationId}
-                id={curation.curationId}
-                similarity={curation.similarity}
-                title={curation.title}
-                description={curation?.review ?? ''}
-                curator={curation.nickName}
-                likes={curation.likeCount ?? 0}
-                comments={curation.commentCount ?? 0}
-                views={curation.viewCount ?? 0}
-                tags={curation.matched ?? ''}
-                thumbnailSrc={curation.thumbnail.imageUrl || null}
-                thumbnailColor={curation.thumbnail.imageColor || undefined}
-                curatorImage={curation.profileImageUrl || undefined}
-                curatorBio={curation.introduction || ''}
-                onClick={() => handleCardClick(curation.curationId)}
-              />
-            ))}
+        {isLoading ? (
+          <div className='flex justify-center items-center py-20'>
+            <p className='text-muted-foreground'>로딩 중...</p>
           </div>
+        ) : curations.length > 0 ? (
+          <>
+            <CurationList curations={curations} onCardClick={handleCardClick} />
+            <div ref={observerRef} className='h-4' />
+            {isFetchingNextPage && (
+              <div className='flex justify-center items-center py-4'>
+                <p className='text-muted-foreground'>더 불러오는 중...</p>
+              </div>
+            )}
+            {!hasNextPage && curations.length > 0 && (
+              <div className='flex items-center justify-center gap-4 py-8 text-muted-foreground'>
+                <div className='h-px flex-1 bg-border' />
+                <span className='text-sm'>❤️ 모든 좋아요한 추천사를 확인했어요</span>
+                <div className='h-px flex-1 bg-border' />
+              </div>
+            )}
+          </>
         ) : (
           // 빈 상태
           <div className='flex flex-col items-center justify-center py-20 gap-4'>
