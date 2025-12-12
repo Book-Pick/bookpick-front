@@ -70,6 +70,12 @@ const CommentItem = ({ comment, onReply, isReply = false }: CommentItemProps) =>
                 placeholder='답글을 입력해주세요.'
                 value={replyContent}
                 onChange={(e) => setReplyContent(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault()
+                    handleReplySubmit()
+                  }
+                }}
                 className='mb-2 min-h-[80px]'
               />
               <div className='flex justify-end gap-2'>

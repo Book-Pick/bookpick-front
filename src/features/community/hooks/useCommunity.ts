@@ -78,13 +78,66 @@ export const useCreateComment = (curationId: number) => {
       const response = await communityApi.createComment(curationId, request)
       return response.data
     },
+    onMutate: async (newComment) => {
+      // 1. 진행 중인 refetch 취소
+      await queryClient.cancelQueries({ queryKey: ['comments', 'infinite', curationId] })
+
+      // 2. 현재 캐시 백업
+      const previousComments = queryClient.getQueryData(['comments', 'infinite', curationId])
+
+      // 3. 현재 사용자 정보 가져오기
+      const authData = JSON.parse(localStorage.getItem('bookpick-auth') || '{}')
+
+      // 4. 낙관적으로 새 댓글 생성
+      const optimisticComment = {
+        commentId: Date.now(), // 임시 ID
+        parentId: newComment.parentId || null,
+        nickname: authData.user?.nickname || '나',
+        profileImageUrl: authData.user?.profileImageUrl || null,
+        content: newComment.content,
+        createdAt: new Date().toISOString(),
+        updatedAt: null,
+      }
+
+      // 5. 캐시에 낙관적 댓글 추가
+      queryClient.setQueryData(['comments', 'infinite', curationId], (old: unknown) => {
+        const oldData = old as
+          | {
+              pages: { comments: (typeof optimisticComment)[]; pageInfo: unknown }[]
+              pageParams: unknown[]
+            }
+          | undefined
+
+        if (!oldData?.pages?.length) return oldData
+
+        const newPages = [...oldData.pages]
+        newPages[0] = {
+          ...newPages[0],
+          comments: [optimisticComment, ...newPages[0].comments],
+        }
+
+        return {
+          ...oldData,
+          pages: newPages,
+        }
+      })
+
+      return { previousComments }
+    },
+    onError: (_err, _newComment, context) => {
+      // 에러 시 롤백
+      if (context?.previousComments) {
+        queryClient.setQueryData(['comments', 'infinite', curationId], context.previousComments)
+      }
+      toast.error('댓글 등록에 실패했습니다.')
+    },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['comments', curationId] })
-      queryClient.invalidateQueries({ queryKey: ['comments', 'infinite', curationId] })
       toast.success('댓글을 등록했습니다.')
     },
-    onError: (error: Error) => {
-      toast.error(error.message || '댓글 등록에 실패했습니다.')
+    onSettled: () => {
+      // 서버 데이터와 동기화
+      queryClient.invalidateQueries({ queryKey: ['comments', curationId] })
+      queryClient.invalidateQueries({ queryKey: ['comments', 'infinite', curationId] })
     },
   })
 }

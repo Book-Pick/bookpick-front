@@ -8,8 +8,8 @@ import type { ApiResponse } from '@/shared/api/api.types'
 export interface Comment {
   commentId: number
   parentId: number | null
-  curationId: number
-  userId: number
+  curationId?: number
+  userId?: number
   nickname: string
   profileImageUrl: string | null
   content: string
