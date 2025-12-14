@@ -118,7 +118,7 @@ export default function CurationDetailPage() {
               .map((tag) => tag.trim())
               .filter((tag) => tag.length > 0)
               .map((keyword, index) => (
-                <Badge key={index} variant='outline' size='sm' className='px-[6px] py-[10px]'>
+                <Badge key={index} variant='outline' size='sm' className='px-[10px] py-[6px]'>
                   #{keyword}
                 </Badge>
               ))}
