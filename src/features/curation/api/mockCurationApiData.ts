@@ -469,11 +469,6 @@ const convertCurationToCurationItem = (curation: Curation): CurationItem => ({
     imageColor: curation.thumbnailColor || null,
   },
   review: curation.description,
-  book: {
-    title: '책 제목', // 임시 데이터
-    author: '저자명',
-    isbn: '',
-  },
   likeCount: curation.likes,
   commentCount: curation.comments,
   viewCount: curation.views,
