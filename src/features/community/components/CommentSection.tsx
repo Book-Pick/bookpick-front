@@ -2,8 +2,15 @@ import { useState, useMemo } from 'react'
 import { Card, CardHeader, CardContent, Textarea, Button, Input } from '@/shared/ui'
 import { MessageCircle, ArrowRight } from 'lucide-react'
 import CommentItem from './CommentItem'
-import { useGetInfiniteComments, useCreateComment } from '../hooks/useCommunity'
+import {
+  useGetInfiniteComments,
+  useCreateComment,
+  useUpdateComment,
+  useDeleteComment,
+} from '../hooks/useCommunity'
 import { buildCommentTree } from '@/shared/utils/dateFormat'
+import { useAuth } from '@/features/auth/hooks/useAuth'
+import { useConfirm } from '@/app/providers'
 
 interface CommentSectionProps {
   curationId: number
@@ -12,13 +19,17 @@ interface CommentSectionProps {
 
 const CommentSection = ({ curationId, className }: CommentSectionProps) => {
   const [newComment, setNewComment] = useState('')
+  const { user } = useAuth()
+  const { confirm } = useConfirm()
 
   // Fetch comments with infinite scroll
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useGetInfiniteComments(curationId)
 
-  // Create comment mutation
+  // Comment mutations
   const createComment = useCreateComment(curationId)
+  const updateComment = useUpdateComment(curationId)
+  const deleteComment = useDeleteComment(curationId)
 
   // Flatten all pages and build tree structure
   const commentTree = useMemo(() => {
@@ -46,6 +57,24 @@ const CommentSection = ({ curationId, className }: CommentSectionProps) => {
     createComment.mutate({ parentId, content })
   }
 
+  const handleEdit = (commentId: number, content: string) => {
+    updateComment.mutate({ commentId, content })
+  }
+
+  const handleDelete = async (commentId: number) => {
+    const confirmed = await confirm({
+      title: '댓글 삭제',
+      description: '이 댓글을 삭제하시겠습니까?\n삭제된 댓글은 복구할 수 없습니다.',
+      confirmText: '삭제',
+      cancelText: '취소',
+      variant: 'destructive',
+    })
+
+    if (confirmed) {
+      deleteComment.mutate(commentId)
+    }
+  }
+
   return (
     <Card className={`${className || ''} pb-0 md:pb-6`}>
       <CardHeader>
@@ -69,7 +98,14 @@ const CommentSection = ({ curationId, className }: CommentSectionProps) => {
           ) : (
             <>
               {commentTree.map((comment) => (
-                <CommentItem key={comment.commentId} comment={comment} onReply={handleReply} />
+                <CommentItem
+                  key={comment.commentId}
+                  comment={comment}
+                  onReply={handleReply}
+                  currentUserId={user?.userId}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                />
               ))}
 
               {/* Load more button */}

@@ -1,11 +1,7 @@
 import { useMutation, useQuery, useQueryClient, useInfiniteQuery } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { communityApi } from '../api/community.api'
-import type {
-  GetCommentsRequest,
-  CreateCommentRequest,
-  UpdateCommentRequest,
-} from '../types/community.types'
+import type { GetCommentsRequest, CreateCommentRequest } from '../types/community.types'
 import type {
   CurationLikeItem,
   InfiniteCurationsData,
@@ -150,18 +146,17 @@ export const useCreateComment = (curationId: number) => {
 /**
  * 4. Update comment
  */
-export const useUpdateComment = (curationId: number, commentId: number) => {
+export const useUpdateComment = (curationId: number) => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async (request: UpdateCommentRequest) => {
-      const response = await communityApi.updateComment(curationId, commentId, request)
+    mutationFn: async ({ commentId, content }: { commentId: number; content: string }) => {
+      const response = await communityApi.updateComment(curationId, commentId, { content })
       return response.data
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['comments', curationId] })
       queryClient.invalidateQueries({ queryKey: ['comments', 'infinite', curationId] })
-      queryClient.invalidateQueries({ queryKey: ['comment', curationId, commentId] })
       toast.success('댓글을 수정했습니다.')
     },
     onError: (error: Error) => {
