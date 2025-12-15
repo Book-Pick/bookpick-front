@@ -80,6 +80,20 @@ export const useGetCurationById = (curationId: number) => {
 }
 
 /**
+ * 4-1. 추천사 단건 조회(수정용)
+ */
+export const useGetCurationForEdit = (curationId: number) => {
+  return useQuery({
+    queryKey: ['curation', 'edit', curationId],
+    queryFn: async () => {
+      const response = await curationApi.getCurationForEdit(curationId)
+      return response.data
+    },
+    enabled: !!curationId,
+  })
+}
+
+/**
  * 5. 추천사 목록 조회 (정렬: similarity, popularity, latest, liked, my)
  */
 export const useGetCurations = ({

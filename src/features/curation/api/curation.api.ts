@@ -6,6 +6,7 @@ import type {
   UpdateReadingPreferenceResponse,
   GetCurationsResponse,
   GetCurationByIdResponse,
+  GetCurationForEditResponse,
   GetCurationsRequest,
   GetCurationsByFieldRequest,
   CreateCurationRequest,
@@ -101,6 +102,25 @@ export const curationApi = {
     } catch (error: unknown) {
       const axiosError = error as AxiosErrorResponse
       console.error('추천사 조회 에러:', axiosError)
+      throw error
+    }
+  },
+
+  /**
+   * 4-1. 추천사 단건 조회(수정용)
+   */
+  getCurationForEdit: async (curationId: number): Promise<GetCurationForEditResponse> => {
+    try {
+      const response = await axios.get(`${urlPrefix}/curations/${curationId}/edit`)
+      return response.data
+    } catch (error: unknown) {
+      const axiosError = error as AxiosErrorResponse
+      if (axiosError.response?.status === 403) {
+        throw new Error('수정 권한이 없습니다.')
+      }
+      if (axiosError.response?.status === 404) {
+        throw new Error('추천사를 찾을 수 없습니다.')
+      }
       throw error
     }
   },

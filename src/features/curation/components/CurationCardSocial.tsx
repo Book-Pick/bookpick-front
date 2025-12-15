@@ -126,7 +126,7 @@ const CurationCardSocial = ({
         </div>
 
         {/* 취향 유사도 - 태그 위로 이동 */}
-        {similarity && (
+        {similarity != null && (
           <div className='mb-3'>
             <div className='flex justify-between items-center mb-2'>
               <span

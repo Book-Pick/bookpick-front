@@ -24,14 +24,18 @@ import { COLOR_PALETTE, type DraftCuration } from '../constants/curationCreateDa
 import { READING_MOODS, GENRES, KEYWORDS, READING_STYLES } from '../constants/preferences'
 import toast from 'react-hot-toast'
 import type { Book, UpdateCurationRequest } from '../types/curation.types'
-import { useCreateCurationDraft, useGetCurationById, useUpdateCuration } from '../hooks/useCuration'
+import {
+  useCreateCurationDraft,
+  useGetCurationForEdit,
+  useUpdateCuration,
+} from '../hooks/useCuration'
 
 export default function CurationCreatePage() {
   const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
   const curationId = id ? Number(id) : 0
 
-  const { data: curationData, isLoading, isError } = useGetCurationById(curationId)
+  const { data: curationData, isLoading, isError } = useGetCurationForEdit(curationId)
   const { mutate: updateCurationMutate, isPending } = useUpdateCuration()
   const { mutate: createCurationDraftMutate, isPending: isDraftPending } = useCreateCurationDraft()
 

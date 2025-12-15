@@ -8,7 +8,7 @@ import type { ApiResponse } from '@/shared/api/api.types'
 export type Book = {
   id?: string
   title: string
-  author: string
+  author?: string
   image?: string
   isbn?: string
 }
@@ -75,12 +75,6 @@ export interface CurationItem {
   nickName: string
   thumbnail: Thumbnail
   review: string
-  book: {
-    title: string
-    author: string
-    image?: string
-    isbn?: string
-  }
   isLiked?: boolean
   likeCount?: number | null
   commentCount?: number
@@ -185,6 +179,8 @@ export type GetCurationsResponse = ApiResponse<PaginatedCurations>
 
 // 확인완료
 export type GetCurationByIdResponse = ApiResponse<CurationItem>
+
+export type GetCurationForEditResponse = ApiResponse<CurationItem & { book: Book }>
 
 export type CreateCurationResponse = ApiResponse<Curation>
 

@@ -20,6 +20,8 @@ export default function MyCurationPage() {
     size: 1000,
   })
 
+  console.log('내 추천사', myCurations)
+
   const curations = useMemo(() => myCurations?.content ?? [], [myCurations])
 
   const publishedCurations = useMemo(
