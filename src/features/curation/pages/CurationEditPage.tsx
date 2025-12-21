@@ -24,11 +24,7 @@ import { COLOR_PALETTE, type DraftCuration } from '../constants/curationCreateDa
 import { READING_MOODS, GENRES, KEYWORDS, READING_STYLES } from '../constants/preferences'
 import toast from 'react-hot-toast'
 import type { Book, UpdateCurationRequest } from '../types/curation.types'
-import {
-  useCreateCurationDraft,
-  useGetCurationForEdit,
-  useUpdateCuration,
-} from '../hooks/useCuration'
+import { useGetCurationForEdit, useUpdateCuration, useGetCurations } from '../hooks/useCuration'
 
 export default function CurationCreatePage() {
   const navigate = useNavigate()
@@ -36,8 +32,27 @@ export default function CurationCreatePage() {
   const curationId = id ? Number(id) : 0
 
   const { data: curationData, isLoading, isError } = useGetCurationForEdit(curationId)
+
+  // Todo임시처리(임시저장 상태값 알기 위해)
+  const { data: myCurations } = useGetCurations({
+    sort: 'my',
+    cursor: 0,
+    size: 1000,
+  })
+
+  const editCurationId = useMemo(() => curationData?.id ?? 0, [curationData])
+
+  const myDraftedCurationIds = useMemo(
+    () => myCurations?.content.filter((c) => c.isDrafted === true).map((c) => c.curationId) ?? [],
+    [myCurations],
+  )
+
+  const currentCurationState = useMemo(
+    () => (myDraftedCurationIds.includes(editCurationId) ? 'DRAFTED' : 'PUBLISHED'),
+    [myDraftedCurationIds, editCurationId],
+  )
+
   const { mutate: updateCurationMutate, isPending } = useUpdateCuration()
-  const { mutate: createCurationDraftMutate, isPending: isDraftPending } = useCreateCurationDraft()
 
   const [title, setTitle] = useState('')
   const [selectedColor, setSelectedColor] = useState<string | null>(
@@ -141,7 +156,11 @@ export default function CurationCreatePage() {
     setThumbnailUrl(url)
   }
 
-  const getUpdateCurationRequest = (): UpdateCurationRequest => {
+  const getUpdateCurationRequest = ({
+    isDrafted,
+  }: {
+    isDrafted: boolean
+  }): UpdateCurationRequest => {
     return {
       id: curationId,
       title,
@@ -162,20 +181,23 @@ export default function CurationCreatePage() {
         keywords: recommendedKeywords,
         styles: recommendedStyles,
       },
+      isDrafted: isDrafted,
     }
   }
 
-  const handleSaveDraft = () => {
-    const request = getUpdateCurationRequest()
+  const handleUpdateDraft = () => {
+    const request = getUpdateCurationRequest({
+      isDrafted: true,
+    })
 
-    createCurationDraftMutate(request, {
+    updateCurationMutate(request, {
       onSuccess: () => {
         navigate('/mypage/curation')
       },
     })
   }
 
-  const handleSave = () => {
+  const handlePublish = () => {
     if (!title) {
       toast.error('제목을 입력해주세요.')
       return
@@ -193,7 +215,9 @@ export default function CurationCreatePage() {
       return
     }
 
-    const request = getUpdateCurationRequest()
+    const request = getUpdateCurationRequest({
+      isDrafted: false,
+    })
 
     updateCurationMutate(request, {
       onSuccess: () => {
@@ -446,23 +470,25 @@ export default function CurationCreatePage() {
 
           {/* 하단 버튼 */}
           <div className='flex justify-center gap-4 pt-8'>
-            <Button
-              variant='outline'
-              size='lg'
-              onClick={handleSaveDraft}
-              className='flex-1 sm:flex-none'
-              disabled={isDraftPending || isPending || isEmptyContent}
-            >
-              {isDraftPending ? '임시 저장 중...' : '임시 저장'}
-            </Button>
+            {currentCurationState === 'DRAFTED' && (
+              <Button
+                variant='outline'
+                size='lg'
+                onClick={handleUpdateDraft}
+                className='flex-1 sm:flex-none'
+                disabled={isPending || isEmptyContent}
+              >
+                임시 저장
+              </Button>
+            )}
             {/* Todo: 임시저장된 추천사 수정일 경우 발행하기 버튼, 공개된 추천사 수정일 경우 수정하기 버튼 표시 필요 api 요청시에도 isDrafted 플래그값 다르게 요청 */}
             <Button
               size='lg'
-              onClick={handleSave}
+              onClick={handlePublish}
               className='flex-1 sm:flex-none'
-              disabled={isDraftPending || isPending || isEmptyContent}
+              disabled={isPending || isEmptyContent}
             >
-              {isPending ? '수정 중...' : '수정하기'}
+              {currentCurationState === 'DRAFTED' ? '발행하기' : '재발행하기'}
             </Button>
           </div>
         </div>

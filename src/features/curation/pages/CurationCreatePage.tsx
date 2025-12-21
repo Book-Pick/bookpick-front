@@ -24,12 +24,11 @@ import { COLOR_PALETTE, type DraftCuration } from '../constants/curationCreateDa
 import { READING_MOODS, GENRES, KEYWORDS, READING_STYLES } from '../constants/preferences'
 import toast from 'react-hot-toast'
 import type { CreateCurationRequest, Book } from '../types/curation.types'
-import { useCreateCuration, useCreateCurationDraft } from '../hooks/useCuration'
+import { useCreateCuration } from '../hooks/useCuration'
 
 export default function CurationCreatePage() {
   const navigate = useNavigate()
   const { mutate: createCurationMutate, isPending } = useCreateCuration()
-  const { mutate: createCurationDraftMutate, isPending: isDraftPending } = useCreateCurationDraft()
 
   const [title, setTitle] = useState('')
   const [selectedColor, setSelectedColor] = useState<string | null>(
@@ -94,7 +93,11 @@ export default function CurationCreatePage() {
     setThumbnailUrl(url)
   }
 
-  const getCreateCurationRequest = (): CreateCurationRequest => {
+  const getCreateCurationRequest = ({
+    isDrafted,
+  }: {
+    isDrafted: boolean
+  }): CreateCurationRequest => {
     return {
       title,
       thumbnail: {
@@ -114,13 +117,14 @@ export default function CurationCreatePage() {
         keywords: recommendedKeywords,
         styles: recommendedStyles,
       },
+      isDrafted: isDrafted,
     }
   }
 
   const handleSaveDraft = () => {
-    const request = getCreateCurationRequest()
+    const request = getCreateCurationRequest({ isDrafted: true })
 
-    createCurationDraftMutate(request, {
+    createCurationMutate(request, {
       onSuccess: () => {
         navigate('/mypage/curation')
       },
@@ -145,7 +149,7 @@ export default function CurationCreatePage() {
       return
     }
 
-    const request = getCreateCurationRequest()
+    const request = getCreateCurationRequest({ isDrafted: false })
 
     createCurationMutate(request, {
       onSuccess: () => {
@@ -378,17 +382,17 @@ export default function CurationCreatePage() {
               size='lg'
               onClick={handleSaveDraft}
               className='flex-1 sm:flex-none'
-              disabled={isDraftPending || isPending || isEmptyContent}
+              disabled={isPending || isEmptyContent}
             >
-              {isDraftPending ? '임시 저장 중...' : '임시 저장'}
+              임시저장
             </Button>
             <Button
               size='lg'
               onClick={handlePublish}
               className='flex-1 sm:flex-none'
-              disabled={isDraftPending || isPending || isEmptyContent}
+              disabled={isPending || isEmptyContent}
             >
-              {isPending ? '발행 중...' : '발행하기'}
+              발행하기
             </Button>
           </div>
         </div>

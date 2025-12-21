@@ -134,14 +134,6 @@ export interface GetCurationsRequest {
   size: number
 }
 
-// 보류
-export interface GetCurationsByFieldRequest {
-  field: string // ex: 'mbti', 'genre', 'keyword', etc.
-  value: string // ex: 'INFJ', '소설', '위로', etc.
-  page?: number
-  limit?: number
-}
-
 // 확인
 export interface CreateCurationRequest {
   title?: string
@@ -149,6 +141,7 @@ export interface CreateCurationRequest {
   book: Book
   review: string
   recommend: RecommendTags
+  isDrafted: boolean
 }
 
 export type UpdateCurationRequest = CreateCurationRequest & {
@@ -157,6 +150,16 @@ export type UpdateCurationRequest = CreateCurationRequest & {
 
 export interface DeleteCurationsRequest {
   curationIds: number[]
+}
+
+export type CreateCurationResult = {
+  id: number
+  isDrafted: boolean
+}
+
+export type UpdateCurationResult = {
+  id: number
+  isDrafted: boolean
 }
 
 export type DeleteCurationsResult = {
@@ -182,11 +185,11 @@ export type GetCurationByIdResponse = ApiResponse<CurationItem>
 
 export type GetCurationForEditResponse = ApiResponse<CurationItem & { book: Book }>
 
-export type CreateCurationResponse = ApiResponse<Curation>
+export type CreateCurationResponse = ApiResponse<CreateCurationResult>
 
 export type SaveCurationResponse = ApiResponse<Curation>
 
-export type UpdateCurationResponse = ApiResponse<{ id: number }>
+export type UpdateCurationResponse = ApiResponse<UpdateCurationResult>
 
 export type DeleteCurationResponse = ApiResponse<null>
 

@@ -6,8 +6,8 @@ import type {
   UpdateReadingPreferenceRequest,
   GetBooksRequest,
   GetCurationsRequest,
-  GetCurationsByFieldRequest,
   CreateCurationRequest,
+  CreateCurationResult,
   UpdateCurationRequest,
   DeleteCurationsRequest,
 } from '../types/curation.types'
@@ -148,20 +148,6 @@ export const useGetInfiniteCurations = ({
 }
 
 /**
- * 6. 특정 필드로 추천사 조회
- */
-export const useGetCurationsByField = (request: GetCurationsByFieldRequest) => {
-  return useQuery({
-    queryKey: ['curations', 'field', request.field, request.value, request.page, request.limit],
-    queryFn: async () => {
-      const response = await curationApi.getCurationsByField(request)
-      return response.data
-    },
-    enabled: !!request.field && !!request.value,
-  })
-}
-
-/**
  * 7. 추천사 작성
  */
 export const useCreateCuration = () => {
@@ -172,29 +158,16 @@ export const useCreateCuration = () => {
       const response = await curationApi.createCuration(request)
       return response.data
     },
-    onSuccess: () => {
+    onSuccess: (data: CreateCurationResult) => {
       queryClient.invalidateQueries({ queryKey: ['curations'] })
-      toast.success('추천사가 등록되었습니다.')
+      if (data?.isDrafted) {
+        toast.success('추천사가 임시저장되었습니다.')
+      } else {
+        toast.success('추천사가 발행되었습니다.')
+      }
     },
     onError: (error: Error) => {
       toast.error(error.message || '추천사 저장에 실패했습니다.')
-    },
-  })
-}
-
-export const useCreateCurationDraft = () => {
-  const queryClient = useQueryClient()
-  return useMutation({
-    mutationFn: async (request: CreateCurationRequest) => {
-      const response = await curationApi.createCurationDraft(request)
-      return response.data
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['curations'] })
-      toast.success('추천사가 임시저장되었습니다.')
-    },
-    onError: (error: Error) => {
-      toast.error(error.message || '추천사 임시저장에 실패했습니다.')
     },
   })
 }
@@ -213,7 +186,11 @@ export const useUpdateCuration = () => {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['curations'] })
       queryClient.invalidateQueries({ queryKey: ['curation', data.id] })
-      toast.success('추천사가 수정되었습니다.')
+      if (data?.isDrafted) {
+        toast.success('추천사가 임시저장되었습니다.')
+      } else {
+        toast.success('추천사가 수정되었습니다.')
+      }
     },
     onError: (error: Error) => {
       toast.error(error.message || '추천사 수정에 실패했습니다.')

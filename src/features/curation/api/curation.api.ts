@@ -8,7 +8,6 @@ import type {
   GetCurationByIdResponse,
   GetCurationForEditResponse,
   GetCurationsRequest,
-  GetCurationsByFieldRequest,
   CreateCurationRequest,
   CreateCurationResponse,
   UpdateCurationRequest,
@@ -21,9 +20,6 @@ import type {
 } from '../types/curation.types'
 import type { AxiosErrorResponse } from '@/shared/api/api.types'
 import { createAxiosClient } from '@/shared/api/axiosClient'
-
-// 목업 데이터 import
-import { mockGetCurationsByFieldResponse } from './mockCurationApiData'
 
 const axios = createAxiosClient(import.meta.env.VITE_APP_BOOKPICK_API_URL)
 const urlPrefix = '/api/v1'
@@ -150,57 +146,11 @@ export const curationApi = {
   },
 
   /**
-   * 6. 특정 필드로 추천사 조회(보류: 추천사 필터링 기능 추가 시 사용)
-   */
-  getCurationsByField: async (
-    request: GetCurationsByFieldRequest,
-  ): Promise<GetCurationsResponse> => {
-    // try {
-    //   const response = await axios.get(`${urlPrefix}/curations/filter`, {
-    //     params: {
-    //       field: request.field,
-    //       value: request.value,
-    //       page: request.page || 1,
-    //       limit: request.limit || 10,
-    //     },
-    //   })
-    //   return response.data
-    // } catch (error: unknown) {
-    //   const axiosError = error as AxiosErrorResponse
-    //   if (axiosError.response?.status === 400) {
-    //     throw new Error('잘못된 필터 조건입니다.')
-    //   }
-    //   throw error
-    // }
-
-    // 목업 데이터 반환
-    console.log('특정 필드로 추천사 조회 요청:', request)
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(mockGetCurationsByFieldResponse)
-      }, 500)
-    })
-  },
-
-  /**
    * 7. 추천사 작성
    */
   createCuration: async (request: CreateCurationRequest): Promise<CreateCurationResponse> => {
     try {
       const response = await axios.post(`${urlPrefix}/curations`, request)
-      return response.data
-    } catch (error: unknown) {
-      const axiosError = error as AxiosErrorResponse
-      if (axiosError.response?.status === 400) {
-        throw new Error('잘못된 요청입니다.')
-      }
-      throw error
-    }
-  },
-
-  createCurationDraft: async (request: CreateCurationRequest): Promise<CreateCurationResponse> => {
-    try {
-      const response = await axios.post(`${urlPrefix}/curation/draft`, request)
       return response.data
     } catch (error: unknown) {
       const axiosError = error as AxiosErrorResponse
