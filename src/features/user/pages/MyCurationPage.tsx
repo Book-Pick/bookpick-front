@@ -14,22 +14,26 @@ export default function MyCurationPage() {
   const [selectedIds, setSelectedIds] = useState<Set<number | string>>(new Set())
   const { mutate: deleteCurations } = useDeleteCurations()
 
-  const { data: myCurations } = useGetCurations({
+  const { data: myPublishedCurations } = useGetCurations({
     sort: 'my',
     cursor: 0,
     size: 1000,
+    draft: false,
   })
 
-  const curations = useMemo(() => myCurations?.content ?? [], [myCurations])
+  const { data: myDraftedCurations } = useGetCurations({
+    sort: 'my',
+    cursor: 0,
+    size: 1000,
+    draft: true,
+  })
 
   const publishedCurations = useMemo(
-    () => curations.filter((c) => c.isDrafted === false) ?? [],
-    [curations],
+    () => myPublishedCurations?.content ?? [],
+    [myPublishedCurations],
   )
-  const draftCurations = useMemo(
-    () => curations.filter((c) => c.isDrafted === true) ?? [],
-    [curations],
-  )
+
+  const draftCurations = useMemo(() => myDraftedCurations?.content ?? [], [myDraftedCurations])
 
   const handleSelect = (id: number | string) => {
     setSelectedIds((prev) => {

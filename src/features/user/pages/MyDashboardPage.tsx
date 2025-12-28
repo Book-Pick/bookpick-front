@@ -36,12 +36,14 @@ export default function MyDashboardPage() {
     sort: 'my',
     cursor: 0,
     size: 1000,
+    draft: false,
   })
 
   const { data: likedCurations } = useGetCurations({
     sort: 'liked',
     cursor: 0,
     size: 1000,
+    draft: false,
   })
 
   const myCurationsCount = myCurations?.content?.length ?? 0

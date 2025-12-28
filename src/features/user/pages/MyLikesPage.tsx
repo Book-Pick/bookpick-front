@@ -16,6 +16,7 @@ export default function MyLikesPage() {
   } = useGetInfiniteCurations({
     sort: 'liked',
     size: 10,
+    draft: false,
   })
 
   // 무한 스크롤 Observer

@@ -29,6 +29,7 @@ export default function HomePage() {
   } = useGetInfiniteCurations({
     sort: 'similarity',
     size: 10,
+    draft: false,
   })
 
   const {
@@ -39,7 +40,8 @@ export default function HomePage() {
     isFetchingNextPage: isFetchingNextPopular,
   } = useGetInfiniteCurations({
     sort: 'popularity',
-    size: 6,
+    size: 10,
+    draft: false,
   })
 
   const {
@@ -50,7 +52,8 @@ export default function HomePage() {
     isFetchingNextPage: isFetchingNextRecent,
   } = useGetInfiniteCurations({
     sort: 'latest',
-    size: 6,
+    size: 10,
+    draft: false,
   })
 
   // 인기순 콜백 ref

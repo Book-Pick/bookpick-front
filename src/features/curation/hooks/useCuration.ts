@@ -100,11 +100,12 @@ export const useGetCurations = ({
   sort = 'similarity',
   cursor = 0,
   size = 10,
+  draft = false,
 }: GetCurationsRequest) => {
   return useQuery({
-    queryKey: ['curations', sort, cursor, size],
+    queryKey: ['curations', sort, cursor, size, draft],
     queryFn: async () => {
-      const response = await curationApi.getCurations({ sort, cursor, size })
+      const response = await curationApi.getCurations({ sort, cursor, size, draft })
       return response.data
     },
   })
@@ -116,14 +117,16 @@ export const useGetCurations = ({
 export const useGetInfiniteCurations = ({
   sort = 'similarity',
   size = 10,
+  draft = false,
 }: Omit<GetCurationsRequest, 'cursor'>) => {
   return useInfiniteQuery({
-    queryKey: ['curations', 'infinite', sort, size],
+    queryKey: ['curations', 'infinite', sort, size, draft],
     queryFn: async ({ pageParam }) => {
       const response = await curationApi.getCurations({
         sort,
         cursor: pageParam,
         size,
+        draft,
       })
       // null 응답 시 기본값 반환
       return (

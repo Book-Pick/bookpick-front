@@ -24,7 +24,7 @@ import { COLOR_PALETTE, type DraftCuration } from '../constants/curationCreateDa
 import { READING_MOODS, GENRES, KEYWORDS, READING_STYLES } from '../constants/preferences'
 import toast from 'react-hot-toast'
 import type { Book, UpdateCurationRequest } from '../types/curation.types'
-import { useGetCurationForEdit, useUpdateCuration, useGetCurations } from '../hooks/useCuration'
+import { useGetCurationForEdit, useUpdateCuration } from '../hooks/useCuration'
 
 export default function CurationCreatePage() {
   const navigate = useNavigate()
@@ -32,25 +32,6 @@ export default function CurationCreatePage() {
   const curationId = id ? Number(id) : 0
 
   const { data: curationData, isLoading, isError } = useGetCurationForEdit(curationId)
-
-  // Todo임시처리(임시저장 상태값 알기 위해)
-  const { data: myCurations } = useGetCurations({
-    sort: 'my',
-    cursor: 0,
-    size: 1000,
-  })
-
-  const editCurationId = useMemo(() => curationData?.id ?? 0, [curationData])
-
-  const myDraftedCurationIds = useMemo(
-    () => myCurations?.content.filter((c) => c.isDrafted === true).map((c) => c.curationId) ?? [],
-    [myCurations],
-  )
-
-  const currentCurationState = useMemo(
-    () => (myDraftedCurationIds.includes(editCurationId) ? 'DRAFTED' : 'PUBLISHED'),
-    [myDraftedCurationIds, editCurationId],
-  )
 
   const { mutate: updateCurationMutate, isPending } = useUpdateCuration()
 
@@ -470,7 +451,7 @@ export default function CurationCreatePage() {
 
           {/* 하단 버튼 */}
           <div className='flex justify-center gap-4 pt-8'>
-            {currentCurationState === 'DRAFTED' && (
+            {curationData?.isDrafted && (
               <Button
                 variant='outline'
                 size='lg'
@@ -488,7 +469,7 @@ export default function CurationCreatePage() {
               className='flex-1 sm:flex-none'
               disabled={isPending || isEmptyContent}
             >
-              {currentCurationState === 'DRAFTED' ? '발행하기' : '재발행하기'}
+              {curationData?.isDrafted ? '발행하기' : '재발행하기'}
             </Button>
           </div>
         </div>

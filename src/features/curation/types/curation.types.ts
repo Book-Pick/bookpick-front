@@ -132,6 +132,7 @@ export interface GetCurationsRequest {
   sort: SortType
   cursor?: number
   size: number
+  draft?: boolean
 }
 
 // 확인

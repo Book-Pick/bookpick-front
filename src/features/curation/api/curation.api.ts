@@ -128,9 +128,14 @@ export const curationApi = {
     sort,
     cursor,
     size,
+    draft = false,
   }: GetCurationsRequest): Promise<GetCurationsResponse> => {
     try {
-      const params: { sort: string; size: number; cursor?: number } = { sort, size }
+      const params: { sort: string; size: number; cursor?: number; draft: boolean } = {
+        sort,
+        size,
+        draft,
+      }
       if (cursor !== undefined) {
         params.cursor = cursor
       }
