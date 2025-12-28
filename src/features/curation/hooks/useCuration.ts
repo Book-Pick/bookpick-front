@@ -100,7 +100,7 @@ export const useGetCurations = ({
   sort = 'similarity',
   cursor = 0,
   size = 10,
-  draft = false,
+  draft,
 }: GetCurationsRequest) => {
   return useQuery({
     queryKey: ['curations', sort, cursor, size, draft],
@@ -117,7 +117,7 @@ export const useGetCurations = ({
 export const useGetInfiniteCurations = ({
   sort = 'similarity',
   size = 10,
-  draft = false,
+  draft,
 }: Omit<GetCurationsRequest, 'cursor'>) => {
   return useInfiniteQuery({
     queryKey: ['curations', 'infinite', sort, size, draft],

@@ -128,16 +128,18 @@ export const curationApi = {
     sort,
     cursor,
     size,
-    draft = false,
+    draft,
   }: GetCurationsRequest): Promise<GetCurationsResponse> => {
     try {
-      const params: { sort: string; size: number; cursor?: number; draft: boolean } = {
+      const params: { sort: string; size: number; cursor?: number; draft?: boolean } = {
         sort,
         size,
-        draft,
       }
       if (cursor !== undefined) {
         params.cursor = cursor
+      }
+      if (draft !== undefined) {
+        params.draft = draft
       }
       const response = await axios.get(`${urlPrefix}/curations`, { params })
       return response.data
