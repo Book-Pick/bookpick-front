@@ -38,6 +38,7 @@ export interface Curation {
   id: number
   userId?: number
   curator: string
+  curatorBio?: string
   curatorId: number
   title: string
   description: string

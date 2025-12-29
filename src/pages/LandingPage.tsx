@@ -172,10 +172,12 @@ export default function LandingPage() {
               title={randomCuration.title}
               description={randomCuration.description}
               curator={randomCuration.curator}
+              curatorBio={randomCuration.curatorBio}
               likes={randomCuration.likes}
               comments={randomCuration.comments}
               views={randomCuration.views}
               tags={randomCuration.tags.join(', ')}
+              thumbnailSrc={randomCuration.thumbnailImage}
             />
           </div>
         </div>
