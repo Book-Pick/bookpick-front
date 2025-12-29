@@ -48,7 +48,7 @@ const CurationBookInfoCard = ({
         </div>
 
         {/* 2줄: 좋아요 + 책 보러가기 버튼 */}
-        <div className='flex items-center gap-2.5'>
+        <div className='flex items-center gap-2.5 pb-5'>
           {/* 좋아요 버튼 */}
           <button
             onClick={onLikeToggle}
