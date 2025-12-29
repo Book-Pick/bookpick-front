@@ -113,7 +113,7 @@ export interface PaginatedBooks {
 }
 
 // 확인완료
-export type SortType = 'similarity' | 'popularity' | 'latest' | 'liked' | 'my'
+export type SortType = 'similarity' | 'popular' | 'latest' | 'liked' | 'my'
 
 // API Request 타입들
 // 확인완료

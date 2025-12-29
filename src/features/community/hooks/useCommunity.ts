@@ -232,7 +232,7 @@ export const useLikeCuration = () => {
    */
   const updateRegularCache = (curationId: number) => {
     // liked, my 등의 sort 타입에 대한 캐시 업데이트
-    const sortTypes = ['liked', 'my', 'similarity', 'popularity', 'latest']
+    const sortTypes = ['liked', 'my', 'similarity', 'popular', 'latest']
 
     sortTypes.forEach((sort) => {
       queryClient.setQueriesData<RegularCurationsData>(

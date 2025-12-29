@@ -94,7 +94,7 @@ export const useGetCurationForEdit = (curationId: number) => {
 }
 
 /**
- * 5. 추천사 목록 조회 (정렬: similarity, popularity, latest, liked, my)
+ * 5. 추천사 목록 조회 (정렬: similarity, popular, latest, liked, my)
  */
 export const useGetCurations = ({
   sort = 'similarity',

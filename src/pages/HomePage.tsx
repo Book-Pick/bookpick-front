@@ -39,7 +39,7 @@ export default function HomePage() {
     hasNextPage: hasNextPopular,
     isFetchingNextPage: isFetchingNextPopular,
   } = useGetInfiniteCurations({
-    sort: 'popularity',
+    sort: 'popular',
     size: 10,
     draft: false,
   })
