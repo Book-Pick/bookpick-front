@@ -1,7 +1,6 @@
 import CuratorProfileCard from '../components/CuratorProfileCard'
-import CurationPurchaseCard from '../components/CurationPurchaseCard'
+import CurationBookInfoCard from '../components/CurationBookInfoCard'
 import CommentSection from '@/features/community/components/CommentSection'
-import toast from 'react-hot-toast'
 import { Badge } from '@/shared/ui'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Heart } from 'lucide-react'
@@ -28,22 +27,6 @@ export default function CurationDetailPage() {
 
   // 본인이 작성한 추천사인지 확인
   const isOwnCuration = user?.userId === curation?.userId
-
-  const handlePurchase = (_curationId: number, _price: number) => {
-    // console.log(`추천사 ${curationId} 구매 요청, 가격: ${price}원`)
-    toast('서비스 준비 중입니다.', {
-      icon: '⏳',
-    })
-    // navigate('/order/complete')
-  }
-
-  const handleCart = (_curationId: number, _price: number) => {
-    // console.log(`추천사 ${curationId} 장바구니 담기 요청, 가격: ${price}원`)
-    // toast.success('추천사가 장바구니에 담겼습니다.')
-    toast('서비스 준비 중입니다.', {
-      icon: '⏳',
-    })
-  }
 
   const handleSubscribeToggle = () => {
     toggleSubscription()
@@ -144,16 +127,13 @@ export default function CurationDetailPage() {
       {/* 댓글 및 피드백 */}
       <CommentSection curationId={curationId} className='bg-transparent' />
 
-      {/* 추천사 구매 정보 */}
-      <CurationPurchaseCard
-        curationId={curation.curationId || curation.id || 0}
-        price={15000}
+      {/* 책 정보 보러가기 */}
+      <CurationBookInfoCard
+        searchQuery={curation.title || ''}
         className='mt-10 bg-neutral-100'
         isLiked={curation.isLiked}
         likeCount={curation.likeCount}
         isLikePending={isLikePending}
-        onPurchase={handlePurchase}
-        onCart={handleCart}
         onLikeToggle={handleToggleLike}
       />
 
