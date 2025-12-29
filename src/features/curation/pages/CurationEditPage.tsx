@@ -41,6 +41,7 @@ export default function CurationCreatePage() {
   )
   const [thumbnail, setThumbnail] = useState<File | null>(null)
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null)
+  const [currentThumbnailTab, setCurrentThumbnailTab] = useState<'color' | 'image'>('color')
   const [selectedBook, setSelectedBook] = useState<Book | null>(null)
   const [content, setContent] = useState('')
   const [isDraftSheetOpen, setIsDraftSheetOpen] = useState(false)
@@ -78,9 +79,11 @@ export default function CurationCreatePage() {
         if (curationData.thumbnail.imageUrl) {
           setThumbnailUrl(curationData.thumbnail.imageUrl)
           setSelectedColor(null)
+          setCurrentThumbnailTab('image')
         } else if (curationData.thumbnail.imageColor) {
           setSelectedColor(curationData.thumbnail.imageColor)
           setThumbnailUrl(null)
+          setCurrentThumbnailTab('color')
         }
       }
 
@@ -298,10 +301,14 @@ export default function CurationCreatePage() {
                   단색 또는 썸네일 이미지 중 하나를 선택할 수 있습니다.
                 </p>
 
-                <Tabs defaultValue='color' variant='button'>
+                <Tabs value={currentThumbnailTab} variant='button'>
                   <TabsList>
-                    <TabsTrigger value='color'>단색</TabsTrigger>
-                    <TabsTrigger value='image'>이미지 업로드</TabsTrigger>
+                    <TabsTrigger value='color' onClick={() => setCurrentThumbnailTab('color')}>
+                      단색
+                    </TabsTrigger>
+                    <TabsTrigger value='image' onClick={() => setCurrentThumbnailTab('image')}>
+                      이미지 업로드
+                    </TabsTrigger>
                   </TabsList>
 
                   {/* 배경 색상 탭 */}

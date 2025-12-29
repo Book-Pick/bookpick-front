@@ -110,7 +110,7 @@ const ThumbnailPreview = ({
           <p className='text-sm text-gray-600'>
             {isImageUploading
               ? '업로드 중...'
-              : thumbnail
+              : thumbnail || thumbnailUrl
                 ? '이미지 변경하기'
                 : '이미지를 선택하거나 드래그하세요'}
           </p>
@@ -121,7 +121,7 @@ const ThumbnailPreview = ({
       </div>
 
       {/* 썸네일 미리보기 (2:1 비율) */}
-      {thumbnail && displayUrl && (
+      {(thumbnail || thumbnailUrl) && displayUrl && (
         <div className='space-y-3'>
           <div className='flex items-center justify-between'>
             <h4 className='font-medium text-sm'>썸네일 미리보기</h4>

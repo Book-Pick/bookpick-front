@@ -188,7 +188,7 @@ export const useUpdateCuration = () => {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['curations'] })
-      queryClient.invalidateQueries({ queryKey: ['curation', data.id] })
+      queryClient.invalidateQueries({ queryKey: ['curation'] })
       if (data?.isDrafted) {
         toast.success('추천사가 임시저장되었습니다.')
       } else {
