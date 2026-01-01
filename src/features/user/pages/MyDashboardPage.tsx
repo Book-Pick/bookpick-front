@@ -1,33 +1,11 @@
+import { useMemo } from 'react'
 import ProfileCard from '../components/ProfileCard'
 import QuickLinksCard from '../components/QuickLinksCard'
 import StatsGrid from '../components/StatsGrid'
 import RecentFeedbackCard from '../components/RecentFeedbackCard'
 import { useGetProfile } from '../hooks/useUser'
 import { useGetCurations } from '@/features/curation/hooks/useCuration'
-
-const mockFeedbacks = [
-  {
-    id: 1,
-    content:
-      '큐레이터님 덕분에 인생 책 만났어요! 정말 감사합니다. 마지막 문장이 계속 마음에 맴sdssd도.sdfasfsd',
-    date: '2025-7-22',
-  },
-  {
-    id: 2,
-    content: '이런 책이 있는 줄도 몰랐네요. 신선한 경험이었습니다.',
-    date: '2025-7-20',
-  },
-  {
-    id: 3,
-    content: '추천해주신 책 덕분에 힐링 되었어요. 감사합니다!',
-    date: '2025-7-18',
-  },
-  {
-    id: 4,
-    content: '추천사 내용이 정말 자세하고 좋았습니다.',
-    date: '2025-7-15',
-  },
-]
+import { useGetMyComments } from '@/features/community/hooks/useCommunity'
 
 export default function MyDashboardPage() {
   const { data: profile } = useGetProfile()
@@ -45,6 +23,13 @@ export default function MyDashboardPage() {
     size: 1000,
     draft: false,
   })
+
+  const { data: myComments } = useGetMyComments()
+
+  console.log('myComments', myComments)
+
+  const recentComments = useMemo(() => myComments?.comments?.slice(0, 3) ?? [], [myComments])
+  console.log('recentComments', recentComments)
 
   const myCurationsCount = myCurations?.content?.length ?? 0
   const totalViewCount =
@@ -76,7 +61,7 @@ export default function MyDashboardPage() {
         <QuickLinksCard />
 
         {/* Row 2, Col 2: 새로운 댓글 */}
-        <RecentFeedbackCard feedbacks={mockFeedbacks} />
+        <RecentFeedbackCard feedbacks={recentComments} />
       </div>
     </div>
   )

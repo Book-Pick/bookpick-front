@@ -8,6 +8,7 @@ import type {
   UpdateCommentResponse,
   DeleteCommentResponse,
   LikeCurationResponse,
+  GetMyCommentsResponse,
 } from '../types/community.types'
 import type { AxiosErrorResponse } from '@/shared/api/api.types'
 import { createAxiosClient } from '@/shared/api/axiosClient'
@@ -140,6 +141,20 @@ export const communityApi = {
       const axiosError = error as AxiosErrorResponse
       if (axiosError.response?.status === 404) {
         throw new Error('추천사를 찾을 수 없습니다.')
+      }
+      throw error
+    }
+  },
+
+  /** 7. 내가 받은 댓글 조회 */
+  getMyComments: async (): Promise<GetMyCommentsResponse> => {
+    try {
+      const response = await axios.get(`${urlPrefix}/comments`)
+      return response.data
+    } catch (error: unknown) {
+      const axiosError = error as AxiosErrorResponse
+      if (axiosError.response?.status === 403) {
+        throw new Error('권한이 없습니다.')
       }
       throw error
     }

@@ -8,7 +8,7 @@ import type { ApiResponse } from '@/shared/api/api.types'
 export interface Comment {
   commentId: number
   parentId: number | null
-  curationId?: number
+  curationId: number
   userId?: number
   nickname: string
   profileImageUrl: string | null
@@ -100,3 +100,11 @@ export type DeleteCommentResponse = ApiResponse<{
  * Like curation response
  */
 export type LikeCurationResponse = ApiResponse<string>
+
+/**
+ * Get my comments response
+ */
+export interface MyComment {
+  comments: Comment[]
+}
+export type GetMyCommentsResponse = ApiResponse<MyComment>

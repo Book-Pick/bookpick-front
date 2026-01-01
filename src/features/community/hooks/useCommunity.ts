@@ -301,3 +301,16 @@ export const useLikeCuration = () => {
     },
   })
 }
+
+/**
+ * 7. Get my comments
+ */
+export const useGetMyComments = () => {
+  return useQuery({
+    queryKey: ['comments', 'my'],
+    queryFn: async () => {
+      const response = await communityApi.getMyComments()
+      return response.data
+    },
+  })
+}
