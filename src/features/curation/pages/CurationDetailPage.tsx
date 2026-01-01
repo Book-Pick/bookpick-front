@@ -129,7 +129,7 @@ export default function CurationDetailPage() {
 
       {/* 책 정보 보러가기 */}
       <CurationBookInfoCard
-        searchQuery={curation.title || ''}
+        curationId={curationId}
         className='mt-10 bg-neutral-100'
         isLiked={curation.isLiked}
         likeCount={curation.likeCount}

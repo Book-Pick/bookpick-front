@@ -1,8 +1,9 @@
 import { Card, CardHeader, CardDescription, CardAction, Button } from '@/shared/ui'
 import { Heart } from 'lucide-react'
+import { useGetCurationBookPurchaseLink } from '../hooks/useCuration'
 
 interface CurationBookInfoCardProps {
-  searchQuery: string
+  curationId: number
   className?: string
   isLiked?: boolean
   likeCount?: number | null
@@ -11,14 +12,21 @@ interface CurationBookInfoCardProps {
 }
 
 const CurationBookInfoCard = ({
-  searchQuery,
+  curationId,
   className,
   isLiked = false,
   likeCount,
   isLikePending = false,
   onLikeToggle,
 }: CurationBookInfoCardProps) => {
-  const naverBookSearchUrl = `https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query=${encodeURIComponent(`${searchQuery} 책`)}`
+  const { refetch, isFetching } = useGetCurationBookPurchaseLink(curationId, { enabled: false })
+
+  const handleBookPurchaseLink = async () => {
+    const result = await refetch()
+    if (result.data) {
+      window.open(result.data, '_blank', 'noopener,noreferrer')
+    }
+  }
 
   return (
     <>
@@ -31,10 +39,14 @@ const CurationBookInfoCard = ({
             </CardDescription>
           </div>
           <CardAction className='flex self-center'>
-            <Button size='lg' variant='point' className='font-bold' asChild>
-              <a href={naverBookSearchUrl} target='_blank' rel='noopener noreferrer'>
-                어떤 책인지 보러가기
-              </a>
+            <Button
+              onClick={handleBookPurchaseLink}
+              disabled={isFetching}
+              size='lg'
+              variant='point'
+              className='font-bold'
+            >
+              <span>{isFetching ? '로딩 중...' : '어떤 책인지 보러가기'}</span>
             </Button>
           </CardAction>
         </CardHeader>
@@ -62,10 +74,14 @@ const CurationBookInfoCard = ({
           </button>
 
           {/* 책 보러가기 버튼 */}
-          <Button size='default' variant='point' className='flex-1 font-bold' asChild>
-            <a href={naverBookSearchUrl} target='_blank' rel='noopener noreferrer'>
-              어떤 책인지 보러가기
-            </a>
+          <Button
+            onClick={handleBookPurchaseLink}
+            disabled={isFetching}
+            size='default'
+            variant='point'
+            className='flex-1 font-bold'
+          >
+            <span>{isFetching ? '로딩 중...' : '어떤 책인지 보러가기'}</span>
           </Button>
         </div>
       </div>

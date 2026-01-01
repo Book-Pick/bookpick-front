@@ -17,6 +17,7 @@ import type {
   DeleteCurationsResponse,
   GetBooksRequest,
   GetBooksResponse,
+  GetCurationBookPurchaseLinkResponse,
 } from '../types/curation.types'
 import type { AxiosErrorResponse } from '@/shared/api/api.types'
 import { createAxiosClient } from '@/shared/api/axiosClient'
@@ -242,6 +243,20 @@ export const curationApi = {
     } catch (error: unknown) {
       const axiosError = error as AxiosErrorResponse
       console.error('책 검색 에러:', axiosError)
+      throw error
+    }
+  },
+
+  /** 12. 큐레이션 책 구매 링크 제공 */
+  getCurationBookPurchaseLink: async (
+    curationId: number,
+  ): Promise<GetCurationBookPurchaseLinkResponse> => {
+    try {
+      const response = await axios.get(`${urlPrefix}/curations/${curationId}/book-link`)
+      return response.data
+    } catch (error: unknown) {
+      const axiosError = error as AxiosErrorResponse
+      console.error('큐레이션 책 구매 링크 제공 에러:', axiosError)
       throw error
     }
   },

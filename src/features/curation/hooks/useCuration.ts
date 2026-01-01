@@ -254,3 +254,20 @@ export const useSearchBooks = () => {
     },
   })
 }
+
+/**
+ * 12. 큐레이션 책 구매 링크 제공
+ */
+export const useGetCurationBookPurchaseLink = (
+  curationId: number,
+  options?: { enabled?: boolean },
+) => {
+  return useQuery({
+    queryKey: ['curation', 'book-purchase-link', curationId],
+    queryFn: async () => {
+      const response = await curationApi.getCurationBookPurchaseLink(curationId)
+      return response.data
+    },
+    enabled: options?.enabled ?? true,
+  })
+}
