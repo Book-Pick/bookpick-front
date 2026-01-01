@@ -26,10 +26,7 @@ export default function MyDashboardPage() {
 
   const { data: myComments } = useGetMyComments()
 
-  console.log('myComments', myComments)
-
   const recentComments = useMemo(() => myComments?.comments?.slice(0, 3) ?? [], [myComments])
-  console.log('recentComments', recentComments)
 
   const myCurationsCount = myCurations?.content?.length ?? 0
   const totalViewCount =
