@@ -71,7 +71,7 @@ export function BookSearchSection({
       id: book.isbn || `${book.title}|${book.author}`,
       title: book.title,
       author: book.author,
-      image: book.image,
+      imageUrl: book.imageUrl,
       isbn: book.isbn || '',
     }
 
@@ -106,9 +106,9 @@ export function BookSearchSection({
         <Card className='border-2 border-primary/20'>
           <CardContent className='p-4'>
             <div className='flex items-center gap-4'>
-              {selectedBook.image ? (
+              {selectedBook.imageUrl ? (
                 <img
-                  src={selectedBook.image}
+                  src={selectedBook.imageUrl}
                   alt={selectedBook.title}
                   className='w-16 h-20 object-cover rounded'
                   onError={(e) => {
@@ -118,7 +118,7 @@ export function BookSearchSection({
                 />
               ) : null}
               <div
-                className={`w-16 h-20 bg-gray-200 rounded flex items-center justify-center ${selectedBook.image ? 'hidden' : ''}`}
+                className={`w-16 h-20 bg-gray-200 rounded flex items-center justify-center ${selectedBook.imageUrl ? 'hidden' : ''}`}
               >
                 <BookOpen size={24} className='text-gray-400' />
               </div>
@@ -177,9 +177,9 @@ export function BookSearchSection({
                           >
                             <CardContent className='p-3'>
                               <div className='flex items-center gap-3'>
-                                {book.image ? (
+                                {book.imageUrl ? (
                                   <img
-                                    src={book.image}
+                                    src={book.imageUrl}
                                     alt={book.title}
                                     className='w-12 h-16 object-cover rounded'
                                     onError={(e) => {
@@ -189,7 +189,7 @@ export function BookSearchSection({
                                   />
                                 ) : null}
                                 <div
-                                  className={`w-12 h-16 bg-gray-200 rounded flex items-center justify-center ${book.image ? 'hidden' : ''}`}
+                                  className={`w-12 h-16 bg-gray-200 rounded flex items-center justify-center ${book.imageUrl ? 'hidden' : ''}`}
                                 >
                                   <BookOpen size={16} className='text-gray-400' />
                                 </div>

@@ -107,7 +107,7 @@ export default function CurationCreatePage() {
       book: {
         title: selectedBook?.title || '',
         author: selectedBook?.author || '',
-        image: selectedBook?.image || '',
+        imageUrl: selectedBook?.imageUrl || '',
         isbn: selectedBook?.isbn,
       },
       review: content,

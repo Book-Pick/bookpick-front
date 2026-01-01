@@ -67,7 +67,7 @@ export default function CurationCreatePage() {
         setSelectedBook({
           title: curationData.book.title,
           author: curationData.book.author,
-          image: curationData.book.image || '',
+          imageUrl: curationData.book.imageUrl || '',
           isbn: curationData.book.isbn,
         })
       } else {
@@ -155,7 +155,7 @@ export default function CurationCreatePage() {
       book: {
         title: selectedBook?.title || '',
         author: selectedBook?.author || '',
-        image: selectedBook?.image || '',
+        imageUrl: selectedBook?.imageUrl || '',
         isbn: selectedBook?.isbn,
       },
       review: content,
