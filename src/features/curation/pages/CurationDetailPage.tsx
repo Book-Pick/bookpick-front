@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import CuratorProfileCard from '../components/CuratorProfileCard'
 import CurationBookInfoCard from '../components/CurationBookInfoCard'
 import CommentSection from '@/features/community/components/CommentSection'
@@ -8,6 +9,7 @@ import { useGetCurationById } from '../hooks/useCuration'
 import { useSubscriptionToggle } from '@/features/user/hooks/useSubscription'
 import { useAuth } from '@/features/auth/hooks/useAuth'
 import { useLikeCuration } from '@/features/community/hooks/useCommunity'
+import { getRandomTags } from '../utils/tags'
 
 export default function CurationDetailPage() {
   const { id } = useParams<{ id: string }>()
@@ -25,7 +27,6 @@ export default function CurationDetailPage() {
 
   const { mutate: likeCurationMutate, isPending: isLikePending } = useLikeCuration()
 
-  // 본인이 작성한 추천사인지 확인
   const isOwnCuration = user?.userId === curation?.userId
 
   const handleSubscribeToggle = () => {
@@ -36,7 +37,8 @@ export default function CurationDetailPage() {
     likeCurationMutate(curationId)
   }
 
-  // 로딩 상태
+  const randomTags = useMemo(() => getRandomTags(curation?.recommend), [curation?.recommend])
+
   if (isLoading) {
     return (
       <div className='flex justify-center items-center min-h-[400px]'>
@@ -45,7 +47,6 @@ export default function CurationDetailPage() {
     )
   }
 
-  // 에러 상태
   if (error) {
     return (
       <div className='flex flex-col justify-center items-center min-h-[400px] gap-4'>
@@ -60,7 +61,6 @@ export default function CurationDetailPage() {
     )
   }
 
-  // 데이터가 없는 경우
   if (!curation) {
     return (
       <div className='flex flex-col justify-center items-center min-h-[400px] gap-4'>
@@ -77,7 +77,6 @@ export default function CurationDetailPage() {
 
   return (
     <>
-      {/* 추천사 내용 */}
       <div className='my-10 xl:my-15'>
         <CuratorProfileCard
           curatorId={curation.userId}
@@ -96,15 +95,11 @@ export default function CurationDetailPage() {
         </p>
         <div className='flex justify-between items-center'>
           <div className='flex gap-1 flex-wrap'>
-            {(curation.matched || curation.recommend?.keywords?.join(', ') || '')
-              .split(',')
-              .map((tag) => tag.trim())
-              .filter((tag) => tag.length > 0)
-              .map((keyword, index) => (
-                <Badge key={index} variant='outline' size='sm' className='px-[10px] py-[6px]'>
-                  #{keyword}
-                </Badge>
-              ))}
+            {randomTags.map((tag, index) => (
+              <Badge key={index} variant='outline' size='sm' className='px-[10px] py-[6px]'>
+                #{tag}
+              </Badge>
+            ))}
           </div>
           {/* 데스크톱에서만 좋아요 버튼 표시 (모바일은 하단 네비바에 표시) */}
           <button
@@ -121,13 +116,9 @@ export default function CurationDetailPage() {
           </button>
         </div>
       </div>
-      {/* 지도 */}
-      {/* <BookStoreMap /> */}
 
-      {/* 댓글 및 피드백 */}
       <CommentSection curationId={curationId} className='bg-transparent' />
 
-      {/* 책 정보 보러가기 */}
       <CurationBookInfoCard
         curationId={curationId}
         className='mt-10 bg-neutral-100'

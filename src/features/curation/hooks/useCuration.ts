@@ -12,9 +12,6 @@ import type {
   DeleteCurationsRequest,
 } from '../types/curation.types'
 
-/**
- * 1. 독서 취향 설정
- */
 export const useSetReadingPreference = () => {
   const queryClient = useQueryClient()
 
@@ -32,9 +29,6 @@ export const useSetReadingPreference = () => {
   })
 }
 
-/**
- * 2. 독서 취향 조회
- */
 export const useGetReadingPreference = () => {
   return useQuery({
     queryKey: ['readingPreference'],
@@ -45,9 +39,6 @@ export const useGetReadingPreference = () => {
   })
 }
 
-/**
- * 3. 독서 취향 수정
- */
 export const useUpdateReadingPreference = () => {
   const queryClient = useQueryClient()
 
@@ -65,9 +56,6 @@ export const useUpdateReadingPreference = () => {
   })
 }
 
-/**
- * 4. 추천사 단건 조회
- */
 export const useGetCurationById = (curationId: number) => {
   return useQuery({
     queryKey: ['curation', curationId],
@@ -79,9 +67,7 @@ export const useGetCurationById = (curationId: number) => {
   })
 }
 
-/**
- * 4-1. 추천사 단건 조회(수정용)
- */
+// 추천사 수정용 조회(책 정보 포함)
 export const useGetCurationForEdit = (curationId: number) => {
   return useQuery({
     queryKey: ['curation', 'edit', curationId],
@@ -93,9 +79,7 @@ export const useGetCurationForEdit = (curationId: number) => {
   })
 }
 
-/**
- * 5. 추천사 목록 조회 (정렬: similarity, popular, latest, liked, my)
- */
+// 추천사 목록 조회(similarity, popular, latest, liked, my)
 export const useGetCurations = ({
   sort = 'similarity',
   cursor = 0,
@@ -111,9 +95,6 @@ export const useGetCurations = ({
   })
 }
 
-/**
- * 5-1. 추천사 목록 무한 스크롤 조회
- */
 export const useGetInfiniteCurations = ({
   sort = 'similarity',
   size = 10,
@@ -150,9 +131,6 @@ export const useGetInfiniteCurations = ({
   })
 }
 
-/**
- * 7. 추천사 작성
- */
 export const useCreateCuration = () => {
   const queryClient = useQueryClient()
 
@@ -175,9 +153,6 @@ export const useCreateCuration = () => {
   })
 }
 
-/**
- * 9. 추천사 수정
- */
 export const useUpdateCuration = () => {
   const queryClient = useQueryClient()
 
@@ -201,9 +176,7 @@ export const useUpdateCuration = () => {
   })
 }
 
-/**
- * 10. 추천사 삭제
- */
+// 추천사 삭제(단건)
 export const useDeleteCuration = () => {
   const queryClient = useQueryClient()
 
@@ -222,6 +195,7 @@ export const useDeleteCuration = () => {
   })
 }
 
+// 추천사 삭제(복수)
 export const useDeleteCurations = () => {
   const queryClient = useQueryClient()
 
@@ -240,9 +214,6 @@ export const useDeleteCurations = () => {
   })
 }
 
-/**
- * 11. 책 검색
- */
 export const useSearchBooks = () => {
   return useMutation({
     mutationFn: async ({ keyword, page }: GetBooksRequest) => {
@@ -255,9 +226,6 @@ export const useSearchBooks = () => {
   })
 }
 
-/**
- * 12. 큐레이션 책 구매 링크 제공
- */
 export const useGetCurationBookPurchaseLink = (
   curationId: number,
   options?: { enabled?: boolean },

@@ -8,7 +8,7 @@ import {
   useUpdateComment,
   useDeleteComment,
 } from '../hooks/useCommunity'
-import { buildCommentTree } from '@/shared/utils/dateFormat'
+import { buildCommentTree } from '../utils/commentTree'
 import { useAuth } from '@/features/auth/hooks/useAuth'
 import { useConfirm } from '@/app/providers'
 
@@ -22,16 +22,14 @@ const CommentSection = ({ curationId, className }: CommentSectionProps) => {
   const { user } = useAuth()
   const { confirm } = useConfirm()
 
-  // Fetch comments with infinite scroll
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useGetInfiniteComments(curationId)
 
-  // Comment mutations
-  const createComment = useCreateComment(curationId)
-  const updateComment = useUpdateComment(curationId)
-  const deleteComment = useDeleteComment(curationId)
+  const { mutate: createCommentMutate, isPending: isCreateCommentPending } =
+    useCreateComment(curationId)
+  const { mutate: updateCommentMutate } = useUpdateComment(curationId)
+  const { mutate: deleteCommentMutate } = useDeleteComment(curationId)
 
-  // Flatten all pages and build tree structure
   const commentTree = useMemo(() => {
     if (!data?.pages) return []
     const allComments = data.pages.flatMap((page) => page.comments)
@@ -41,8 +39,8 @@ const CommentSection = ({ curationId, className }: CommentSectionProps) => {
   const totalComments = data?.pages[0]?.pageInfo.totalElements || 0
 
   const handleSubmit = () => {
-    if (newComment.trim()) {
-      createComment.mutate(
+    if (newComment.trim() && !isCreateCommentPending) {
+      createCommentMutate(
         { content: newComment.trim() },
         {
           onSuccess: () => {
@@ -54,11 +52,11 @@ const CommentSection = ({ curationId, className }: CommentSectionProps) => {
   }
 
   const handleReply = (parentId: number, content: string) => {
-    createComment.mutate({ parentId, content })
+    createCommentMutate({ parentId, content })
   }
 
   const handleEdit = (commentId: number, content: string) => {
-    updateComment.mutate({ commentId, content })
+    updateCommentMutate({ commentId, content })
   }
 
   const handleDelete = async (commentId: number) => {
@@ -71,7 +69,7 @@ const CommentSection = ({ curationId, className }: CommentSectionProps) => {
     })
 
     if (confirmed) {
-      deleteComment.mutate(commentId)
+      deleteCommentMutate(commentId)
     }
   }
 
@@ -84,7 +82,6 @@ const CommentSection = ({ curationId, className }: CommentSectionProps) => {
         </div>
       </CardHeader>
       <CardContent className='space-y-6'>
-        {/* Comment list */}
         <div className='space-y-6'>
           {isLoading ? (
             <div className='text-center py-8 text-neutral-500'>
@@ -108,7 +105,6 @@ const CommentSection = ({ curationId, className }: CommentSectionProps) => {
                 />
               ))}
 
-              {/* Load more button */}
               {hasNextPage && (
                 <div className='flex justify-center pt-4'>
                   <Button
@@ -125,7 +121,7 @@ const CommentSection = ({ curationId, className }: CommentSectionProps) => {
           )}
         </div>
 
-        {/* New comment form - 모바일 */}
+        {/* 댓글 입력창 - 모바일 */}
         <div className='md:hidden'>
           <Input
             placeholder='이 추천사에 답글 남기기'
@@ -137,12 +133,12 @@ const CommentSection = ({ curationId, className }: CommentSectionProps) => {
                 handleSubmit()
               }
             }}
-            disabled={createComment.isPending}
+            disabled={isCreateCommentPending}
             rightElement={
               <button
                 type='button'
                 onClick={handleSubmit}
-                disabled={!newComment.trim() || createComment.isPending}
+                disabled={!newComment.trim() || isCreateCommentPending}
                 className='disabled:opacity-40'
               >
                 <ArrowRight className='size-4 text-neutral-900' />
@@ -151,7 +147,7 @@ const CommentSection = ({ curationId, className }: CommentSectionProps) => {
           />
         </div>
 
-        {/* New comment form - 데스크톱 */}
+        {/* 댓글 입력창 - 데스크톱 */}
         <div className='hidden md:block'>
           <Textarea
             placeholder='이 추천사에 답글 남기기'
@@ -164,15 +160,15 @@ const CommentSection = ({ curationId, className }: CommentSectionProps) => {
                 handleSubmit()
               }
             }}
-            disabled={createComment.isPending}
+            disabled={isCreateCommentPending}
           />
           <div className='flex justify-end'>
             <Button
               size='sm'
               onClick={handleSubmit}
-              disabled={!newComment.trim() || createComment.isPending}
+              disabled={!newComment.trim() || isCreateCommentPending}
             >
-              {createComment.isPending ? '작성 중...' : '댓글 작성'}
+              {isCreateCommentPending ? '작성 중...' : '댓글 작성'}
             </Button>
           </div>
         </div>

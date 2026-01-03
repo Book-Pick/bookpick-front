@@ -12,10 +12,28 @@ import EmptyCurations from '@/features/curation/components/EmptyCurations'
 import EmptyCurationsCta from '@/features/curation/components/EmptyCurationsCta'
 import toast from 'react-hot-toast'
 
+// 에디터 픽 데이터(임시)
+const editorPicks = [
+  {
+    id: '1',
+    title: '#에겐남 독자들의 추천사 모음',
+    imageUrl: '/images/sample_image_01.jpeg',
+  },
+  {
+    id: '2',
+    title: '#INFP 책방지기의 가을 도서 추천사',
+    imageUrl: '/images/sample_image_02.jpeg',
+  },
+  {
+    id: '3',
+    title: '#가을 강가에서 소설을',
+    imageUrl: '/images/sample_image_03.jpeg',
+  },
+]
+
 export default function HomePage() {
   const navigate = useNavigate()
 
-  // Observer 인스턴스를 저장할 ref
   const popularObserverInstance = useRef<IntersectionObserver | null>(null)
   const similarObserverInstance = useRef<IntersectionObserver | null>(null)
   const recentObserverInstance = useRef<IntersectionObserver | null>(null)
@@ -56,7 +74,6 @@ export default function HomePage() {
     draft: false,
   })
 
-  // 인기순 콜백 ref
   const popularObserverRef = useCallback(
     (node: HTMLDivElement | null) => {
       if (popularObserverInstance.current) {
@@ -77,7 +94,6 @@ export default function HomePage() {
     [fetchNextPopular, hasNextPopular, isFetchingNextPopular],
   )
 
-  // 유사도순 콜백 ref
   const similarObserverRef = useCallback(
     (node: HTMLDivElement | null) => {
       if (similarObserverInstance.current) {
@@ -98,7 +114,6 @@ export default function HomePage() {
     [fetchNextPersonalized, hasNextPersonalized, isFetchingNextPersonalized],
   )
 
-  // 최신순 콜백 ref
   const recentObserverRef = useCallback(
     (node: HTMLDivElement | null) => {
       if (recentObserverInstance.current) {
@@ -119,16 +134,10 @@ export default function HomePage() {
     [fetchNextRecent, hasNextRecent, isFetchingNextRecent],
   )
 
-  const handleCardClick = (curationId: number) => {
-    navigate(`/curation/detail/${curationId}`)
-  }
-
-  // 무한 스크롤 데이터 평탄화
   const similarCurations = personalizedData?.pages.flatMap((page) => page.content) || []
   const likeCurations = popularData?.pages.flatMap((page) => page.content) || []
   const recentCurations = recentData?.pages.flatMap((page) => page.content) || []
 
-  // 독서 취향 조회
   const { data: readingPreference } = useGetReadingPreference()
 
   const hasNoPreferenceData = readingPreference
@@ -140,25 +149,6 @@ export default function HomePage() {
         )
     : true
 
-  // 에디터 픽 데이터
-  const editorPicks = [
-    {
-      id: '1',
-      title: '#에겐남 독자들의 추천사 모음',
-      imageUrl: '/images/sample_image_01.jpeg',
-    },
-    {
-      id: '2',
-      title: '#INFP 책방지기의 가을 도서 추천사',
-      imageUrl: '/images/sample_image_02.jpeg',
-    },
-    {
-      id: '3',
-      title: '#가을 강가에서 소설을',
-      imageUrl: '/images/sample_image_03.jpeg',
-    },
-  ]
-
   const handleEditorPickClick = (_id: string) => {
     void _id // 임시로 사용하지 않음
     toast('서비스 준비 중입니다.', {
@@ -166,11 +156,13 @@ export default function HomePage() {
     })
   }
 
+  const handleCardClick = (curationId: number) => {
+    navigate(`/curation/detail/${curationId}`)
+  }
+
   return (
     <div className='min-h-screen bg-background'>
-      {/* 메인 컨텐츠 영역 */}
       <ContentsLayout>
-        {/* 에디터 픽 섹션 */}
         <section className='mb-[50px] mt-5'>
           <EditorPickSection
             title='에디터가 엄선한 #가을 #낭만 #여행'

@@ -3,24 +3,19 @@ import CurationCardSocial from '@/features/curation/components/CurationCardSocia
 import { mockCurationData } from '@/data/mockCurationData'
 
 export default function LandingPage() {
-  // 랜덤 추천사 하나 선택
   const randomCuration = mockCurationData[Math.floor(Math.random() * mockCurationData.length)]
 
   return (
     <div className='min-h-screen'>
-      {/* 메인 배너 */}
       <LandingBanner />
 
-      {/* How it works 섹션 */}
       <section className='py-16 sm:py-20 lg:py-24 bg-gradient-to-br from-background via-muted/20 to-background'>
         <div className='max-w-[1440px] mx-auto px-4 sm:px-10 lg:px-20'>
           <h2 className='text-2xl sm:text-3xl lg:text-4xl font-bold text-center mb-16 sm:mb-20'>
             이렇게 시작해요
           </h2>
 
-          {/* 3단계 플로우 */}
           <div className='relative'>
-            {/* 물결 연결선 (데스크톱에서만 표시) */}
             <div className='hidden lg:block absolute top-1/2 left-0 right-0 transform -translate-y-1/2 z-0'>
               <svg width='100%' height='20' viewBox='0 0 1000 20' className='overflow-visible'>
                 <path
@@ -41,10 +36,8 @@ export default function LandingPage() {
             </div>
 
             <div className='grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-8 relative z-10'>
-              {/* 1단계: 독자 발견 */}
               <div className='text-center group'>
                 <div className='relative mb-6'>
-                  {/* 일러스트 배경 */}
                   <div className='w-32 h-32 mx-auto bg-gradient-to-br from-blue-50 to-indigo-100 rounded-full flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105'>
                     <div className='w-24 h-24 bg-gradient-to-br from-blue-200 to-indigo-300 rounded-full flex items-center justify-center'>
                       <span className='text-4xl'>🔍</span>
@@ -59,10 +52,8 @@ export default function LandingPage() {
                 </p>
               </div>
 
-              {/* 2단계: 감상으로 선택 */}
               <div className='text-center group'>
                 <div className='relative mb-6'>
-                  {/* 일러스트 배경 */}
                   <div className='w-32 h-32 mx-auto bg-gradient-to-br from-purple-50 to-pink-100 rounded-full flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105'>
                     <div className='w-24 h-24 bg-gradient-to-br from-purple-200 to-pink-300 rounded-full flex items-center justify-center'>
                       <span className='text-4xl'>💭</span>
@@ -77,10 +68,8 @@ export default function LandingPage() {
                 </p>
               </div>
 
-              {/* 3단계: 책 선물 */}
               <div className='text-center group'>
                 <div className='relative mb-6'>
-                  {/* 일러스트 배경 */}
                   <div className='w-32 h-32 mx-auto bg-gradient-to-br from-green-50 to-emerald-100 rounded-full flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105'>
                     <div className='w-24 h-24 bg-gradient-to-br from-green-200 to-emerald-300 rounded-full flex items-center justify-center'>
                       <span className='text-4xl'>🎁</span>
@@ -97,7 +86,6 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* 하단 메시지 */}
           <div className='text-center mt-16'>
             <p className='text-lg text-muted-foreground italic'>
               "무작위가 아닌, <span className='text-primary font-medium'>당신을 위한</span> 책 선택"
@@ -106,14 +94,12 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 핵심 가치 섹션 */}
       <section className='py-16 sm:py-20 lg:py-24 bg-muted/30'>
         <div className='max-w-[1440px] mx-auto px-4 sm:px-10 lg:px-20'>
           <h2 className='text-2xl sm:text-3xl lg:text-4xl font-bold text-center mb-12 sm:mb-16'>
             북픽이 특별한 이유
           </h2>
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8'>
-            {/* 나를 닮은 한권 - 빨간색 */}
             <div className='bg-white rounded-xl p-6 shadow-lg border-2 border-red-200 hover:border-red-300 transition-all duration-300 hover:shadow-xl group'>
               <div className='w-12 h-12 bg-red-50 rounded-lg flex items-center justify-center mb-4 group-hover:bg-red-100 transition-colors duration-300'>
                 <span className='text-2xl'>📖</span>
@@ -124,7 +110,6 @@ export default function LandingPage() {
               </p>
             </div>
 
-            {/* 매일 도착하는 책 편지 - 노란색 */}
             <div className='bg-white rounded-xl p-6 shadow-lg border-2 border-yellow-200 hover:border-yellow-300 transition-all duration-300 hover:shadow-xl group'>
               <div className='w-12 h-12 bg-yellow-50 rounded-lg flex items-center justify-center mb-4 group-hover:bg-yellow-100 transition-colors duration-300'>
                 <span className='text-2xl'>📬</span>
@@ -135,7 +120,6 @@ export default function LandingPage() {
               </p>
             </div>
 
-            {/* 지금, 모두가 읽는 그 책 - 민트색 */}
             <div className='bg-white rounded-xl p-6 shadow-lg border-2 border-emerald-200 hover:border-emerald-300 transition-all duration-300 hover:shadow-xl group'>
               <div className='w-12 h-12 bg-emerald-50 rounded-lg flex items-center justify-center mb-4 group-hover:bg-emerald-100 transition-colors duration-300'>
                 <span className='text-2xl'>🔥</span>
@@ -146,7 +130,6 @@ export default function LandingPage() {
               </p>
             </div>
 
-            {/* 로그인하면 더 가까워져요 - 보라색 */}
             <div className='bg-white rounded-xl p-6 shadow-lg border-2 border-purple-200 hover:border-purple-300 transition-all duration-300 hover:shadow-xl group'>
               <div className='w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center mb-4 group-hover:bg-purple-100 transition-colors duration-300'>
                 <span className='text-2xl'>✨</span>
@@ -160,7 +143,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 추천사 미리보기 섹션 */}
       <section className='py-16 sm:py-20 lg:py-24 bg-background'>
         <div className='max-w-[1440px] mx-auto px-4 sm:px-10 lg:px-20'>
           <h2 className='text-2xl sm:text-3xl lg:text-4xl font-bold text-center mb-12 sm:mb-16'>

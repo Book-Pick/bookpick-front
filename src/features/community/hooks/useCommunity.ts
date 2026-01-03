@@ -114,7 +114,7 @@ export const useCreateComment = (curationId: number) => {
         const newPages = [...oldData.pages]
         newPages[0] = {
           ...newPages[0],
-          comments: [optimisticComment, ...newPages[0].comments],
+          comments: [...newPages[0].comments, optimisticComment],
         }
 
         return {

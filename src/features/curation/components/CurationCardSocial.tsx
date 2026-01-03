@@ -39,7 +39,7 @@ interface CurationCardSocialProps {
 
 const CurationCardSocial = ({
   id,
-  similarity,
+  similarity = null,
   title,
   description,
   curator,
