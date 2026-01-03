@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { CommentTreeNode } from '@/shared/utils/dateFormat'
+import type { CommentTreeNode } from '../utils/commentTree'
 import { formatRelativeTime } from '@/shared/utils/dateFormat'
 import {
   Avatar,
