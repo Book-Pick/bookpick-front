@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import { Image as ImageIcon, Eye } from 'lucide-react'
+import { Image as ImageIcon, Eye, Info } from 'lucide-react'
 import { Button } from '@/shared/ui'
 import CurationCardSocial from './CurationCardSocial'
 import toast from 'react-hot-toast'
@@ -113,6 +113,10 @@ const ThumbnailPreview = ({
               : thumbnail || thumbnailUrl
                 ? '이미지 변경하기'
                 : '이미지를 선택하거나 드래그하세요'}
+          </p>
+          <p className='text-xs text-muted-foreground mt-2 flex items-center justify-center gap-1'>
+            <Info size={12} />
+            최대 10MB(jpg, png)
           </p>
           {thumbnail && !isImageUploading && (
             <p className='text-xs text-gray-500 mt-1'>{thumbnail.name}</p>
