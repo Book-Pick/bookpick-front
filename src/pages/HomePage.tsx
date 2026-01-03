@@ -218,7 +218,11 @@ export default function HomePage() {
                   </div>
                 ) : similarCurations?.length > 0 ? (
                   <>
-                    <CurationList curations={similarCurations} onCardClick={handleCardClick} />
+                    <CurationList
+                      curations={similarCurations}
+                      onCardClick={handleCardClick}
+                      showSimilarity
+                    />
                     <div ref={similarObserverRef} className='h-4' />
                     {isFetchingNextPersonalized && (
                       <div className='flex justify-center items-center py-4'>

@@ -5,9 +5,11 @@ import { useLikeCuration } from '@/features/community/hooks/useCommunity'
 const CurationList = ({
   curations,
   onCardClick,
+  showSimilarity = false,
 }: {
   curations: CurationItem[]
   onCardClick: (id: number) => void
+  showSimilarity?: boolean
 }) => {
   const { mutate: likeCurationMutate } = useLikeCuration()
 
@@ -21,7 +23,7 @@ const CurationList = ({
         <CurationCardSocial
           key={curation.curationId}
           id={curation.curationId}
-          similarity={curation.similarity}
+          similarity={showSimilarity ? curation.similarity : null}
           title={curation.title || '제목 없음'}
           description={curation.review || ''}
           curator={curation.nickName}
