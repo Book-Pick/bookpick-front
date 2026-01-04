@@ -22,6 +22,7 @@ export const useSetReadingPreference = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['readingPreference'] })
+      queryClient.invalidateQueries({ queryKey: ['curations'] })
     },
     onError: (error: Error) => {
       toast.error(error.message || '독서 취향 설정에 실패했습니다.')
@@ -49,6 +50,7 @@ export const useUpdateReadingPreference = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['readingPreference'] })
+      queryClient.invalidateQueries({ queryKey: ['curations'] })
     },
     onError: (error: Error) => {
       toast.error(error.message || '독서 취향 수정에 실패했습니다.')

@@ -77,7 +77,7 @@ export const createAxiosClient = (
             if (exceptionType?.includes('JwtTokenExpiredException')) {
               redirectToLogin(message || '로그인 토큰이 만료되었습니다.', 'token-expired')
             } else if (exceptionType?.includes('InvalidTokenTypeException')) {
-              redirectToLogin(message || ' 유효하지않은 토큰 타입입니다.', 'invalid-token')
+              redirectToLogin(message || '유효하지않은 토큰 타입입니다.', 'invalid-token')
             } else {
               toast.error(message, { id: 'server-error' })
               // window.location.href = '/error'
