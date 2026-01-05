@@ -43,7 +43,7 @@ const CurationCardSocial = ({
   title,
   description,
   curator,
-  curatorBio = '독서를 사랑하는 큐레이터',
+  curatorBio = '소개글이 없습니다.',
   curatorImage,
   likes,
   comments,
@@ -67,14 +67,14 @@ const CurationCardSocial = ({
 
   return (
     <Card
-      className={`w-full bg-white border rounded-xl overflow-hidden max-w-sm mx-auto p-0 transition-all focus:outline-none focus-visible:outline-none ${
+      className={`w-full h-full flex flex-col bg-white border rounded-xl overflow-hidden max-w-sm mx-auto p-0 transition-all focus:outline-none focus-visible:outline-none ${
         editMode && isSelected
           ? 'border-gray-200 shadow-[0_4px_16px_rgba(0,0,0,0.3)]'
           : 'border-gray-200 shadow-sm'
       } ${editMode ? 'cursor-pointer' : ''} ${className || ''}`}
       onClick={onClick}
     >
-      {/* 썸네일 - 맨 상단 */}
+      {/* 썸네일 */}
       <div className='w-full h-40 bg-gray-50 flex items-center justify-center overflow-hidden relative'>
         <CurationThumbnail
           thumbnailImage={thumbnailSrc}
@@ -98,7 +98,7 @@ const CurationCardSocial = ({
         )}
       </div>
 
-      {/* 프로필 섹션 - 썸네일 아래 */}
+      {/* 프로필 */}
       <CardHeader className='px-4 pt-2 pb-0'>
         <div className='flex items-center gap-3'>
           <Avatar className='w-10 h-10'>
@@ -117,15 +117,13 @@ const CurationCardSocial = ({
         </div>
       </CardHeader>
 
-      {/* 컨텐츠 섹션 */}
-      <CardContent className='p-4 pt-0'>
-        {/* 제목과 설명 */}
-        <div className='mb-3'>
-          {/* <h3 className='font-semibold text-sm text-gray-900 line-clamp-2 mb-2'>{title}</h3> */}
+      {/* 추천사 미리보기 */}
+      <CardContent className='p-4 pt-0 flex-1 flex flex-col'>
+        <div className='mb-3 flex-1'>
           <p className='text-sm text-gray-600 line-clamp-5 leading-relaxed'>{description}</p>
         </div>
 
-        {/* 취향 유사도 - 태그 위로 이동 */}
+        {/* 취향 유사도(취향 유사도순에서만 표시) */}
         {similarity != null && (
           <div className='mb-3'>
             <div className='flex justify-between items-center mb-2'>
@@ -162,7 +160,6 @@ const CurationCardSocial = ({
         </div>
       </CardContent>
 
-      {/* 인터랙션 섹션 */}
       <CardFooter className='mt-auto p-4 pt-0 border-t border-gray-200'>
         <div className='flex items-center justify-end gap-4 w-full'>
           <button className='flex items-center gap-1 text-gray-600 hover:text-gray-800 transition-colors'>
