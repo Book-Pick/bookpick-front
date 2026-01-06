@@ -12,6 +12,7 @@ interface ProfileRegisterFormProps {
   onNicknameChange: (value: string) => void
   onIntroductionChange: (value: string) => void
   onProfileImageChange: (imageUrl: string) => void
+  nicknameError?: string
 }
 
 export default function ProfileRegisterForm({
@@ -21,6 +22,7 @@ export default function ProfileRegisterForm({
   onNicknameChange,
   onIntroductionChange,
   onProfileImageChange,
+  nicknameError,
 }: ProfileRegisterFormProps) {
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -111,15 +113,17 @@ export default function ProfileRegisterForm({
           {/* 닉네임 */}
           <div className='space-y-2'>
             <label htmlFor='nickname' className='text-sm font-medium'>
-              닉네임
+              닉네임 <span className='text-destructive'>*</span>
             </label>
             <Input
               id='nickname'
               placeholder='닉네임을 입력하세요'
               value={nickname}
               onChange={(e) => onNicknameChange(e.target.value)}
+              className={nicknameError ? 'border-destructive' : ''}
               maxLength={20}
             />
+            {nicknameError && <p className='text-sm text-destructive'>{nicknameError}</p>}
           </div>
 
           {/* 한 줄 소개 */}

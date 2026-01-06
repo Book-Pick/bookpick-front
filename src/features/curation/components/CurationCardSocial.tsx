@@ -9,8 +9,21 @@ import {
   AvatarImage,
   Progress,
   Checkbox,
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
 } from '@/shared/ui'
-import { Heart, MessageSquare, User } from 'lucide-react'
+import {
+  Heart,
+  MessageSquare,
+  User,
+  MoreVertical,
+  Share2,
+  Bookmark,
+  Pencil,
+  Trash2,
+} from 'lucide-react'
 import CurationThumbnail from './CurationThumbnail'
 import { ViewerIcon } from '@/assets/icons/ViewerIcon'
 
@@ -35,6 +48,12 @@ interface CurationCardSocialProps {
   onSelect?: (id: number | string) => void
   isLiked?: boolean
   onLikeClick?: (id: number | string) => void
+  // 케밥 메뉴 관련 props
+  isOwner?: boolean
+  onShare?: (id: number | string) => void
+  onBookmark?: (id: number | string) => void
+  onEdit?: (id: number | string) => void
+  onDelete?: (id: number | string) => void
 }
 
 const CurationCardSocial = ({
@@ -58,6 +77,11 @@ const CurationCardSocial = ({
   onSelect,
   isLiked = false,
   onLikeClick,
+  isOwner = false,
+  onShare,
+  onBookmark,
+  onEdit,
+  onDelete,
 }: CurationCardSocialProps) => {
   // tags 문자열을 배열로 변환
   const tagArray = tags
@@ -114,6 +138,68 @@ const CurationCardSocial = ({
             <p className='font-semibold text-sm text-gray-900 truncate'>{curator}</p>
             <p className='text-xs text-gray-500 truncate'>{curatorBio}</p>
           </div>
+          {/* 케밥 메뉴 */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                className='p-1 rounded-md hover:bg-gray-100 transition-colors'
+                onClick={(e) => e.stopPropagation()}
+              >
+                <MoreVertical className='w-5 h-5 text-gray-400' />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align='end'
+              sideOffset={8}
+              className='flex flex-row gap-1 p-2 rounded-xl rounded-tr-none shadow-lg'
+            >
+              <DropdownMenuItem
+                onClick={(e) => {
+                  e.stopPropagation()
+                  if (id !== undefined && onShare) onShare(id)
+                }}
+                className='flex flex-col items-center gap-1 px-3 py-2 cursor-pointer rounded-lg'
+              >
+                <Share2 className='w-5 h-5' />
+                <span className='text-xs'>공유</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={(e) => {
+                  e.stopPropagation()
+                  if (id !== undefined && onBookmark) onBookmark(id)
+                }}
+                className='flex flex-col items-center gap-1 px-3 py-2 cursor-pointer rounded-lg'
+              >
+                <Bookmark className='w-5 h-5' />
+                <span className='text-xs'>저장</span>
+              </DropdownMenuItem>
+              {isOwner && (
+                <>
+                  <DropdownMenuItem
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      if (id !== undefined && onEdit) onEdit(id)
+                    }}
+                    className='flex flex-col items-center gap-1 px-3 py-2 cursor-pointer rounded-lg'
+                  >
+                    <Pencil className='w-5 h-5' />
+                    <span className='text-xs'>수정</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      if (id !== undefined && onDelete) onDelete(id)
+                    }}
+                    className='flex flex-col items-center gap-1 px-3 py-2 cursor-pointer rounded-lg text-red-600 focus:text-red-600'
+                    variant='destructive'
+                  >
+                    <Trash2 className='w-5 h-5' />
+                    <span className='text-xs'>삭제</span>
+                  </DropdownMenuItem>
+                </>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </CardHeader>
 

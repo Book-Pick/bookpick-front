@@ -23,6 +23,9 @@ export default function RegisterPage() {
 
   return (
     <div className='max-w-md w-full space-y-8'>
+      <Link to='/' className='block text-center mb-6'>
+        <h1 className='text-3xl font-wanted font-bold'>BOOKPICK</h1>
+      </Link>
       <Card className='px-4 py-10 rounded-2xl border-0 bg-transparent sm:border sm:bg-card'>
         <CardTitle>
           <h2 className='text-2xl px-0 sm:px-6 mb-5'>회원가입</h2>

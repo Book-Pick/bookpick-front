@@ -19,7 +19,13 @@ export default function MyProfileEditPage() {
   const [profileImage, setProfileImage] = useState<string>('')
 
   // react-hook-form 설정
-  const { watch, setValue, reset } = useForm<ProfileSettingsFormData>({
+  const {
+    watch,
+    setValue,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ProfileSettingsFormData>({
     resolver: zodResolver(profileSettingsSchema),
     mode: 'onTouched',
     defaultValues: {
@@ -68,10 +74,10 @@ export default function MyProfileEditPage() {
 
   const { formData, handlers } = useReadingPreferenceForm(initialFormData)
 
-  const handleSave = () => {
+  const onSubmit = (data: ProfileSettingsFormData) => {
     updateProfileMutate({
-      nickName: watch('nickname'),
-      introduction: watch('introduction'),
+      nickName: data.nickname,
+      introduction: data.introduction,
       profileImage: profileImage,
     })
 
@@ -115,9 +121,10 @@ export default function MyProfileEditPage() {
         nickname={nickname}
         introduction={introduction}
         profileImage={profileImage}
-        onNicknameChange={(value) => setValue('nickname', value)}
+        onNicknameChange={(value) => setValue('nickname', value, { shouldValidate: true })}
         onIntroductionChange={(value) => setValue('introduction', value)}
         onProfileImageChange={setProfileImage}
+        nicknameError={errors.nickname?.message}
       />
 
       {/* Divider */}
@@ -133,7 +140,7 @@ export default function MyProfileEditPage() {
         </Button>
         <Button
           size='lg'
-          onClick={handleSave}
+          onClick={handleSubmit(onSubmit)}
           className='flex-1 sm:flex-none'
           disabled={isUpdateProfilePending || isUpdateReadingPreferencePending}
         >

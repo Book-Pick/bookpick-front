@@ -7,6 +7,7 @@ import {
   Button,
   AspectRatio,
 } from '@/shared/ui'
+import { useNavigate } from 'react-router-dom'
 
 interface CuratorProfileCardProps {
   curatorId: number
@@ -34,13 +35,23 @@ const CuratorProfileCard = ({
   onSubscribeToggle,
 }: CuratorProfileCardProps) => {
   void _curatorId // curatorId는 부모에서 관리
+  const navigate = useNavigate()
 
   const handleSubscribeClick = () => {
     onSubscribeToggle?.()
   }
 
+  const handleCardClick = () => {
+    if (isOwnProfile) {
+      navigate('/mypage/curation')
+    }
+  }
+
   return (
-    <Card className={`py-4 pb-0 md:pb-3 bg-transparent border-0 md:border ${className || ''}`}>
+    <Card
+      className={`py-4 pb-0 md:pb-3 bg-transparent border-0 md:border ${isOwnProfile ? 'cursor-pointer hover:bg-neutral-50 transition-colors' : ''} ${className || ''}`}
+      onClick={handleCardClick}
+    >
       <CardHeader className='px-0 md:px-7'>
         {/* 모바일 레이아웃 */}
         <div className='flex md:hidden flex-row gap-3 items-center'>
