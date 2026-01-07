@@ -56,18 +56,6 @@ export default function UIPreview() {
     console.log(`추천사 ${curationId} 구매 요청, 가격: ${price}원`)
   }
 
-  const handleSelectCuration = (id: number | string) => {
-    const numId = typeof id === 'string' ? parseInt(id) : id
-    setSelectedCurations((prev) =>
-      prev.includes(numId) ? prev.filter((i) => i !== numId) : [...prev, numId],
-    )
-  }
-
-  const handleDeleteSelected = () => {
-    console.log('선택된 추천사 삭제:', selectedCurations)
-    alert(`${selectedCurations.length}개의 추천사가 선택되었습니다.`)
-  }
-
   const handleBookSelect = (book: Book | null) => {
     setSelectedBook(book)
   }
@@ -500,7 +488,6 @@ export default function UIPreview() {
                     <Button
                       variant='destructive'
                       size='sm'
-                      onClick={handleDeleteSelected}
                       disabled={selectedCurations.length === 0}
                     >
                       선택 삭제 ({selectedCurations.length})
@@ -529,9 +516,6 @@ export default function UIPreview() {
                         views={curation.views}
                         tags={curation.tags.join(', ')}
                         thumbnailSrc={[sampleImage1, sampleImage2, sampleImage3][index]}
-                        editMode={true}
-                        isSelected={selectedCurations.includes(curation.id)}
-                        onSelect={handleSelectCuration}
                       />
                     ))}
                   </div>
