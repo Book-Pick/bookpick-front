@@ -1,6 +1,7 @@
 import CurationCardSocial from '@/features/curation/components/CurationCardSocial'
 import type { CurationItem } from '@/features/curation/types/curation.types'
 import { useLikeCuration } from '@/features/community/hooks/useCommunity'
+import { useAuth } from '@/features/auth/hooks/useAuth'
 
 const CurationList = ({
   curations,
@@ -16,6 +17,8 @@ const CurationList = ({
   const handleLikeClick = (id: number) => {
     likeCurationMutate(id)
   }
+
+  const { user } = useAuth()
 
   return (
     <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6'>
@@ -38,6 +41,7 @@ const CurationList = ({
           isLiked={curation.isLiked}
           onClick={() => onCardClick(curation.curationId || curation.id || 0)}
           onLikeClick={(id) => handleLikeClick(Number(id))}
+          isOwner={curation.userId === user?.userId}
         />
       ))}
     </div>

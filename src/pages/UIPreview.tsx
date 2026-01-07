@@ -32,8 +32,6 @@ import sampleImage from '@/assets/images/sample_image.jpeg'
 import sampleImage1 from '@/assets/images/sample_image_01.jpeg'
 import sampleImage2 from '@/assets/images/sample_image_02.jpeg'
 import sampleImage3 from '@/assets/images/sample_image_03.jpeg'
-import CurationCardFull from '@/features/curation/components/CurationCardFull'
-import CurationCardBasic from '@/features/curation/components/CurationCardBasic'
 import CurationCardSocial from '@/features/curation/components/CurationCardSocial'
 import CuratorProfileCard from '@/features/curation/components/CuratorProfileCard'
 import CurationPurchaseCard from '@/features/curation/components/CurationPurchaseCard'
@@ -467,31 +465,6 @@ export default function UIPreview() {
             <section className='bg-white rounded-lg p-6 shadow-sm'>
               <h2 className='text-2xl font-bold mb-6'>추천사 카드</h2>
               <div className='space-y-6'>
-                <div>
-                  <h3 className='text-lg font-semibold mb-3'>기본 추천사 카드</h3>
-                  <CurationCardBasic
-                    similarity={95}
-                    title='일상에서 발견하는 철학적 순간들'
-                    description='우리가 무심코 지나치는 하루의 조각들 속에 얼마나 많은 질문과 해답이 숨어있는지 생각해보신 적 있으신가요?'
-                    curator='사유하는 직장인'
-                    likes={24}
-                    comments={8}
-                  />
-                </div>
-                <div>
-                  <h3 className='text-lg font-semibold mb-3'>상세 추천사 카드</h3>
-                  <CurationCardFull
-                    title='결국 어른이 된다는 건, 아픔과 불안, 외로움을 숨기면서도 하루하루를 살아내는 법을 배워가는 일'
-                    description='어른이 된다는 건 단순히 나이를 먹는 게 아니라, 세상 속에서 살아남기 위해 새로운 방식을 배우는 과정 같아. 진짜로 괜찮지 않아도, 사람들 앞에서는 웃을 줄 알고 괜찮아라는 말을 입에 달고 사는 법을 익히는 거지.'
-                    curator='감성큐레이터'
-                    likes={24}
-                    comments={8}
-                    views={156}
-                    date='2025.08.25'
-                    tags={['에세이', '성장', '힐링']}
-                    thumbnailSrc={sampleImage1}
-                  />
-                </div>
                 <div>
                   <h3 className='text-lg font-semibold mb-3'>SNS 스타일 추천사 카드</h3>
                   <p className='text-sm text-gray-600 mb-4'>

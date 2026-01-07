@@ -9,22 +9,10 @@ import {
   AvatarImage,
   Progress,
   Checkbox,
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
 } from '@/shared/ui'
-import {
-  Heart,
-  MessageSquare,
-  User,
-  MoreVertical,
-  Share2,
-  Bookmark,
-  Pencil,
-  Trash2,
-} from 'lucide-react'
+import { Heart, MessageSquare, User } from 'lucide-react'
 import CurationThumbnail from './CurationThumbnail'
+import CurationActionMenu from './CurationActionMenu'
 import { ViewerIcon } from '@/assets/icons/ViewerIcon'
 
 interface CurationCardSocialProps {
@@ -138,68 +126,14 @@ const CurationCardSocial = ({
             <p className='font-semibold text-sm text-gray-900 truncate'>{curator}</p>
             <p className='text-xs text-gray-500 truncate'>{curatorBio}</p>
           </div>
-          {/* 케밥 메뉴 */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button
-                className='p-1 rounded-md hover:bg-gray-100 transition-colors'
-                onClick={(e) => e.stopPropagation()}
-              >
-                <MoreVertical className='w-5 h-5 text-gray-400' />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              align='end'
-              sideOffset={8}
-              className='flex flex-row gap-1 p-2 rounded-xl rounded-tr-none shadow-lg'
-            >
-              <DropdownMenuItem
-                onClick={(e) => {
-                  e.stopPropagation()
-                  if (id !== undefined && onShare) onShare(id)
-                }}
-                className='flex flex-col items-center gap-1 px-3 py-2 cursor-pointer rounded-lg'
-              >
-                <Share2 className='w-5 h-5' />
-                <span className='text-xs'>공유</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={(e) => {
-                  e.stopPropagation()
-                  if (id !== undefined && onBookmark) onBookmark(id)
-                }}
-                className='flex flex-col items-center gap-1 px-3 py-2 cursor-pointer rounded-lg'
-              >
-                <Bookmark className='w-5 h-5' />
-                <span className='text-xs'>저장</span>
-              </DropdownMenuItem>
-              {isOwner && (
-                <>
-                  <DropdownMenuItem
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      if (id !== undefined && onEdit) onEdit(id)
-                    }}
-                    className='flex flex-col items-center gap-1 px-3 py-2 cursor-pointer rounded-lg'
-                  >
-                    <Pencil className='w-5 h-5' />
-                    <span className='text-xs'>수정</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      if (id !== undefined && onDelete) onDelete(id)
-                    }}
-                    className='flex flex-col items-center gap-1 px-3 py-2 cursor-pointer rounded-lg text-red-600 focus:text-red-600'
-                    variant='destructive'
-                  >
-                    <Trash2 className='w-5 h-5' />
-                    <span className='text-xs'>삭제</span>
-                  </DropdownMenuItem>
-                </>
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <CurationActionMenu
+            id={id}
+            isOwner={isOwner}
+            onShare={onShare}
+            onBookmark={onBookmark}
+            onEdit={onEdit}
+            onDelete={onDelete}
+          />
         </div>
       </CardHeader>
 
