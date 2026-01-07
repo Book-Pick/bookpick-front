@@ -6,9 +6,11 @@ import {
 } from '@/shared/ui'
 import { MoreVertical, Share2, Bookmark, Pencil, Trash2 } from 'lucide-react'
 
+type CurationActionMenuVariant = 'viewer' | 'owner' | 'draft'
+
 interface CurationActionMenuProps {
   id?: number | string
-  isOwner?: boolean
+  variant?: CurationActionMenuVariant
   onShare?: (id: number | string) => void
   onBookmark?: (id: number | string) => void
   onEdit?: (id: number | string) => void
@@ -17,16 +19,22 @@ interface CurationActionMenuProps {
 
 const CurationActionMenu = ({
   id,
-  isOwner = false,
+  variant = 'viewer',
   onShare,
   onBookmark,
   onEdit,
   onDelete,
 }: CurationActionMenuProps) => {
   const menuItems = [
-    { icon: Share2, label: '공유', onClick: onShare, variant: 'muted' as const },
-    { icon: Bookmark, label: '저장', onClick: onBookmark, variant: 'muted' as const },
-    ...(isOwner
+    // viewer, owner: 공유/저장 표시
+    ...(variant !== 'draft'
+      ? [
+          { icon: Share2, label: '공유', onClick: onShare, variant: 'muted' as const },
+          { icon: Bookmark, label: '저장', onClick: onBookmark, variant: 'muted' as const },
+        ]
+      : []),
+    // owner, draft: 수정/삭제 표시
+    ...(variant !== 'viewer'
       ? [
           { icon: Pencil, label: '수정', onClick: onEdit, variant: 'muted' as const },
           {

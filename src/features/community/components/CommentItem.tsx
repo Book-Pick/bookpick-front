@@ -95,6 +95,7 @@ const CommentItem = ({
                       setReplyContent('')
                     }}
                     className='cursor-pointer text-xs px-2 py-1'
+                    variant='muted'
                   >
                     <Pencil className='w-3 h-3 mr-1.5' />
                     수정
@@ -231,7 +232,7 @@ const CommentItem = ({
                 />
               </div>
 
-              {/* 데스크톱: 기존 Textarea */}
+              {/* 데스크톱: Textarea */}
               <div className='mt-3 p-3 bg-neutral-50 rounded-lg hidden md:block'>
                 <Textarea
                   placeholder='답글을 입력해주세요.'

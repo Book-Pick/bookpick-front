@@ -41,7 +41,7 @@ const CurationList = ({
           isLiked={curation.isLiked}
           onClick={() => onCardClick(curation.curationId || curation.id || 0)}
           onLikeClick={(id) => handleLikeClick(Number(id))}
-          isOwner={curation.userId === user?.userId}
+          menuVariant={curation.userId === user?.userId ? 'owner' : 'viewer'}
         />
       ))}
     </div>

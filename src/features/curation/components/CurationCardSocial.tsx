@@ -8,12 +8,13 @@ import {
   AvatarFallback,
   AvatarImage,
   Progress,
-  Checkbox,
 } from '@/shared/ui'
 import { Heart, MessageSquare, User } from 'lucide-react'
 import CurationThumbnail from './CurationThumbnail'
 import CurationActionMenu from './CurationActionMenu'
 import { ViewerIcon } from '@/assets/icons/ViewerIcon'
+
+type CurationActionMenuVariant = 'viewer' | 'owner' | 'draft'
 
 interface CurationCardSocialProps {
   id?: number | string
@@ -31,13 +32,10 @@ interface CurationCardSocialProps {
   thumbnailColor?: string | null
   className?: string
   onClick?: () => void
-  editMode?: boolean
-  isSelected?: boolean
-  onSelect?: (id: number | string) => void
   isLiked?: boolean
   onLikeClick?: (id: number | string) => void
   // 케밥 메뉴 관련 props
-  isOwner?: boolean
+  menuVariant?: CurationActionMenuVariant
   onShare?: (id: number | string) => void
   onBookmark?: (id: number | string) => void
   onEdit?: (id: number | string) => void
@@ -60,12 +58,9 @@ const CurationCardSocial = ({
   thumbnailColor,
   className,
   onClick,
-  editMode = false,
-  isSelected = false,
-  onSelect,
   isLiked = false,
   onLikeClick,
-  isOwner = false,
+  menuVariant = 'viewer',
   onShare,
   onBookmark,
   onEdit,
@@ -79,11 +74,7 @@ const CurationCardSocial = ({
 
   return (
     <Card
-      className={`w-full h-full flex flex-col bg-white border rounded-xl overflow-hidden max-w-sm mx-auto p-0 transition-all focus:outline-none focus-visible:outline-none ${
-        editMode && isSelected
-          ? 'border-gray-200 shadow-[0_4px_16px_rgba(0,0,0,0.3)]'
-          : 'border-gray-200 shadow-sm'
-      } ${editMode ? 'cursor-pointer' : ''} ${className || ''}`}
+      className={`w-full h-full flex flex-col bg-white border rounded-xl overflow-hidden max-w-sm mx-auto p-0 transition-all focus:outline-none focus-visible:outline-none border-gray-200 shadow-sm ${onClick ? 'cursor-pointer' : ''} ${className || ''}`}
       onClick={onClick}
     >
       {/* 썸네일 */}
@@ -93,21 +84,6 @@ const CurationCardSocial = ({
           thumbnailColor={thumbnailColor}
           title={title}
         />
-        {/* 체크박스 - editMode일 때만 표시 */}
-        {editMode && (
-          <div className='absolute top-3 right-3 z-10'>
-            <Checkbox
-              checked={isSelected}
-              onCheckedChange={() => {
-                if (id !== undefined && onSelect) {
-                  onSelect(id)
-                }
-              }}
-              className='w-5 h-5 bg-white border-2 border-gray-300 focus:outline-none focus-visible:ring-0'
-              onClick={(e) => e.stopPropagation()}
-            />
-          </div>
-        )}
       </div>
 
       {/* 프로필 */}
@@ -128,7 +104,7 @@ const CurationCardSocial = ({
           </div>
           <CurationActionMenu
             id={id}
-            isOwner={isOwner}
+            variant={menuVariant}
             onShare={onShare}
             onBookmark={onBookmark}
             onEdit={onEdit}
