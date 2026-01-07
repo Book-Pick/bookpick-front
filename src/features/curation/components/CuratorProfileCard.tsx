@@ -49,10 +49,10 @@ const CuratorProfileCard = ({
 
   return (
     <Card
-      className={`py-4 pb-0 md:pb-3 bg-transparent border-0 md:border ${isOwnProfile ? 'cursor-pointer hover:bg-neutral-50 transition-colors' : ''} ${className || ''}`}
+      className={`py-4 md:pb-3 bg-neutral-50 md:bg-transparent border-0 md:border rounded-xl md:rounded-lg ${isOwnProfile ? 'cursor-pointer hover:bg-neutral-100 transition-colors' : ''} ${className || ''}`}
       onClick={handleCardClick}
     >
-      <CardHeader className='px-0 md:px-7'>
+      <CardHeader className='px-3 md:px-7'>
         {/* 모바일 레이아웃 */}
         <div className='flex md:hidden flex-row gap-3 items-center'>
           <div className='w-[48px] min-w-[48px] max-w-[48px] flex-shrink-0'>
