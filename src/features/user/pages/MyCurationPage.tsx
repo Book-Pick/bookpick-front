@@ -34,7 +34,7 @@ export default function MyCurationPage() {
   const draftCurations = useMemo(() => myDraftedCurations?.content ?? [], [myDraftedCurations])
 
   const handleCardClick = (id: number) => {
-    navigate(`/curation/${id}`)
+    navigate(`/curation/detail/${id}`)
   }
 
   const handleEdit = (id: number | string) => {

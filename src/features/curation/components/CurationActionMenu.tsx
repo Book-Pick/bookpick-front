@@ -60,8 +60,9 @@ const CurationActionMenu = ({
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align='end'
-        sideOffset={8}
-        className='flex flex-row gap-1 p-2 rounded-xl rounded-tr-none shadow-lg w-fit'
+        sideOffset={0}
+        alignOffset={15}
+        className='flex flex-row gap-1 p-2 rounded-xl rounded-tr-none shadow-lg w-fit min-w-0'
       >
         {menuItems.map(({ icon: Icon, label, onClick, variant, className }) => (
           <DropdownMenuItem
