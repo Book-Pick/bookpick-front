@@ -61,7 +61,7 @@ export const createAxiosClient = (
               error.config?.url?.includes('/login') || error.config?.url?.includes('/register')
 
             if (!isAuthEndpoint) {
-              toast.error('유효하지 않은 인증 정보입니다. 다시 로그인하세요.', {
+              toast.error('유효하지 않은 인증 정보입니다. 다시 로그인해 주세요.', {
                 id: 'auth-required',
               })
               redirectToLogin()
@@ -69,18 +69,22 @@ export const createAxiosClient = (
             break
           }
           case 403:
-            toast.error(message, { id: 'forbidden' })
+            toast.error('접근 권한이 없습니다.', { id: 'forbidden' })
             redirectToLogin()
             break
           case 500:
             if (exceptionType?.includes('JwtTokenExpiredException')) {
-              toast.error(message, { id: 'token-expired' })
+              toast.error('로그인이 만료되었습니다. 다시 로그인해 주세요.', { id: 'token-expired' })
               redirectToLogin()
             } else if (exceptionType?.includes('InvalidTokenTypeException')) {
-              toast.error(message, { id: 'invalid-token' })
+              toast.error('로그인 정보가 올바르지 않습니다. 다시 로그인해 주세요.', {
+                id: 'invalid-token',
+              })
               redirectToLogin()
             } else {
-              toast.error(message, { id: 'server-error' })
+              toast.error('일시적인 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.', {
+                id: 'server-error',
+              })
             }
             break
         }
