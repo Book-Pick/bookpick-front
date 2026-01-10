@@ -42,9 +42,8 @@ export const createAxiosClient = (
       const message = response?.data?.message
       const exceptionType = response?.data?.exception
 
-      const redirectToLogin = (message?: string, toastId?: string) => {
+      const redirectToLogin = () => {
         localStorage.removeItem('bookpick-auth')
-        toast.error(message || '다시 로그인 하세요.', { id: toastId || 'redirect-login' })
         setTimeout(() => {
           window.location.href = '/login'
         }, 1500)
@@ -62,32 +61,28 @@ export const createAxiosClient = (
               error.config?.url?.includes('/login') || error.config?.url?.includes('/register')
 
             if (!isAuthEndpoint) {
-              redirectToLogin(message || '인증이 필요합니다.', 'auth-required')
+              toast.error('유효하지 않은 인증 정보입니다. 다시 로그인하세요.', {
+                id: 'auth-required',
+              })
+              redirectToLogin()
             }
             break
           }
           case 403:
             toast.error(message, { id: 'forbidden' })
-            redirectToLogin(undefined, 'forbidden')
+            redirectToLogin()
             break
-          // case 400:
-          //   toast.error(message)
-          //   break
           case 500:
             if (exceptionType?.includes('JwtTokenExpiredException')) {
-              redirectToLogin(message || '유효하지 않은 인증 정보입니다.', 'token-expired')
+              toast.error(message, { id: 'token-expired' })
+              redirectToLogin()
             } else if (exceptionType?.includes('InvalidTokenTypeException')) {
-              redirectToLogin(message || '유효하지 않은 인증 정보입니다.', 'invalid-token')
+              toast.error(message, { id: 'invalid-token' })
+              redirectToLogin()
             } else {
               toast.error(message, { id: 'server-error' })
-              // window.location.href = '/error'
             }
             break
-          // case 409:
-          //   toast.error(message)
-          //   break
-          // default:
-          //   toast.error(message)
         }
       }
 
