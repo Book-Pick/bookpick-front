@@ -111,6 +111,11 @@ export default function MyProfileEditPage() {
     navigate('/mypage/dashboard')
   }
 
+  const onError = () => {
+    const nicknameInput = document.getElementById('nickname')
+    nicknameInput?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
+
   const nickname = watch('nickname')
   const introduction = watch('introduction')
 
@@ -140,7 +145,7 @@ export default function MyProfileEditPage() {
         </Button>
         <Button
           size='lg'
-          onClick={handleSubmit(onSubmit)}
+          onClick={handleSubmit(onSubmit, onError)}
           className='flex-1 sm:flex-none'
           disabled={isUpdateProfilePending || isUpdateReadingPreferencePending}
         >
