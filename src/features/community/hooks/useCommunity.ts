@@ -8,9 +8,6 @@ import type {
   RegularCurationsData,
 } from '@/features/curation/types/curation.types'
 
-/**
- * 1. Get comments list
- */
 export const useGetComments = ({ curationId, page = 1, size = 10 }: GetCommentsRequest) => {
   return useQuery({
     queryKey: ['comments', curationId, page, size],
@@ -22,9 +19,6 @@ export const useGetComments = ({ curationId, page = 1, size = 10 }: GetCommentsR
   })
 }
 
-/**
- * 1-1. Get comments with infinite scroll
- */
 export const useGetInfiniteComments = (curationId: number, size: number = 10) => {
   return useInfiniteQuery({
     queryKey: ['comments', 'infinite', curationId],
@@ -54,9 +48,6 @@ export const useGetInfiniteComments = (curationId: number, size: number = 10) =>
   })
 }
 
-/**
- * 2. Get single comment
- */
 export const useGetCommentById = (curationId: number, commentId: number) => {
   return useQuery({
     queryKey: ['comment', curationId, commentId],
@@ -68,9 +59,6 @@ export const useGetCommentById = (curationId: number, commentId: number) => {
   })
 }
 
-/**
- * 3. Create comment (including replies)
- */
 export const useCreateComment = (curationId: number) => {
   const queryClient = useQueryClient()
 
@@ -143,9 +131,6 @@ export const useCreateComment = (curationId: number) => {
   })
 }
 
-/**
- * 4. Update comment
- */
 export const useUpdateComment = (curationId: number) => {
   const queryClient = useQueryClient()
 
@@ -165,9 +150,6 @@ export const useUpdateComment = (curationId: number) => {
   })
 }
 
-/**
- * 5. Delete comment
- */
 export const useDeleteComment = (curationId: number) => {
   const queryClient = useQueryClient()
 
@@ -197,9 +179,6 @@ const toggleLike = (isLiked?: boolean, likeCount?: number | null) => {
   return { isLiked: newIsLiked, likeCount: newCount }
 }
 
-/**
- * 6. Like curation
- */
 export const useLikeCuration = () => {
   const queryClient = useQueryClient()
 
@@ -299,12 +278,13 @@ export const useLikeCuration = () => {
       }
       toast.error('좋아요에 실패했습니다.')
     },
+    onSettled: () => {
+      // 좋아요 목록 재조회 (목록 갱신 필요)
+      queryClient.invalidateQueries({ queryKey: ['curations', 'infinite', 'liked'] })
+    },
   })
 }
 
-/**
- * 7. Get my comments
- */
 export const useGetMyComments = () => {
   return useQuery({
     queryKey: ['comments', 'my'],
