@@ -1,9 +1,9 @@
 import { useRef } from 'react'
-import { Input, Textarea, Avatar, AvatarImage, AvatarFallback } from '@/shared/ui'
+import { Input, Textarea, Avatar, AvatarImage } from '@/shared/ui'
 import toast from 'react-hot-toast'
 import { useImageUpload } from '@/shared/hooks'
 import { validateImageFile, fileToDataURL } from '@/shared/utils/imageValidation'
-import { CircleUser } from 'lucide-react'
+import Thumbnail from '@/shared/components/Thumbnail'
 
 interface ProfileRegisterFormProps {
   nickname: string
@@ -83,15 +83,13 @@ export default function ProfileRegisterForm({
               className='relative cursor-pointer hover:opacity-80 transition-opacity'
               onClick={handleImageClick}
             >
-              <Avatar className='w-20 h-20 md:w-24 md:h-24'>
-                {profileImage ? (
+              {profileImage ? (
+                <Avatar className='w-20 h-20 md:w-24 md:h-24'>
                   <AvatarImage src={profileImage} alt='프로필 이미지' />
-                ) : (
-                  <AvatarFallback className='bg-secondary'>
-                    <CircleUser size={36} className='text-primary' />
-                  </AvatarFallback>
-                )}
-              </Avatar>
+                </Avatar>
+              ) : (
+                <Thumbnail className='w-20 h-20 md:w-24 md:h-24 rounded-full' />
+              )}
               {/* 업로드 중 표시 */}
               {isImageUploading && (
                 <div className='absolute inset-0 flex items-center justify-center bg-black/50 rounded-full'>

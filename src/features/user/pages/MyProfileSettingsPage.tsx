@@ -8,12 +8,12 @@ import {
   Textarea,
   Avatar,
   AvatarImage,
-  AvatarFallback,
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from '@/shared/ui'
+import Thumbnail from '@/shared/components/Thumbnail'
 import toast from 'react-hot-toast'
 import { useCreateProfile } from '../hooks/useUser'
 import { profileSettingsSchema, type ProfileSettingsFormData } from '../model/validationSchema'
@@ -136,13 +136,13 @@ export default function MyProfileSettingsPage() {
                   className='relative cursor-pointer hover:opacity-80 transition-opacity'
                   onClick={handleImageClick}
                 >
-                  <Avatar className='w-20 h-20 md:w-24 md:h-24'>
-                    {profileImage ? (
+                  {profileImage ? (
+                    <Avatar className='w-20 h-20 md:w-24 md:h-24'>
                       <AvatarImage src={profileImage} alt='프로필 이미지' />
-                    ) : (
-                      <AvatarFallback className='text-2xl md:text-3xl bg-muted'>👤</AvatarFallback>
-                    )}
-                  </Avatar>
+                    </Avatar>
+                  ) : (
+                    <Thumbnail className='w-20 h-20 md:w-24 md:h-24 rounded-full' />
+                  )}
                   {/* 업로드 중 표시 */}
                   {isImageUploading && (
                     <div className='absolute inset-0 flex items-center justify-center bg-black/50 rounded-full'>
