@@ -16,17 +16,17 @@ import toast from 'react-hot-toast'
 const editorPicks = [
   {
     id: '1',
-    title: '#에겐남 독자들의 추천사 모음',
+    title: '#필사하기 좋은 문장이 있는 책 모음',
     imageUrl: '/images/sample_image_01.jpeg',
   },
   {
     id: '2',
-    title: '#INFP 책방지기의 가을 도서 추천사',
+    title: '#INFP 책방지기의 겨울 도서',
     imageUrl: '/images/sample_image_02.jpeg',
   },
   {
     id: '3',
-    title: '#가을 강가에서 소설을',
+    title: '#올해의 시작으로 읽기 좋은 책',
     imageUrl: '/images/sample_image_03.jpeg',
   },
 ]
