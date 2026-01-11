@@ -192,6 +192,41 @@ export default function UIPreview() {
                     </div>
                   </div>
                 </div>
+
+                {/* Floating Label */}
+                <div>
+                  <h3 className='text-lg font-semibold mb-3'>Floating Label</h3>
+                  <p className='text-sm text-gray-600 mb-4'>
+                    라벨이 input 안에 있다가 focus/입력 시 위로 올라가는 애니메이션 스타일
+                  </p>
+                  <div className='space-y-4'>
+                    <div className='flex items-center gap-4'>
+                      <div className='w-20 text-sm text-gray-600'>Small</div>
+                      <Input size='sm' label='이메일' floatingLabel />
+                    </div>
+                    <div className='flex items-center gap-4'>
+                      <div className='w-20 text-sm text-gray-600'>Medium</div>
+                      <Input size='md' label='사용자명' floatingLabel />
+                    </div>
+                    <div className='flex items-center gap-4'>
+                      <div className='w-20 text-sm text-gray-600'>Large</div>
+                      <Input size='lg' label='전화번호' floatingLabel />
+                    </div>
+                    <div className='flex items-center gap-4'>
+                      <div className='w-20 text-sm text-gray-600'>XLarge</div>
+                      <Input size='xl' label='검색어' floatingLabel />
+                    </div>
+                    <div className='flex items-center gap-4'>
+                      <div className='w-20 text-sm text-gray-600'>에러</div>
+                      <Input
+                        size='md'
+                        label='비밀번호'
+                        floatingLabel
+                        errorMessage='비밀번호를 입력하세요'
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
             </section>
 
