@@ -17,7 +17,7 @@ import type {
 
 // 토글 선택 시 secondary 색상 적용
 const TOGGLE_SECONDARY_STYLE =
-  'data-[state=on]:bg-secondary data-[state=on]:text-secondary-foreground'
+  'data-[state=on]:bg-secondary data-[state=on]:text-secondary-foreground px-4'
 
 interface ReadingPreferenceFormProps {
   formData: ReadingPreferenceFormData

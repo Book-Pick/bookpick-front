@@ -138,7 +138,11 @@ export default function MyProfileSettingsPage() {
                 >
                   {profileImage ? (
                     <Avatar className='w-20 h-20 md:w-24 md:h-24'>
-                      <AvatarImage src={profileImage} alt='프로필 이미지' />
+                      <AvatarImage
+                        src={profileImage}
+                        alt='프로필 이미지'
+                        className='object-cover'
+                      />
                     </Avatar>
                   ) : (
                     <Thumbnail className='w-20 h-20 md:w-24 md:h-24 rounded-full' />

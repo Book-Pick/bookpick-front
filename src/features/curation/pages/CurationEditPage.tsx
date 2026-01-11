@@ -400,6 +400,7 @@ export default function CurationCreatePage() {
                             onPressedChange={() => toggleRecommendedGenre(genre)}
                             variant='outline'
                             size='sm'
+                            className='px-4'
                           >
                             {genre}
                           </Toggle>
@@ -422,6 +423,7 @@ export default function CurationCreatePage() {
                             onPressedChange={() => toggleRecommendedKeyword(keyword)}
                             variant='outline'
                             size='sm'
+                            className='px-4'
                           >
                             {keyword}
                           </Toggle>
@@ -444,6 +446,7 @@ export default function CurationCreatePage() {
                             onPressedChange={() => toggleRecommendedStyle(style)}
                             variant='outline'
                             size='sm'
+                            className='px-4'
                           >
                             {style}
                           </Toggle>
