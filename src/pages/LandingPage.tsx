@@ -1,9 +1,19 @@
 import LandingBanner from '@/shared/components/LandingBanner'
 import CurationCardSocial from '@/features/curation/components/CurationCardSocial'
 import { mockCurationData } from '@/data/mockCurationData'
+import { useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
 
 export default function LandingPage() {
+  const navigate = useNavigate()
   const randomCuration = mockCurationData[Math.floor(Math.random() * mockCurationData.length)]
+
+  const handleCardClick = () => {
+    toast('북픽에 가입하면 취향에 맞는 다양한 추천사를 받아볼 수 있어요!', {
+      icon: '✨',
+    })
+    navigate(`/register`)
+  }
 
   return (
     <div className='min-h-screen'>
@@ -160,6 +170,7 @@ export default function LandingPage() {
               views={randomCuration.views}
               tags={randomCuration.tags.join(', ')}
               thumbnailSrc={randomCuration.thumbnailImage}
+              onClick={() => handleCardClick()}
             />
           </div>
         </div>

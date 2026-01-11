@@ -188,7 +188,7 @@ export default function HomePage() {
               <TabsContent value='like'>
                 {isLoadingPopular ? (
                   <div className='flex justify-center items-center mt-6 py-20'>
-                    <p className='text-muted-foreground'>로딩 중...</p>
+                    <p className='text-muted-foreground'>추천사 불러오는 중...</p>
                   </div>
                 ) : likeCurations?.length > 0 ? (
                   <>
@@ -214,7 +214,7 @@ export default function HomePage() {
               <TabsContent value='similar'>
                 {isLoadingPersonalized ? (
                   <div className='flex justify-center items-center mt-6 py-20'>
-                    <p className='text-muted-foreground'>로딩 중...</p>
+                    <p className='text-muted-foreground'>추천사 불러오는 중...</p>
                   </div>
                 ) : similarCurations?.length > 0 ? (
                   <>
@@ -246,7 +246,7 @@ export default function HomePage() {
               <TabsContent value='recent'>
                 {isLoadingRecent ? (
                   <div className='flex justify-center items-center mt-6 py-20'>
-                    <p className='text-muted-foreground'>로딩 중...</p>
+                    <p className='text-muted-foreground'>추천사 불러오는 중...</p>
                   </div>
                 ) : recentCurations?.length > 0 ? (
                   <>
