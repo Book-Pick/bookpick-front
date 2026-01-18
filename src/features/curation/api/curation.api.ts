@@ -5,6 +5,7 @@ import type {
   UpdateReadingPreferenceRequest,
   UpdateReadingPreferenceResponse,
   GetCurationsResponse,
+  GetCurationsByIdsResponse,
   GetCurationByIdResponse,
   GetCurationForEditResponse,
   GetCurationsRequest,
@@ -149,6 +150,20 @@ export const curationApi = {
       if (axiosError.response?.status === 404) {
         throw new Error('독서 취향을 먼저 설정해주세요.')
       }
+      throw error
+    }
+  },
+
+  /**
+   * 6. 큐레이션 ID 목록으로 조회 (에디터픽용)
+   */
+  getCurationsByIds: async (curationIds: number[]): Promise<GetCurationsByIdsResponse> => {
+    try {
+      const response = await axios.post(`${urlPrefix}/curations/by-ids`, { curationIds })
+      return response.data
+    } catch (error: unknown) {
+      const axiosError = error as AxiosErrorResponse
+      console.error('getCurationsByIds error:', axiosError.response)
       throw error
     }
   },

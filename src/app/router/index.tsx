@@ -18,6 +18,7 @@ import CurationDetailPage from '@/features/curation/pages/CurationDetailPage'
 import CurationListPage from '@/features/curation/pages/CurationListPage'
 import CuratorProfilePage from '@/features/curation/pages/CuratorProfilePage'
 import ReadingPreferencePage from '@/features/curation/pages/ReadingPreferencePage'
+import EditorPickCurationPage from '@/features/curation/pages/EditorPickCurationPage'
 
 // 주문
 import OrderCheckoutPage from '@/features/order/pages/OrderCheckoutPage'
@@ -71,6 +72,10 @@ export const routerConfig: RouteObject[] = [
               { path: 'detail/:id', element: <CurationDetailPage /> },
               { path: 'curator/:userId', element: <CuratorProfilePage /> },
             ],
+          },
+          {
+            path: 'editor-pick/:id',
+            element: <EditorPickCurationPage />,
           },
           {
             path: 'mypage',

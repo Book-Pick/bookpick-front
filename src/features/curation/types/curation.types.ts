@@ -201,6 +201,8 @@ export type GetBooksResponse = ApiResponse<PaginatedBooks>
 
 export type GetCurationBookPurchaseLinkResponse = ApiResponse<string>
 
+export type GetCurationsByIdsResponse = ApiResponse<CurationItem[]>
+
 // 좋아요 캐시 업데이트용 타입
 export interface CurationLikeItem {
   curationId: number

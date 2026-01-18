@@ -133,6 +133,18 @@ export const useGetInfiniteCurations = ({
   })
 }
 
+// 큐레이션 ID 목록으로 조회 (에디터픽용)
+export const useGetCurationsByIds = (curationIds: number[]) => {
+  return useQuery({
+    queryKey: ['curations', 'byIds', curationIds],
+    queryFn: async () => {
+      const response = await curationApi.getCurationsByIds(curationIds)
+      return response.data
+    },
+    enabled: curationIds.length > 0,
+  })
+}
+
 export const useCreateCuration = () => {
   const queryClient = useQueryClient()
 

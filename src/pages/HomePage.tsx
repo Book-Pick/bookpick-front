@@ -10,7 +10,6 @@ import {
 } from '@/features/curation/hooks/useCuration'
 import EmptyCurations from '@/features/curation/components/EmptyCurations'
 import EmptyCurationsCta from '@/features/curation/components/EmptyCurationsCta'
-import toast from 'react-hot-toast'
 
 // 에디터 픽 데이터(임시)
 const editorPicks = [
@@ -26,7 +25,7 @@ const editorPicks = [
   },
   {
     id: '3',
-    title: '#올해의 시작으로 읽기 좋은 책',
+    title: '#올해의 시작으로 읽기 좋은 에세이',
     imageUrl: '/images/sample_image_03.jpeg',
   },
 ]
@@ -149,11 +148,8 @@ export default function HomePage() {
         )
     : true
 
-  const handleEditorPickClick = (_id: string) => {
-    void _id // 임시로 사용하지 않음
-    toast('서비스 준비 중입니다.', {
-      icon: '⏳',
-    })
+  const handleEditorPickClick = (id: string) => {
+    navigate(`/editor-pick/${id}`)
   }
 
   const handleCardClick = (curationId: number) => {
@@ -165,7 +161,7 @@ export default function HomePage() {
       <ContentsLayout>
         <section className='mb-[50px] mt-5'>
           <EditorPickSection
-            title='에디터가 엄선한 #가을 #낭만 #여행'
+            title='에디터가 엄선한 #필사 #겨울 #에세이'
             picks={editorPicks}
             onCardClick={handleEditorPickClick}
           />
