@@ -6,6 +6,7 @@ import { Badge } from '@/shared/ui/badge'
 import CurationCardSocial from '@/features/curation/components/CurationCardSocial'
 import { useConfirm } from '@/app/providers'
 import { useGetCurations, useDeleteCuration } from '@/features/curation/hooks/useCuration'
+import toast from 'react-hot-toast'
 
 export default function MyCurationPage() {
   const navigate = useNavigate()
@@ -55,6 +56,20 @@ export default function MyCurationPage() {
     }
   }
 
+  const handleShare = async (id: number | string) => {
+    const url = `${window.location.origin}/curation/detail/${id}`
+    try {
+      await navigator.clipboard.writeText(url)
+      toast.success('링크가 클립보드에 저장되었습니다.')
+    } catch {
+      toast.error('링크 복사에 실패했습니다.')
+    }
+  }
+
+  const handleBookmark = () => {
+    toast('서비스 준비 중입니다.', { icon: '⏳' })
+  }
+
   return (
     <div className='flex flex-col gap-8 md:gap-[60px] my-6 md:my-10 xl:my-15'>
       <div className='flex items-center justify-between'>
@@ -95,6 +110,8 @@ export default function MyCurationPage() {
                   curatorImage={curation.profileImageUrl || undefined}
                   curatorBio={curation.introduction || ''}
                   menuVariant='owner'
+                  onShare={handleShare}
+                  onBookmark={handleBookmark}
                   onEdit={handleEdit}
                   onDelete={handleDelete}
                   onClick={() => handleCardClick(curation.curationId)}

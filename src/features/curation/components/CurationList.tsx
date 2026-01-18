@@ -27,10 +27,14 @@ const CurationList = ({
     likeCurationMutate(id)
   }
 
-  const handleShare = () => {
-    toast('서비스 준비 중입니다.', {
-      icon: '⏳',
-    })
+  const handleShare = async (id: number) => {
+    const url = `${window.location.origin}/curation/detail/${id}`
+    try {
+      await navigator.clipboard.writeText(url)
+      toast.success('링크가 클립보드에 저장되었습니다.')
+    } catch {
+      toast.error('링크 복사에 실패했습니다.')
+    }
   }
 
   const handleBookmark = () => {
@@ -79,7 +83,7 @@ const CurationList = ({
           onClick={() => onCardClick(curation.curationId || curation.id || 0)}
           onLikeClick={(id) => handleLikeClick(Number(id))}
           menuVariant={curation.userId === user?.userId ? 'owner' : 'viewer'}
-          onShare={() => handleShare()}
+          onShare={() => handleShare(curation.curationId)}
           onBookmark={() => handleBookmark()}
           onEdit={() => handleEdit(curation.curationId)}
           onDelete={() => handleDelete(curation.curationId)}
