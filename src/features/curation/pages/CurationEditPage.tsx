@@ -1,6 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Eye } from 'lucide-react'
 import {
   Button,
   Card,
@@ -20,7 +19,7 @@ import { BookSearchSection } from '../components/BookSearchSection'
 import { ReviewSection } from '../components/ReviewSection'
 import { DraftListSheet } from '../components/DraftListSheet'
 import ThumbnailPreview from '../components/ThumbnailPreview'
-import CurationCardSocial from '../components/CurationCardSocial'
+import ColorPaletteSection from '../components/ColorPaletteSection'
 import { COLOR_PALETTE, type DraftCuration } from '../constants/curationCreateData'
 import { READING_MOODS, GENRES, KEYWORDS, READING_STYLES } from '../constants/preferences'
 import toast from 'react-hot-toast'
@@ -51,7 +50,6 @@ export default function CurationCreatePage() {
   const [recommendedGenres, setRecommendedGenres] = useState<string[]>([])
   const [recommendedKeywords, setRecommendedKeywords] = useState<string[]>([])
   const [recommendedStyles, setRecommendedStyles] = useState<string[]>([])
-  const [showColorPreview, setShowColorPreview] = useState(false)
 
   const isEmptyContent = useMemo(
     () => !title && !selectedBook && !content,
@@ -140,6 +138,11 @@ export default function CurationCreatePage() {
 
   const handleThumbnailUpload = (url: string) => {
     setThumbnailUrl(url)
+  }
+
+  const handleThumbnailReset = () => {
+    setThumbnail(null)
+    setThumbnailUrl(null)
   }
 
   const getUpdateCurationRequest = ({
@@ -315,58 +318,13 @@ export default function CurationCreatePage() {
 
                   {/* 배경 색상 탭 */}
                   <TabsContent value='color' className='space-y-4 mt-4'>
-                    <div className='w-fit border p-4 rounded-xl space-y-3'>
-                      <div className='grid grid-cols-5 md:grid-cols-10 gap-1.5'>
-                        {COLOR_PALETTE.filter((color) => color.name.includes('400')).map(
-                          (color) => (
-                            <button
-                              key={color.value}
-                              onClick={() => handleColorSelect(color.value)}
-                              className={`w-10 h-10 rounded-lg border-2 transition-all hover:scale-105 ${
-                                selectedColor === color.value && !thumbnail
-                                  ? 'ring-2 ring-primary ring-offset-2'
-                                  : 'border-gray-200 hover:border-gray-300'
-                              }`}
-                              style={{ backgroundColor: color.value }}
-                              title={color.name}
-                            />
-                          ),
-                        )}
-                      </div>
-                    </div>
-
-                    {/* 전체 카드 미리보기 버튼 */}
-                    <div className='flex justify-center'>
-                      <Button
-                        type='button'
-                        variant='outline'
-                        size='sm'
-                        onClick={() => setShowColorPreview(!showColorPreview)}
-                      >
-                        <Eye size={16} className='mr-2' />
-                        {showColorPreview ? '미리보기 숨기기' : '전체 카드 미리보기'}
-                      </Button>
-                    </div>
-
-                    {/* 전체 카드 미리보기 */}
-                    {showColorPreview && (
-                      <div className='pt-4 border-t'>
-                        <h4 className='font-medium text-sm mb-4 text-center'>실제 카드 미리보기</h4>
-                        <div className='max-w-sm mx-auto'>
-                          <CurationCardSocial
-                            title={title || '추천사 제목'}
-                            description={content || '추천사 내용이 여기에 표시됩니다...'}
-                            curator='나'
-                            curatorBio='독서를 사랑하는 큐레이터'
-                            likes={0}
-                            comments={0}
-                            views={0}
-                            tags='미리보기'
-                            thumbnailColor={selectedColor}
-                          />
-                        </div>
-                      </div>
-                    )}
+                    <ColorPaletteSection
+                      selectedColor={selectedColor}
+                      onColorSelect={handleColorSelect}
+                      thumbnail={thumbnail}
+                      title={title}
+                      content={content}
+                    />
                   </TabsContent>
 
                   {/* 썸네일 이미지 탭 */}
@@ -376,6 +334,7 @@ export default function CurationCreatePage() {
                       thumbnailUrl={thumbnailUrl}
                       onThumbnailSelect={handleThumbnailSelect}
                       onThumbnailUpload={handleThumbnailUpload}
+                      onReset={handleThumbnailReset}
                       title={title}
                       content={content}
                     />

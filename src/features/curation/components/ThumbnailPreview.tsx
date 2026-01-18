@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import { Image as ImageIcon, Eye, Info } from 'lucide-react'
+import { Image as ImageIcon, Eye, Info, RefreshCw } from 'lucide-react'
 import { Button } from '@/shared/ui'
 import CurationCardSocial from './CurationCardSocial'
 import toast from 'react-hot-toast'
@@ -11,14 +11,15 @@ interface ThumbnailPreviewProps {
   thumbnailUrl: string | null
   onThumbnailSelect: (e: React.ChangeEvent<HTMLInputElement>) => void
   onThumbnailUpload: (url: string) => void
+  onReset?: () => void
   title: string
   content: string
 }
 
 /**
  * 썸네일 이미지 업로드 및 미리보기 컴포넌트
- * - 2:1 비율 썸네일 미리보기
- * - "전체 카드 미리보기" 버튼으로 실제 카드 확인
+ * - 모바일: 세로 정렬 + 버튼으로 미리보기 토글
+ * - 웹: 가로 정렬 + 우측에 미리보기 항상 표시
  * - S3 자동 업로드
  */
 const ThumbnailPreview = ({
@@ -26,6 +27,7 @@ const ThumbnailPreview = ({
   thumbnailUrl,
   onThumbnailSelect,
   onThumbnailUpload,
+  onReset,
   title,
   content,
 }: ThumbnailPreviewProps) => {
@@ -38,6 +40,8 @@ const ThumbnailPreview = ({
   // 표시할 이미지 URL (우선순위: thumbnailUrl > localPreview > thumbnail 객체)
   const displayUrl =
     thumbnailUrl || localPreview || (thumbnail ? URL.createObjectURL(thumbnail) : null)
+
+  const hasImage = !!(thumbnail || thumbnailUrl || localPreview)
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -89,96 +93,126 @@ const ThumbnailPreview = ({
     )
   }
 
+  const handleReset = () => {
+    setLocalPreview(null)
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
+    }
+    onReset?.()
+  }
+
   return (
-    <div className='space-y-4'>
-      {/* 이미지 업로드 영역 */}
-      <div className='relative'>
-        <input
-          ref={fileInputRef}
-          type='file'
-          accept='image/*'
-          onChange={handleFileChange}
-          className='absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10'
-          id='thumbnail-upload'
-          disabled={isImageUploading}
-        />
-        <label
-          htmlFor='thumbnail-upload'
-          className={`block w-full p-8 border-2 border-dashed border-gray-300 rounded-lg text-center cursor-pointer hover:border-gray-400 transition-colors ${isImageUploading ? 'opacity-50 cursor-not-allowed' : ''}`}
-        >
-          <ImageIcon size={48} className='mx-auto text-gray-400 mb-2' />
-          <p className='text-sm text-gray-600'>
-            {isImageUploading
-              ? '업로드 중...'
-              : thumbnail || thumbnailUrl
-                ? '이미지 변경하기'
-                : '이미지를 선택하거나 드래그하세요'}
-          </p>
-          <p className='text-xs text-muted-foreground mt-2 flex items-center justify-center gap-1'>
-            <Info size={12} />
-            최대 10MB(jpg, png)
-          </p>
-          {thumbnail && !isImageUploading && (
-            <p className='text-xs text-gray-500 mt-1'>{thumbnail.name}</p>
-          )}
-        </label>
-      </div>
-
-      {/* 썸네일 미리보기 (2:1 비율) */}
-      {(thumbnail || thumbnailUrl) && displayUrl && (
-        <div className='space-y-3'>
-          <div className='flex items-center justify-between'>
-            <h4 className='font-medium text-sm'>썸네일 미리보기</h4>
-            <span className='text-xs text-muted-foreground'>실제 카드에 표시될 크기</span>
+    <div className='flex flex-col md:flex-row md:gap-8'>
+      {/* 좌측: 이미지 업로드 영역 */}
+      <div className='flex-1 space-y-4'>
+        {/* 이미지가 없을 때: 업로드 UI */}
+        {!hasImage && (
+          <div className='relative'>
+            <input
+              ref={fileInputRef}
+              type='file'
+              accept='image/*'
+              onChange={handleFileChange}
+              className='absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10'
+              id='thumbnail-upload'
+              disabled={isImageUploading}
+            />
+            <label
+              htmlFor='thumbnail-upload'
+              className={`block w-full p-8 border-2 border-dashed border-gray-300 rounded-lg text-center cursor-pointer hover:border-gray-400 transition-colors ${isImageUploading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            >
+              <ImageIcon size={48} className='mx-auto text-gray-400 mb-2' />
+              <p className='text-sm text-gray-600'>
+                {isImageUploading ? '업로드 중...' : '이미지를 선택하거나 드래그하세요'}
+              </p>
+              <p className='text-xs text-muted-foreground mt-2 flex items-center justify-center gap-1'>
+                <Info size={12} />
+                최대 10MB(jpg, png)
+              </p>
+            </label>
           </div>
+        )}
 
-          {/* 2:1 비율 썸네일 */}
-          <div className='w-full max-w-sm mx-auto'>
-            <div className='relative w-full h-50 bg-gray-100 rounded-lg overflow-hidden border border-gray-200'>
-              <img src={displayUrl} alt='썸네일 미리보기' className='w-full h-full object-cover' />
-              {/* 업로드 중 표시 */}
+        {/* 이미지가 있을 때: 미리보기 + 리셋 버튼 */}
+        {hasImage && displayUrl && (
+          <div className='space-y-3'>
+            {/* 이미지 미리보기 */}
+            <div className='relative w-full rounded-lg overflow-hidden border border-gray-200'>
+              <img src={displayUrl} alt='썸네일 미리보기' className='w-full h-48 object-cover' />
+              {/* 업로드 중 오버레이 */}
               {isImageUploading && (
                 <div className='absolute inset-0 flex items-center justify-center bg-black/50'>
                   <span className='text-white text-sm'>업로드 중...</span>
                 </div>
               )}
+              {/* 다시 업로드 버튼 */}
+              <button
+                type='button'
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  handleReset()
+                }}
+                className='absolute top-2 right-2 z-20 p-1.5 bg-black/60 hover:bg-black/80 rounded-full text-white transition-colors'
+                title='다시 업로드'
+              >
+                <RefreshCw size={16} />
+              </button>
             </div>
-          </div>
 
-          {/* 전체 카드 미리보기 버튼 */}
-          <div className='flex justify-center'>
-            <Button
-              type='button'
-              variant='outline'
-              size='sm'
-              onClick={() => setShowFullPreview(!showFullPreview)}
-            >
-              <Eye size={16} className='mr-2' />
-              {showFullPreview ? '미리보기 숨기기' : '전체 카드 미리보기'}
-            </Button>
-          </div>
+            {/* 모바일: 전체 카드 미리보기 버튼 */}
+            <div className='flex justify-center md:hidden'>
+              <Button
+                type='button'
+                variant='outline'
+                size='sm'
+                onClick={() => setShowFullPreview(!showFullPreview)}
+              >
+                <Eye size={16} className='mr-2' />
+                {showFullPreview ? '미리보기 숨기기' : '전체 카드 미리보기'}
+              </Button>
+            </div>
 
-          {/* 전체 카드 미리보기 */}
-          {showFullPreview && (
-            <div className='pt-4 border-t'>
-              <h4 className='font-medium text-sm mb-4 text-center'>실제 카드 미리보기</h4>
-              <div className='max-w-sm mx-auto'>
-                <CurationCardSocial
-                  title={title || '추천사 제목'}
-                  description={content || '추천사 내용이 여기에 표시됩니다...'}
-                  curator='나'
-                  curatorBio='독서를 사랑하는 큐레이터'
-                  likes={0}
-                  comments={0}
-                  views={0}
-                  tags='미리보기'
-                  thumbnailSrc={displayUrl}
-                />
+            {/* 모바일: 전체 카드 미리보기 */}
+            {showFullPreview && (
+              <div className='pt-4 border-t md:hidden'>
+                <h4 className='font-medium text-sm mb-4 text-center'>추천사 카드 미리보기</h4>
+                <div className='max-w-sm mx-auto'>
+                  <CurationCardSocial
+                    title={title || '추천사 제목'}
+                    description={content || '추천사 내용이 여기에 표시됩니다...'}
+                    curator='나'
+                    curatorBio='독서를 사랑하는 큐레이터'
+                    likes={0}
+                    comments={0}
+                    views={0}
+                    tags='미리보기'
+                    thumbnailSrc={displayUrl}
+                  />
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* 우측: 웹 전용 미리보기 (항상 표시) */}
+      <div className='hidden md:block flex-1'>
+        <h4 className='font-medium text-sm mb-4 text-center'>추천사 카드 미리보기</h4>
+        <div className='max-w-sm mx-auto'>
+          <CurationCardSocial
+            title={title || '추천사 제목'}
+            description={content || '추천사 내용이 여기에 표시됩니다...'}
+            curator='나'
+            curatorBio='독서를 사랑하는 큐레이터'
+            likes={0}
+            comments={0}
+            views={0}
+            tags='미리보기'
+            thumbnailSrc={displayUrl ?? undefined}
+          />
         </div>
-      )}
+      </div>
     </div>
   )
 }
