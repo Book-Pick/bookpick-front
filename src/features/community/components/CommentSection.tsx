@@ -52,6 +52,7 @@ const CommentSection = ({ curationId, className }: CommentSectionProps) => {
   }
 
   const handleReply = (parentId: number, content: string) => {
+    if (isCreateCommentPending) return
     createCommentMutate({ parentId, content })
   }
 
