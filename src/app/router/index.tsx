@@ -55,10 +55,6 @@ export const routerConfig: RouteObject[] = [
         element: <HomePageWrapper />,
       },
       {
-        path: '/ui-preview',
-        element: <UIPreview />,
-      },
-      {
         path: '/',
         element: (
           <ProtectedServiceRoute>
@@ -139,7 +135,7 @@ export const routerConfig: RouteObject[] = [
     path: '*',
     element: <NotFound />,
   },
+  ...(import.meta.env.DEV ? [{ path: '/ui-preview', element: <UIPreview /> }] : []),
 ]
 
-// 하위 호환성을 위해 router도 export (필요시 사용)
 export const router = routerConfig
