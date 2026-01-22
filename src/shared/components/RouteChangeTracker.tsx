@@ -6,10 +6,11 @@ const RouteChangeTracker = () => {
   const location = useLocation()
   const [initialized, setInitialized] = useState(false)
 
-  // 로컬에서는 기록하지 않음
+  // 프로덕션 환경에서만 구글 애널리틱스 초기화
   useEffect(() => {
-    if (!window.location.href.includes('localhost')) {
-      ReactGA.initialize(import.meta.env.VITE_APP_GOOGLE_ANALYTICS_ID as string)
+    const gaId = import.meta.env.VITE_APP_GOOGLE_ANALYTICS_ID
+    if (import.meta.env.PROD && gaId) {
+      ReactGA.initialize(gaId)
       setInitialized(true)
     }
   }, [])
