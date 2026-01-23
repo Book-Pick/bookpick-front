@@ -22,8 +22,9 @@ import type {
 } from '../types/curation.types'
 import type { AxiosErrorResponse } from '@/shared/api/api.types'
 import { createAxiosClient } from '@/shared/api/axiosClient'
+import { getApiBaseUrl } from '@/shared/api/apiConfig'
 
-const axios = createAxiosClient(import.meta.env.VITE_APP_BOOKPICK_API_URL)
+const axios = createAxiosClient(getApiBaseUrl())
 const urlPrefix = '/api/v1'
 
 export const curationApi = {
