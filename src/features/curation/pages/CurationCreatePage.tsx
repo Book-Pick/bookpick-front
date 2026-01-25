@@ -192,6 +192,7 @@ export default function CurationCreatePage() {
               <div className='space-y-4'>
                 <h3 className='text-lg font-semibold'>1. 추천사 제목을 적어주세요!</h3>
                 <Input
+                  size='sm'
                   placeholder='제목을 입력해 주세요'
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}

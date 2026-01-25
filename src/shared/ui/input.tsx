@@ -61,7 +61,9 @@ function Input({
         'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
         errorMessage && 'border-destructive',
         isFloating ? floatingInputStyles[size] : null,
-        !isFloating && size === 'sm' && 'h-9 px-3 py-1 text-xs md:text-sm file:h-7 file:text-sm',
+        !isFloating &&
+          size === 'sm' &&
+          'h-9 px-3 py-1 text-sm md:text-base file:h-7 file:text-base',
         !isFloating && size === 'md' && 'h-11 px-4 py-2 text-base file:h-9 file:text-base',
         !isFloating &&
           size === 'lg' &&
