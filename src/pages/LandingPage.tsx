@@ -1,178 +1,192 @@
-import LandingBanner from '@/shared/components/LandingBanner'
+import { Button } from '@/shared/ui'
 import CurationCardSocial from '@/features/curation/components/CurationCardSocial'
 import { mockCurationData } from '@/data/mockCurationData'
 import { useNavigate } from 'react-router-dom'
-import toast from 'react-hot-toast'
 
 export default function LandingPage() {
   const navigate = useNavigate()
-  const randomCuration = mockCurationData[Math.floor(Math.random() * mockCurationData.length)]
+  const previewCurations = mockCurationData.slice(0, 3)
+
+  const handleStartClick = () => {
+    navigate('/register')
+  }
 
   const handleCardClick = () => {
-    toast('북픽에 가입하면 취향에 맞는 다양한 추천사를 받아볼 수 있어요!', {
-      icon: '✨',
-    })
-    navigate(`/register`)
+    navigate('/register')
   }
 
   return (
-    <div className='min-h-screen'>
-      <LandingBanner />
+    <div className='min-h-screen bg-white'>
+      {/* Hero Section */}
+      <section
+        className='relative min-h-[500px] flex flex-col justify-center bg-cover bg-center bg-no-repeat px-4 sm:px-10 lg:px-20 pb-[165px] pt-24'
+        style={{
+          backgroundImage: `url(/images/hero-section-bg.jpg)`,
+        }}
+      >
+        {/* Hero Content */}
+        <div className='flex flex-col items-center justify-center gap-10 flex-1 mt-[86px]'>
+          <h1
+            className='text-2xl sm:text-3xl lg:text-[30px] font-semibold text-white text-center leading-tight tracking-wide max-w-4xl'
+            style={{ wordBreak: 'keep-all' }}
+          >
+            블라인드 북, 나와 닮은 취향의 사람이 쓴 추천사로 고르는 책
+          </h1>
+          <Button onClick={handleStartClick} variant='point' size='xl' className='rounded-full'>
+            북픽 시작하기
+          </Button>
+        </div>
+      </section>
 
-      <section className='py-16 sm:py-20 lg:py-24 bg-gradient-to-br from-background via-muted/20 to-background'>
-        <div className='max-w-[1440px] mx-auto px-4 sm:px-10 lg:px-20'>
-          <h2 className='text-2xl sm:text-3xl lg:text-4xl font-bold text-center mb-16 sm:mb-20'>
-            이렇게 시작해요
-          </h2>
-
-          <div className='relative'>
-            <div className='hidden lg:block absolute top-1/2 left-0 right-0 transform -translate-y-1/2 z-0'>
-              <svg width='100%' height='20' viewBox='0 0 1000 20' className='overflow-visible'>
-                <path
-                  d='M 0,10 Q 250,2 500,10 T 1000,10'
-                  stroke='url(#waveGradient)'
-                  strokeWidth='2'
-                  fill='none'
-                  className='drop-shadow-sm'
-                />
-                <defs>
-                  <linearGradient id='waveGradient' x1='0%' y1='0%' x2='100%' y2='0%'>
-                    <stop offset='0%' stopColor='rgb(59 130 246 / 0.4)' />
-                    <stop offset='50%' stopColor='rgb(147 51 234 / 0.6)' />
-                    <stop offset='100%' stopColor='rgb(34 197 94 / 0.4)' />
-                  </linearGradient>
-                </defs>
-              </svg>
+      <section className='bg-white py-[70px] px-4 sm:px-10 lg:px-[100px]'>
+        <h2 className='text-2xl sm:text-3xl lg:text-[34px] font-semibold mb-5 text-center lg:text-left'>
+          이렇게 이용해요
+        </h2>
+        <div className='flex flex-col md:flex-row items-center justify-center gap-[52px] py-[50px]'>
+          {/* 독자 발견 */}
+          <div className='flex flex-col items-center gap-6 w-[154px]'>
+            <div className='w-[120px] h-[120px] rounded-[20px] overflow-hidden'>
+              <img
+                src='/images/how-it-works-1.png'
+                alt='독자 발견'
+                className='w-full h-full object-cover'
+              />
             </div>
-
-            <div className='grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-8 relative z-10'>
-              <div className='text-center group'>
-                <div className='relative mb-6'>
-                  <div className='w-32 h-32 mx-auto bg-gradient-to-br from-blue-50 to-indigo-100 rounded-full flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105'>
-                    <div className='w-24 h-24 bg-gradient-to-br from-blue-200 to-indigo-300 rounded-full flex items-center justify-center'>
-                      <span className='text-4xl'>🔍</span>
-                    </div>
-                  </div>
-                </div>
-                <h3 className='text-xl font-bold mb-3 text-foreground'>독자 발견</h3>
-                <p className='text-muted-foreground leading-relaxed'>
-                  당신과 비슷한 독서 취향을 가진
-                  <br />
-                  <span className='text-primary font-medium'>진짜 독자</span>들을 찾아드려요
-                </p>
-              </div>
-
-              <div className='text-center group'>
-                <div className='relative mb-6'>
-                  <div className='w-32 h-32 mx-auto bg-gradient-to-br from-purple-50 to-pink-100 rounded-full flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105'>
-                    <div className='w-24 h-24 bg-gradient-to-br from-purple-200 to-pink-300 rounded-full flex items-center justify-center'>
-                      <span className='text-4xl'>💭</span>
-                    </div>
-                  </div>
-                </div>
-                <h3 className='text-xl font-bold mb-3 text-foreground'>감상으로 선택</h3>
-                <p className='text-muted-foreground leading-relaxed'>
-                  책 정보는 숨기고
-                  <br />
-                  <span className='text-primary font-medium'>진짜 감상</span>만으로 선택하세요
-                </p>
-              </div>
-
-              <div className='text-center group'>
-                <div className='relative mb-6'>
-                  <div className='w-32 h-32 mx-auto bg-gradient-to-br from-green-50 to-emerald-100 rounded-full flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105'>
-                    <div className='w-24 h-24 bg-gradient-to-br from-green-200 to-emerald-300 rounded-full flex items-center justify-center'>
-                      <span className='text-4xl'>🎁</span>
-                    </div>
-                  </div>
-                </div>
-                <h3 className='text-xl font-bold mb-3 text-foreground'>책 선물</h3>
-                <p className='text-muted-foreground leading-relaxed'>
-                  당신만을 위한
-                  <br />
-                  <span className='text-primary font-medium'>특별한 책</span>이 도착해요
-                </p>
-              </div>
+            <div className='text-center px-[10px] py-[10px]'>
+              <h3 className='text-2xl font-semibold whitespace-nowrap'>독자 발견</h3>
             </div>
           </div>
 
-          <div className='text-center mt-16'>
-            <p className='text-lg text-muted-foreground italic'>
-              "무작위가 아닌, <span className='text-primary font-medium'>당신을 위한</span> 책 선택"
-            </p>
+          <div className='hidden lg:flex items-center w-[300px] h-[120px]'>
+            <img
+              src='/images/how-it-works-connect-line.svg'
+              alt='연결선'
+              className='w-full h-full object-contain'
+            />
+          </div>
+
+          <div className='flex flex-col items-center gap-6 w-[154px]'>
+            <div className='w-[120px] h-[120px] rounded-[20px] overflow-hidden'>
+              <img
+                src='/images/how-it-works-2.jpg'
+                alt='감상으로 선택'
+                className='w-full h-full object-cover'
+              />
+            </div>
+            <div className='text-center px-[10px] py-[10px]'>
+              <h3 className='text-2xl font-semibold whitespace-nowrap'>감상으로 선택</h3>
+            </div>
+          </div>
+
+          <div className='hidden lg:flex items-center w-[300px] h-[120px]'>
+            <img
+              src='/images/how-it-works-connect-line.svg'
+              alt='연결선'
+              className='w-full h-full object-contain'
+            />
+          </div>
+
+          {/* 책 선물 */}
+          <div className='flex flex-col items-center gap-6 w-[154px]'>
+            <div className='w-[120px] h-[120px] rounded-[20px] overflow-hidden'>
+              <img
+                src='/images/how-it-works-3.jpg'
+                alt='책 선물'
+                className='w-full h-full object-cover'
+              />
+            </div>
+            <div className='text-center px-[10px] py-[10px]'>
+              <h3 className='text-2xl font-semibold whitespace-nowrap'>책 선물</h3>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className='py-16 sm:py-20 lg:py-24 bg-muted/30'>
-        <div className='max-w-[1440px] mx-auto px-4 sm:px-10 lg:px-20'>
-          <h2 className='text-2xl sm:text-3xl lg:text-4xl font-bold text-center mb-12 sm:mb-16'>
-            북픽이 특별한 이유
+      {/* 핵심 가치 소개 Section */}
+      <section className='bg-white py-[70px] px-4 sm:px-10 lg:px-[100px] pb-[120px]'>
+        <div className='flex flex-col gap-[60px]'>
+          <h2 className='text-2xl sm:text-3xl lg:text-[34px] font-semibold text-[#262628] text-center lg:text-left'>
+            핵심 가치 소개
           </h2>
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8'>
-            <div className='bg-white rounded-xl p-6 shadow-lg border-2 border-red-200 hover:border-red-300 transition-all duration-300 hover:shadow-xl group'>
-              <div className='w-12 h-12 bg-red-50 rounded-lg flex items-center justify-center mb-4 group-hover:bg-red-100 transition-colors duration-300'>
-                <span className='text-2xl'>📖</span>
-              </div>
-              <h3 className='text-lg font-bold mb-3 text-gray-800'>나를 닮은 한권</h3>
-              <p className='text-gray-600 text-sm leading-relaxed'>
-                한 권 한 권, 당신의 스타일에 맞춘 추천사를 받아보세요.
+          <div className='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-[30px]'>
+            {/* 나를 닮은 한 권 */}
+            <div className='bg-white border-[3px] border-[#E85660] rounded-xl p-[30px] flex flex-col justify-between gap-[60px] min-h-[200px]'>
+              <h3 className='text-2xl font-semibold text-black'>나를 닮은 한 권</h3>
+              <p className='text-sm  font-medium text-black leading-relaxed'>
+                한 권 한 권, 당신의 스타일에 맞춘 추천사을 받아보세요.
               </p>
             </div>
 
-            <div className='bg-white rounded-xl p-6 shadow-lg border-2 border-yellow-200 hover:border-yellow-300 transition-all duration-300 hover:shadow-xl group'>
-              <div className='w-12 h-12 bg-yellow-50 rounded-lg flex items-center justify-center mb-4 group-hover:bg-yellow-100 transition-colors duration-300'>
-                <span className='text-2xl'>📬</span>
-              </div>
-              <h3 className='text-lg font-bold mb-3 text-gray-800'>매일 도착하는 책 편지</h3>
-              <p className='text-gray-600 text-sm leading-relaxed'>
+            {/* 매일 도착하는 책 편지 */}
+            <div className='bg-white border-[3px] border-[#F9CC4C] rounded-xl p-[30px] flex flex-col justify-between gap-[60px] min-h-[200px]'>
+              <h3 className='text-2xl font-semibold text-black'>매일 도착하는 책 편지</h3>
+              <p className='text-sm font-medium text-black leading-relaxed'>
                 책을 고를 걱정 없이, 좋은 책을 자연스럽게 만나는 방법.
               </p>
             </div>
 
-            <div className='bg-white rounded-xl p-6 shadow-lg border-2 border-emerald-200 hover:border-emerald-300 transition-all duration-300 hover:shadow-xl group'>
-              <div className='w-12 h-12 bg-emerald-50 rounded-lg flex items-center justify-center mb-4 group-hover:bg-emerald-100 transition-colors duration-300'>
-                <span className='text-2xl'>🔥</span>
-              </div>
-              <h3 className='text-lg font-bold mb-3 text-gray-800'>지금, 모두가 읽는 그 책</h3>
-              <p className='text-gray-600 text-sm leading-relaxed'>
-                실시간 일기순/최신순으로 누구나 볼 수 있는 열린 서재
+            {/* 지금, 모두가 읽는 그 책 */}
+            <div className='bg-white border-[3px] border-[#48C4E0] rounded-xl p-[30px] flex flex-col justify-between gap-[60px] min-h-[200px]'>
+              <h3 className='text-2xl font-semibold text-black w-[227.5px]'>
+                지금, 모두가 읽는 그 책
+              </h3>
+              <p className='text-sm font-medium text-black leading-relaxed'>
+                실시간 인기순/최신순으로 누구나 볼 수 있는 열린 서재.
               </p>
             </div>
 
-            <div className='bg-white rounded-xl p-6 shadow-lg border-2 border-purple-200 hover:border-purple-300 transition-all duration-300 hover:shadow-xl group'>
-              <div className='w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center mb-4 group-hover:bg-purple-100 transition-colors duration-300'>
-                <span className='text-2xl'>✨</span>
-              </div>
-              <h3 className='text-lg font-bold mb-3 text-gray-800'>로그인하면 더 가까워져요</h3>
-              <p className='text-gray-600 text-sm leading-relaxed'>
-                당신만의 책장과 북픽 맞춤 추천을 만나보세요
+            {/* 로그인하면 더 가까워져요 */}
+            <div className='bg-white border-[3px] border-[#A891E9] rounded-xl p-[30px] flex flex-col justify-between gap-[60px] min-h-[200px]'>
+              <h3 className='text-2xl font-semibold text-black'>로그인하면 더 가까워져요</h3>
+              <p className='text-sm font-medium text-black leading-relaxed'>
+                당신만의 책장과 북픽 맞춤 추천을 만나보세요.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      <section className='py-16 sm:py-20 lg:py-24 bg-background'>
-        <div className='max-w-[1440px] mx-auto px-4 sm:px-10 lg:px-20'>
-          <h2 className='text-2xl sm:text-3xl lg:text-4xl font-bold text-center mb-12 sm:mb-16'>
-            이런 추천사가 기다려요
-          </h2>
-          <div className='max-w-2xl mx-auto'>
-            <CurationCardSocial
-              similarity={randomCuration.similarity}
-              title={randomCuration.title}
-              description={randomCuration.description}
-              curator={randomCuration.curator}
-              curatorBio={randomCuration.curatorBio}
-              likes={randomCuration.likes}
-              comments={randomCuration.comments}
-              views={randomCuration.views}
-              tags={randomCuration.tags.join(', ')}
-              thumbnailSrc={randomCuration.thumbnailImage}
-              onClick={() => handleCardClick()}
-            />
+      {/* 추천사 미리보기 Section */}
+      <section className='bg-white py-[70px] px-4 sm:px-10 lg:px-[100px] pb-[130px]'>
+        <div className='flex flex-col items-center gap-[38px]'>
+          <div className='w-full flex flex-col gap-10'>
+            <h2 className='text-2xl sm:text-3xl lg:text-[34px] font-semibold text-[#333333] text-center lg:text-left'>
+              추천사 미리보기
+            </h2>
+            <div className='flex flex-col lg:flex-row items-center justify-center gap-[38px]'>
+              {previewCurations.map((curation) => (
+                <div key={curation.id} className='w-full lg:w-[400px]'>
+                  <CurationCardSocial
+                    id={curation.id}
+                    similarity={curation.similarity}
+                    title={curation.title}
+                    description={curation.description}
+                    curator={curation.curator}
+                    curatorBio={curation.curatorBio}
+                    likes={curation.likes}
+                    comments={curation.comments}
+                    views={curation.views}
+                    tags={curation.tags.join(', ')}
+                    thumbnailSrc={curation.thumbnailImage}
+                    onClick={handleCardClick}
+                    className='h-full'
+                  />
+                </div>
+              ))}
+            </div>
           </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className='bg-white py-22 mb-40 px-4 sm:px-10 lg:px-20'>
+        <div className='flex flex-col items-center justify-center gap-[50px]'>
+          <h2 className='text-2xl sm:text-3xl lg:text-[34px] font-semibold text-[#262628] text-center'>
+            당신의 맞춤 추천사 북픽 시금 시작하세요
+          </h2>
+          <Button onClick={handleStartClick} variant='point' size='xl' className='rounded-full'>
+            북픽 시작하기
+          </Button>
         </div>
       </section>
     </div>
