@@ -49,7 +49,7 @@ const CurationActionMenu = ({
   ]
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <button
           className='p-1 rounded-md hover:bg-gray-100 transition-colors'
