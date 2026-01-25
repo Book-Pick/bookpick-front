@@ -85,12 +85,11 @@ export default function ReadingPreferencePage() {
       <ReadingPreferenceForm formData={formData} handlers={handlers} />
 
       <div className='flex flex-col sm:flex-row justify-center gap-4 pt-8 mb-10'>
-        <Button size='lg' onClick={handleSubmit} disabled={isPending} className='w-full sm:w-auto'>
+        <Button onClick={handleSubmit} disabled={isPending} className='w-full sm:w-auto'>
           {isPending ? '저장 중...' : '설정 완료하기'}
         </Button>
         <Button
           variant='outline'
-          size='lg'
           onClick={handleSkip}
           disabled={isPending}
           className='w-full sm:w-auto'

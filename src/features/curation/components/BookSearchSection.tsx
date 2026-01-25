@@ -143,6 +143,7 @@ export function BookSearchSection({
                 <Input
                   placeholder={placeholder}
                   value={searchQuery}
+                  size='sm'
                   onChange={(e) => {
                     setSearchQuery(e.target.value)
                     if (data) reset() // 입력 시 이전 검색 결과 초기화

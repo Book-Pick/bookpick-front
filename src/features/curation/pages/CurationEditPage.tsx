@@ -458,7 +458,6 @@ export default function CurationCreatePage() {
             {curationData?.isDrafted && (
               <Button
                 variant='outline'
-                size='lg'
                 onClick={handleUpdateDraft}
                 className='flex-1 sm:flex-none'
                 disabled={isPending || isEmptyContent}
@@ -468,7 +467,6 @@ export default function CurationCreatePage() {
             )}
             {/* Todo: 임시저장된 추천사 수정일 경우 발행하기 버튼, 공개된 추천사 수정일 경우 수정하기 버튼 표시 필요 api 요청시에도 isDrafted 플래그값 다르게 요청 */}
             <Button
-              size='lg'
               onClick={handlePublish}
               className='flex-1 sm:flex-none'
               disabled={isPending || isEmptyContent}

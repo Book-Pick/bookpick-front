@@ -140,11 +140,10 @@ export default function MyProfileEditPage() {
 
       {/* 하단 버튼 */}
       <div className='flex justify-center gap-4 pt-8 mb-10'>
-        <Button variant='outline' size='lg' onClick={handleCancel} className='flex-1 sm:flex-none'>
+        <Button variant='outline' onClick={handleCancel} className='flex-1 sm:flex-none'>
           취소하기
         </Button>
         <Button
-          size='lg'
           onClick={handleSubmit(onSubmit, onError)}
           className='flex-1 sm:flex-none'
           disabled={isUpdateProfilePending || isUpdateReadingPreferencePending}

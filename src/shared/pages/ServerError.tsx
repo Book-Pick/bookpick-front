@@ -16,7 +16,7 @@ export default function ServerError() {
         <p className='text-gray-500 mb-8 max-w-md mx-auto'>
           일시적인 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.
         </p>
-        <Button variant='default' size='lg' onClick={() => navigate('/')} className='font-medium'>
+        <Button variant='default' onClick={() => navigate('/')} className='font-medium'>
           홈으로 돌아가기
         </Button>
       </div>

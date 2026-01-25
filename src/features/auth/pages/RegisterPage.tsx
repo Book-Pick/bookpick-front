@@ -69,7 +69,7 @@ export default function RegisterPage() {
               )}
             </div>
 
-            <Button type='submit' size='lg' className='w-full' disabled={isRegisterPending}>
+            <Button type='submit' className='w-full' disabled={isRegisterPending}>
               {isRegisterPending ? '회원가입 중...' : '회원가입'}
             </Button>
           </form>

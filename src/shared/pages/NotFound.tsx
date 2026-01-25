@@ -16,7 +16,7 @@ export default function NotFound() {
         <p className='text-gray-500 mb-8 max-w-md mx-auto'>
           요청하신 페이지가 존재하지 않거나 이동되었을 수 있습니다.
         </p>
-        <Button variant='default' size='lg' onClick={() => navigate('/')} className='font-medium'>
+        <Button variant='default' onClick={() => navigate('/')} className='font-medium'>
           홈으로 돌아가기
         </Button>
       </div>

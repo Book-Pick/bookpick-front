@@ -376,7 +376,6 @@ export default function CurationCreatePage() {
           <div className='flex justify-center gap-4 pt-8'>
             <Button
               variant='outline'
-              size='lg'
               onClick={handleSaveDraft}
               className='flex-1 sm:flex-none'
               disabled={isPending || isEmptyContent}
@@ -384,7 +383,6 @@ export default function CurationCreatePage() {
               임시저장
             </Button>
             <Button
-              size='lg'
               onClick={handlePublish}
               className='flex-1 sm:flex-none'
               disabled={isPending || isEmptyContent}

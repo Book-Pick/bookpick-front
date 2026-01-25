@@ -31,6 +31,7 @@ export function AuthorSearchSection({
         <div className='space-y-3'>
           <div className='flex gap-2'>
             <Input
+              size='sm'
               placeholder={placeholder}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}

@@ -53,12 +53,10 @@ export default function OrderCompletePage() {
 
             {/* 버튼 그룹 */}
             <div className='flex flex-col sm:flex-row gap-3 pt-4 pb-4 justify-center'>
-              <Button variant='outline' size='lg' onClick={() => navigate('/')}>
+              <Button variant='outline' onClick={() => navigate('/')}>
                 홈으로 돌아가기
               </Button>
-              <Button size='lg' onClick={() => navigate('/order/history')}>
-                주문 내역 확인하기
-              </Button>
+              <Button onClick={() => navigate('/order/history')}>주문 내역 확인하기</Button>
             </div>
           </CardContent>
         </Card>

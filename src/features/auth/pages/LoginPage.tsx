@@ -67,7 +67,7 @@ export default function LoginPage() {
               )}
             </div>
 
-            <Button type='submit' size='lg' className='w-full' disabled={isPending}>
+            <Button type='submit' className='w-full' disabled={isPending}>
               {isPending ? '로그인 중...' : '로그인'}
             </Button>
           </form>

@@ -48,15 +48,10 @@ const CurationPurchaseCard = ({
             <CardTitle className='text-2xl font-bold'>{formatPrice(price, currency)}</CardTitle>
           </div>
           <CardAction className='flex self-center'>
-            <Button
-              size='lg'
-              variant='point'
-              onClick={handlePurchaseClick}
-              className='mr-2 font-bold'
-            >
+            <Button variant='point' onClick={handlePurchaseClick} className='mr-2 font-bold'>
               구매하러 가기
             </Button>
-            <Button size='lg' variant='outline' onClick={handleCartClick}>
+            <Button variant='outline' onClick={handleCartClick}>
               장바구니
             </Button>
           </CardAction>

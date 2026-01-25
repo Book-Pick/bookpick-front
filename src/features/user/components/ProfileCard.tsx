@@ -43,7 +43,7 @@ export default function ProfileCard({
           )}
         </div>
       </div>
-      <Button className='w-full' size='lg' onClick={() => navigate('/mypage/profile')}>
+      <Button className='w-full' onClick={() => navigate('/mypage/profile')}>
         프로필 수정
       </Button>
     </div>
