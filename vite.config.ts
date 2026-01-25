@@ -18,7 +18,7 @@ export default defineConfig(({ mode }) => {
     server: {
       proxy: {
         '/api': {
-          target: env.VITE_API_BASE_URL || 'http://bookpick-test.duckdns.org',
+          target: env.VITE_API_BASE_URL || 'https://bookpick-test.duckdns.org',
           changeOrigin: true,
           secure: false,
         },
