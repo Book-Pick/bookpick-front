@@ -100,16 +100,18 @@ const CurationCardSocial = ({
           </Avatar>
           <div className='flex-1 min-w-0'>
             <p className='font-semibold text-sm text-gray-900 truncate'>{curator}</p>
-            <p className='text-xs text-gray-500 truncate'>{curatorBio}</p>
+            <p className='text-xs text-gray-500 line-clamp-2'>{curatorBio}</p>
           </div>
-          <CurationActionMenu
-            id={id}
-            variant={menuVariant}
-            onShare={onShare}
-            onBookmark={onBookmark}
-            onEdit={onEdit}
-            onDelete={onDelete}
-          />
+          <div className='flex-shrink-0'>
+            <CurationActionMenu
+              id={id}
+              variant={menuVariant}
+              onShare={onShare}
+              onBookmark={onBookmark}
+              onEdit={onEdit}
+              onDelete={onDelete}
+            />
+          </div>
         </div>
       </CardHeader>
 
