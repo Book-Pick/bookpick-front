@@ -177,7 +177,7 @@ export default function ReadingPreferenceForm({ formData, handlers }: ReadingPre
               </p>
             </CardHeader>
             <CardContent className='px-0 pt-4'>
-              <div className='space-y-3'>
+              <div className='space-y-4'>
                 {READING_HABITS.map((habit) => (
                   <div key={habit} className='flex items-center space-x-3'>
                     <Checkbox
@@ -187,7 +187,7 @@ export default function ReadingPreferenceForm({ formData, handlers }: ReadingPre
                     />
                     <label
                       htmlFor={habit}
-                      className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer'
+                      className='text-base font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer'
                     >
                       {habit}
                     </label>

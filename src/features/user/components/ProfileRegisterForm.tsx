@@ -115,6 +115,7 @@ export default function ProfileRegisterForm({
             </label>
             <Input
               id='nickname'
+              size='sm'
               placeholder='닉네임을 입력하세요'
               value={nickname}
               onChange={(e) => onNicknameChange(e.target.value)}
