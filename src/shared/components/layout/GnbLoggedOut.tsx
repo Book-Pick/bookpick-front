@@ -5,7 +5,7 @@ export function GnbLoggedOut() {
   const navigate = useNavigate()
 
   return (
-    <div className='flex items-center gap-4'>
+    <div className='flex items-center gap-2'>
       {/* 모바일 버튼 */}
       <Button
         variant='ghost'
@@ -25,7 +25,7 @@ export function GnbLoggedOut() {
       {/* 데스크톱 버튼 */}
       <Button
         variant='ghost'
-        size='xl'
+        size='lg'
         className='hidden lg:flex text-white hover:text-white hover:bg-transparent px-2'
         onClick={() => navigate('/login')}
       >
@@ -33,7 +33,7 @@ export function GnbLoggedOut() {
       </Button>
       <Button
         variant='ghost'
-        size='xl'
+        size='lg'
         className='hidden lg:flex text-point hover:bg-transparent hover:text-point px-2'
         onClick={() => navigate('/register')}
       >
