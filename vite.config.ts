@@ -18,20 +18,9 @@ export default defineConfig(({ mode }) => {
     server: {
       proxy: {
         '/api': {
-          target: env.VITE_APP_BOOKPICK_API_URL || 'http://localhost:8080',
+          target: env.VITE_API_BASE_URL || 'http://bookpick-test.duckdns.org',
           changeOrigin: true,
           secure: false,
-          configure: (proxy, _options) => {
-            proxy.on('error', (err, _req, res) => {
-              console.error('Proxy error:', err)
-              if (res && !res.headersSent) {
-                res.writeHead(500, {
-                  'Content-Type': 'text/plain',
-                })
-                res.end('Proxy error: 백엔드 서버에 연결할 수 없습니다.')
-              }
-            })
-          },
         },
         '/bookpick': {
           target: env.VITE_IMAGE_UPLOAD_URL || '',
