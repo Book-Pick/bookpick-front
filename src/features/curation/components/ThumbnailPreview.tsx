@@ -113,6 +113,12 @@ const ThumbnailPreview = ({
               type='file'
               accept='image/*'
               onChange={handleFileChange}
+              onClick={(e) => {
+                // HTML5 File Input 특성상 동일 파일 선택 시 onChange가 발생하지 않는 문제 해결
+                // 매번 value를 초기화하여 동일 파일 재선택 가능하도록 함
+                const target = e.target as HTMLInputElement
+                target.value = ''
+              }}
               className='absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10'
               id='thumbnail-upload'
               disabled={isImageUploading}
