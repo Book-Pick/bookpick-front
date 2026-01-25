@@ -103,7 +103,7 @@ export function GnbLoggedIn() {
       </DropdownMenu>
 
       {/* 데스크톱: 로그아웃 버튼 */}
-      <Button variant='text' onClick={handleLogoutClick} className='hidden sm:flex'>
+      <Button size='xl' variant='text' onClick={handleLogoutClick} className='hidden sm:flex px-2'>
         로그아웃
       </Button>
     </div>
