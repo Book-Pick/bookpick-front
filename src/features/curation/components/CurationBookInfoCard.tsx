@@ -25,19 +25,13 @@ const CurationBookInfoCard = ({
     try {
       // Safari 팝업 차단을 피하기 위해 클릭 시점에 먼저 빈 창을 엽니다
       // 이렇게 하면 사용자 상호작용과 직접 연결되어 팝업 차단을 피할 수 있습니다
-      const newWindow = window.open('about:blank', '_blank', 'noopener,noreferrer')
+      const newWindow = window.open('about:blank', '_blank')
 
       const result = await refetch()
       if (result.data) {
         if (newWindow && !newWindow.closed) {
           // refetch 완료 후 창의 URL을 업데이트합니다
-          // location.replace를 사용하면 히스토리에 about:blank가 남지 않습니다
-          try {
-            newWindow.location.replace(result.data)
-          } catch {
-            // 크로스 오리진 URL의 경우 location.href 사용
-            newWindow.location.href = result.data
-          }
+          newWindow.location.href = result.data
         } else {
           // 팝업이 차단된 경우 fallback (현재 창에서 이동)
           window.location.href = result.data
