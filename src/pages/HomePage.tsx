@@ -15,17 +15,17 @@ import EmptyCurationsCta from '@/features/curation/components/EmptyCurationsCta'
 const editorPicks = [
   {
     id: '1',
-    title: '#필사하기 좋은 문장이 있는 책 모음',
+    title: '#필사하기 좋은 문장이 있는 책',
     imageUrl: '/images/sample_image_01.jpeg',
   },
   {
     id: '2',
-    title: '#INFP 책방지기의 겨울 도서',
+    title: '#INFP 감성 겨울 도서 모음',
     imageUrl: '/images/sample_image_02.jpeg',
   },
   {
     id: '3',
-    title: '#올해의 시작으로 읽기 좋은 에세이',
+    title: '#올해의 시작으로 읽기 좋은 책',
     imageUrl: '/images/sample_image_03.jpeg',
   },
 ]
