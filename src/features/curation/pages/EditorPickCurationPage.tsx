@@ -61,7 +61,7 @@ export default function EditorPickCurationPage() {
 
   return (
     <ContentsLayout>
-      <div className='my-[-10px]'>
+      <div className='mt-[-10px] mb-10'>
         <div className='mb-8'>
           <h1 className='text-2xl md:text-3xl font-bold mb-2'>{editorPick.title}</h1>
           <p className='text-muted-foreground'>{editorPick.description}</p>
