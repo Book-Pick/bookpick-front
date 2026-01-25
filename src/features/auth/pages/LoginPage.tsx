@@ -42,29 +42,23 @@ export default function LoginPage() {
           <h2 className='text-2xl px-0 sm:px-6 mb-5'>로그인</h2>
         </CardTitle>
         <CardContent className='px-0 sm:px-6'>
-          <form onSubmit={handleSubmit(onSubmit)} className='space-y-6'>
-            <div className='space-y-2'>
-              <label htmlFor='email' className='text-sm font-medium leading-none'>
-                이메일 주소
-              </label>
+          <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
+            <div>
               <Input
                 id='email'
                 type='email'
-                placeholder='이메일을 입력해주세요'
+                placeholder='이메일'
                 {...register('email')}
                 className={errors.email ? 'border-destructive' : ''}
               />
               {errors.email && <p className='text-sm text-destructive'>{errors.email.message}</p>}
             </div>
 
-            <div className='space-y-2'>
-              <label htmlFor='password' className='text-sm font-medium leading-none'>
-                비밀번호
-              </label>
+            <div>
               <Input
                 id='password'
                 type='password'
-                placeholder='비밀번호를 입력해주세요'
+                placeholder='비밀번호'
                 {...register('password')}
                 className={errors.password ? 'border-destructive' : ''}
               />

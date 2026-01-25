@@ -62,7 +62,7 @@ function Input({
         errorMessage && 'border-destructive',
         isFloating ? floatingInputStyles[size] : null,
         !isFloating && size === 'sm' && 'h-7 px-2 py-0.5 text-sm file:h-5 file:text-xs',
-        !isFloating && size === 'md' && 'h-9 px-3 py-1 text-xs md:text-sm file:h-7 file:text-sm',
+        !isFloating && size === 'md' && 'h-11 px-4 py-2 text-base file:h-9 file:text-base',
         !isFloating &&
           size === 'lg' &&
           'h-11 px-4 py-2 text-lg md:text-base file:h-9 file:text-base',
