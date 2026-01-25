@@ -15,6 +15,7 @@ import {
   TabsTrigger,
   TabsContent,
 } from '@/shared/ui'
+import { ArrowLeft } from 'lucide-react'
 import { BookSearchSection } from '../components/BookSearchSection'
 import { ReviewSection } from '../components/ReviewSection'
 import { DraftListSheet } from '../components/DraftListSheet'
@@ -25,9 +26,11 @@ import { READING_MOODS, GENRES, KEYWORDS, READING_STYLES } from '../constants/pr
 import toast from 'react-hot-toast'
 import type { Book, UpdateCurationRequest } from '../types/curation.types'
 import { useGetCurationForEdit, useUpdateCuration } from '../hooks/useCuration'
+import { useConfirm } from '@/app/providers'
 
 export default function CurationCreatePage() {
   const navigate = useNavigate()
+  const { confirm } = useConfirm()
   const { id } = useParams<{ id: string }>()
   const curationId = id ? Number(id) : 0
 
@@ -221,6 +224,32 @@ export default function CurationCreatePage() {
     // Todo: 다른 필드들은 draft 데이터에 따라 설정
   }
 
+  const handleCancel = async () => {
+    // 수정 중인 내용이 있는지 확인
+    const hasChanges =
+      title !== (curationData?.title || '') ||
+      content !== (curationData?.review || '') ||
+      selectedBook?.isbn !== curationData?.book?.isbn ||
+      thumbnailUrl !== curationData?.thumbnail?.imageUrl ||
+      selectedColor !== curationData?.thumbnail?.imageColor
+
+    // 변경사항이 있으면 확인 다이얼로그 표시
+    if (hasChanges) {
+      const confirmed = await confirm({
+        title: '수정 취소',
+        description: '수정 중인 내용이 있습니다.\n정말 나가시겠습니까?\n저장하지 않은 변경사항은 사라집니다.',
+        confirmText: '나가기',
+        cancelText: '계속 수정',
+        variant: 'destructive',
+      })
+
+      if (!confirmed) return
+    }
+
+    // 이전 페이지로 이동
+    navigate(-1)
+  }
+
   // 로딩 상태
   if (isLoading) {
     return (
@@ -251,16 +280,15 @@ export default function CurationCreatePage() {
       <div className='pt-8 sm:pt-16 pb-8'>
         <div className='space-y-4'>
           {/* 헤더 */}
-          <div className='flex flex-col-reverse md:flex-row items-start md:items-center justify-between gap-8 sm:gap-4'>
-            <h1 className='text-2xl font-bold px-4'>추천사 수정하기</h1>
-            {/* <Button
-              variant='outline'
-              onClick={() => setIsDraftSheetOpen(true)}
-              className='self-end md:self-auto'
+          <div className='flex items-center gap-3 px-4'>
+            <button
+              onClick={handleCancel}
+              className='p-1 hover:bg-gray-100 rounded-md transition-colors'
+              aria-label='뒤로가기'
             >
-              <FileText size={16} className='mr-2' />
-              임시 저장된 글 가져오기
-            </Button> */}
+              <ArrowLeft size={24} />
+            </button>
+            <h1 className='text-2xl font-bold'>추천사 수정하기</h1>
           </div>
 
           {/* 1. 추천사 제목 입력 */}

@@ -15,6 +15,7 @@ import {
   TabsTrigger,
   TabsContent,
 } from '@/shared/ui'
+import { ArrowLeft } from 'lucide-react'
 import { BookSearchSection } from '../components/BookSearchSection'
 import { ReviewSection } from '../components/ReviewSection'
 import { DraftListSheet } from '../components/DraftListSheet'
@@ -25,9 +26,11 @@ import { READING_MOODS, GENRES, KEYWORDS, READING_STYLES } from '../constants/pr
 import toast from 'react-hot-toast'
 import type { CreateCurationRequest, Book } from '../types/curation.types'
 import { useCreateCuration } from '../hooks/useCuration'
+import { useConfirm } from '@/app/providers'
 
 export default function CurationCreatePage() {
   const navigate = useNavigate()
+  const { confirm } = useConfirm()
   const { mutate: createCurationMutate, isPending } = useCreateCuration()
 
   const [title, setTitle] = useState('')
@@ -169,21 +172,38 @@ export default function CurationCreatePage() {
     // Todo: 다른 필드들은 draft 데이터에 따라 설정
   }
 
+  const handleCancel = async () => {
+    // 작성 중인 내용이 있으면 확인 다이얼로그 표시
+    if (!isEmptyContent) {
+      const confirmed = await confirm({
+        title: '작성 취소',
+        description: '작성 중인 내용이 있습니다.\n정말 나가시겠습니까?\n저장하지 않은 내용은 사라집니다.',
+        confirmText: '나가기',
+        cancelText: '계속 작성',
+        variant: 'destructive',
+      })
+
+      if (!confirmed) return
+    }
+
+    // 이전 페이지로 이동
+    navigate(-1)
+  }
+
   return (
     <>
       <div className='pt-8 sm:pt-16 pb-8'>
         <div className='space-y-4'>
           {/* 헤더 */}
-          <div className='flex flex-col-reverse md:flex-row items-start md:items-center justify-between gap-8 sm:gap-4'>
-            <h1 className='text-2xl font-bold px-4'>나만의 추천사 작성하기</h1>
-            {/* <Button
-              variant='outline'
-              onClick={() => setIsDraftSheetOpen(true)}
-              className='self-end md:self-auto'
+          <div className='flex items-center gap-3 px-4'>
+            <button
+              onClick={handleCancel}
+              className='p-1 hover:bg-gray-100 rounded-md transition-colors'
+              aria-label='뒤로가기'
             >
-              <FileText size={16} className='mr-2' />
-              임시 저장된 글 가져오기
-            </Button> */}
+              <ArrowLeft size={24} />
+            </button>
+            <h1 className='text-2xl font-bold'>나만의 추천사 작성하기</h1>
           </div>
 
           {/* 1. 추천사 제목 입력 */}
