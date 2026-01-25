@@ -9,7 +9,6 @@ export function GnbLoggedOut() {
       {/* 모바일 버튼 */}
       <Button
         variant='ghost'
-        size='sm'
         className='lg:hidden text-white hover:text-white hover:bg-transparent px-2'
         onClick={() => navigate('/login')}
       >
@@ -17,7 +16,6 @@ export function GnbLoggedOut() {
       </Button>
       <Button
         variant='ghost'
-        size='sm'
         className='lg:hidden text-point hover:bg-transparent hover:text-point px-2'
         onClick={() => navigate('/register')}
       >
