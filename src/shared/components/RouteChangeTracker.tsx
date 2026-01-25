@@ -23,6 +23,16 @@ const RouteChangeTracker = () => {
     }
   }, [initialized, location])
 
+  // 페이지 이동 시 스크롤을 맨 위로 초기화
+  // 모바일 Safari 등 모든 브라우저에서 확실하게 작동하도록 여러 방법 사용
+  useEffect(() => {
+    window.scrollTo(0, 0)
+
+    // document 요소의 scrollTop 직접 설정 (iOS Safari 대응)
+    document.documentElement.scrollTop = 0
+    document.body.scrollTop = 0
+  }, [location.pathname])
+
   return null
 }
 

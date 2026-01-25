@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useRef } from 'react'
 import { Card, CardHeader, CardContent, Textarea, Button, Input } from '@/shared/ui'
 import { MessageCircle, ArrowRight } from 'lucide-react'
 import CommentItem from './CommentItem'
@@ -21,6 +21,7 @@ const CommentSection = ({ curationId, className }: CommentSectionProps) => {
   const [newComment, setNewComment] = useState('')
   const { user } = useAuth()
   const { confirm } = useConfirm()
+  const isSubmittingRef = useRef(false)
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useGetInfiniteComments(curationId)
@@ -39,12 +40,19 @@ const CommentSection = ({ curationId, className }: CommentSectionProps) => {
   const totalComments = data?.pages[0]?.pageInfo.totalElements || 0
 
   const handleSubmit = () => {
-    if (newComment.trim() && !isCreateCommentPending) {
+    // 중복 제출 방지: 로컬 플래그와 React Query pending 상태 모두 체크
+    if (newComment.trim() && !isCreateCommentPending && !isSubmittingRef.current) {
+      isSubmittingRef.current = true
+
       createCommentMutate(
         { content: newComment.trim() },
         {
           onSuccess: () => {
             setNewComment('')
+            isSubmittingRef.current = false
+          },
+          onError: () => {
+            isSubmittingRef.current = false
           },
         },
       )
@@ -129,7 +137,8 @@ const CommentSection = ({ curationId, className }: CommentSectionProps) => {
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === 'Enter') {
+              // IME 조합 중(한글, 일본어 등 입력 중)에는 Enter 무시
+              if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
                 e.preventDefault()
                 handleSubmit()
               }
@@ -156,7 +165,8 @@ const CommentSection = ({ curationId, className }: CommentSectionProps) => {
             onChange={(e) => setNewComment(e.target.value)}
             className='mb-3 min-h-[100px] rounded-none'
             onKeyDown={(e) => {
-              if (e.key === 'Enter' && !e.shiftKey) {
+              // IME 조합 중(한글, 일본어 등 입력 중)에는 Enter 무시
+              if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
                 e.preventDefault()
                 handleSubmit()
               }
