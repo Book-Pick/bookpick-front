@@ -3,7 +3,6 @@ import { authApi } from '../api/auth.api'
 import { useMutation } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import type { RegisterRequest, LoginRequest } from '../types/auth.types'
-import { useNavigate } from 'react-router-dom'
 
 export const useAuth = () => {
   const { user, token, isAuthenticated, isLoading, setAuthState } = useAuthContext()
@@ -65,17 +64,10 @@ export const useAuth = () => {
    * 회원가입
    */
   const useRegister = () => {
-    const navigate = useNavigate()
     return useMutation({
       mutationFn: async (request: RegisterRequest) => {
         const response = await authApi.register(request)
         return response.data
-      },
-      onSuccess: (data) => {
-        if (data?.userId) {
-          toast.success('회원가입이 완료되었습니다.')
-          navigate('/login')
-        }
       },
       onError: (error) => {
         toast.error(error.message || '회원가입에 실패했습니다.')

@@ -36,7 +36,6 @@ export const useCreateProfile = () => {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['profile'] })
-      toast.success('프로필이 성공적으로 등록되었습니다.')
       updateUser({
         nickname: data?.nickName ?? '',
         bio: data?.introduction ?? '',

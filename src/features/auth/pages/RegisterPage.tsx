@@ -1,25 +1,59 @@
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { Button, Input, Card, CardContent, CardFooter, CardTitle } from '@/shared/ui'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import toast from 'react-hot-toast'
 import { registerSchema, type RegisterFormData } from '../model/validationSchema'
 import { useAuth } from '../hooks/useAuth.ts'
+import { useCreateProfile } from '@/features/user/hooks/useUser'
+import { generateRandomNickname } from '@/features/user/constants/nicknameGenerator'
 
 export default function RegisterPage() {
-  const { useRegister } = useAuth()
-  const { mutate: registerMutate, isPending: isRegisterPending } = useRegister()
+  const navigate = useNavigate()
+  const { useRegister, useLogin } = useAuth()
+  const { mutateAsync: registerAsync } = useRegister()
+  const { mutateAsync: loginAsync } = useLogin()
+  const { mutateAsync: createProfileAsync } = useCreateProfile()
+  const [isProcessing, setIsProcessing] = useState(false)
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<RegisterFormData>({ resolver: zodResolver(registerSchema), mode: 'onTouched' })
 
-  const onSubmit = (data: RegisterFormData) => {
-    registerMutate({
-      email: data.email,
-      password: data.password,
-    })
+  const onSubmit = async (data: RegisterFormData) => {
+    setIsProcessing(true)
+    try {
+      // 1. 회원가입
+      const result = await registerAsync({ email: data.email, password: data.password })
+      if (!result?.userId) throw new Error('회원가입 실패')
+
+      toast.success('회원가입이 완료되었습니다.')
+
+      // 2. 자동 로그인
+      await loginAsync({ email: data.email, password: data.password })
+
+      // 3. 랜덤 닉네임으로 기본 프로필 생성
+      const randomNickname = generateRandomNickname()
+      await createProfileAsync({
+        nickName: randomNickname,
+        introduction: '',
+        profileImage: '',
+      })
+
+      // 4. 홈으로 이동
+      navigate('/')
+    } catch (error) {
+      console.error('회원가입 프로세스 실패:', error)
+      navigate('/login') // 실패 시 로그인 페이지로 폴백
+    } finally {
+      setIsProcessing(false)
+    }
   }
+
+  const isLoading = isProcessing
 
   return (
     <div className='max-w-md w-full space-y-8'>
@@ -69,8 +103,8 @@ export default function RegisterPage() {
               )}
             </div>
 
-            <Button type='submit' className='w-full' disabled={isRegisterPending}>
-              {isRegisterPending ? '회원가입 중...' : '회원가입'}
+            <Button type='submit' className='w-full' disabled={isLoading}>
+              {isLoading ? '회원가입 중...' : '회원가입'}
             </Button>
           </form>
         </CardContent>
