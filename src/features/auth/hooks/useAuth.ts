@@ -5,7 +5,8 @@ import toast from 'react-hot-toast'
 import type { RegisterRequest, LoginRequest } from '../types/auth.types'
 
 export const useAuth = () => {
-  const { user, token, isAuthenticated, isLoading, setAuthState } = useAuthContext()
+  const { user, token, isAuthenticated, isLoading, isFirstLogin, setAuthState, clearFirstLogin } =
+    useAuthContext()
 
   /**
    * 로그인
@@ -102,10 +103,12 @@ export const useAuth = () => {
     token,
     isAuthenticated,
     isLoading,
+    isFirstLogin,
 
     // Method
     useLogin,
     useRegister,
     useLogout,
+    clearFirstLogin,
   }
 }

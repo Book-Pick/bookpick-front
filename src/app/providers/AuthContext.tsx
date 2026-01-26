@@ -13,6 +13,7 @@ export interface AuthContextType extends AuthState {
   setAuthState: React.Dispatch<React.SetStateAction<AuthState>>
   updateUser: (userData: Partial<User>) => void
   clearAuth: () => void
+  clearFirstLogin: () => void
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined)

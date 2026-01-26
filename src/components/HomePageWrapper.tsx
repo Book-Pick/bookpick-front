@@ -1,9 +1,10 @@
 import { useAuth } from '@/features/auth/hooks/useAuth'
 import HomePage from '@/pages/HomePage'
 import LandingPage from '@/pages/LandingPage'
+import FirstLoginModal from '@/components/FirstLoginModal'
 
 export default function HomePageWrapper() {
-  const { isAuthenticated, isLoading } = useAuth()
+  const { isAuthenticated, isLoading, isFirstLogin, clearFirstLogin } = useAuth()
 
   if (isLoading) {
     return (
@@ -13,5 +14,10 @@ export default function HomePageWrapper() {
     )
   }
 
-  return isAuthenticated ? <HomePage /> : <LandingPage />
+  return (
+    <>
+      {isAuthenticated ? <HomePage /> : <LandingPage />}
+      <FirstLoginModal open={isAuthenticated && isFirstLogin} onClose={clearFirstLogin} />
+    </>
+  )
 }

@@ -79,11 +79,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     })
   }, [])
 
+  /**
+   * 첫 로그인 플래그만 해제
+   */
+  const clearFirstLogin = useCallback(() => {
+    setAuthState((prev) => ({ ...prev, isFirstLogin: false }))
+  }, [])
+
   const contextValue = {
     ...authState,
     setAuthState,
     updateUser,
     clearAuth,
+    clearFirstLogin,
   }
 
   return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
