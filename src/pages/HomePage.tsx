@@ -40,6 +40,7 @@ export default function HomePage() {
   const {
     data: personalizedData,
     isLoading: isLoadingPersonalized,
+    isFetching: isFetchingPersonalized,
     fetchNextPage: fetchNextPersonalized,
     hasNextPage: hasNextPersonalized,
     isFetchingNextPage: isFetchingNextPersonalized,
@@ -208,7 +209,10 @@ export default function HomePage() {
                 )}
               </TabsContent>
               <TabsContent value='similar'>
-                {isLoadingPersonalized ? (
+                {isLoadingPersonalized ||
+                (isFetchingPersonalized &&
+                  !isFetchingNextPersonalized &&
+                  similarCurations?.length === 0) ? (
                   <div className='flex justify-center items-center mt-6 py-20'>
                     <p className='text-muted-foreground'>추천사 불러오는 중...</p>
                   </div>
